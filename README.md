@@ -7,6 +7,7 @@ The repository tries to follow a standard structure, broadly based on the [Cooki
 ## Repository structure:  
 
 * README.md - you're reading it
+* /packrat - contains logs and package library for this project, as created with the [packrat](http://rstudio.github.io/packrat/) R package.
 * /data - contains raw data files and manually curated files (corfiles) with immunofluorescence quantification data for all embryos analyzed in the project
    * /corfiles
    * /rawfiles
