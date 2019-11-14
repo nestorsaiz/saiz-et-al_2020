@@ -2,7 +2,8 @@
 ## some basic calculations on the raw dataset and return, as new variables:
 ## 1. Total cell count per embryo (Cellcount)
 ## 2. Number of ICM cells per embryo (icm.count)
-## 3. Average cell count per litter or experimental group (litter.median)
+## 3. Average cell count per litter or experimental group 
+##    (litter.median or group.median)
 
 ## This function requires dplyr to run
 library("plyr")
@@ -10,7 +11,6 @@ library("dplyr")
 
 ## This function requires a dataset, as well as the names of the variables for
 ## * embryo identifier (embryo.var), 
-## * total cell count per embryo (cc.var), 
 ## * experimental unit (expunit.var) 
 ## * treatment (tt.var)
 ## It also takes an option to separate the experimental unit
