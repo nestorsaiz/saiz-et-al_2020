@@ -8,8 +8,8 @@ The repository tries to follow a standard structure, broadly based on the [Cooki
 
 * README.md - you're reading it
 * /data - contains raw data files and manually curated files (corfiles) with immunofluorescence quantification data for all embryos analyzed in the project
-   * corfiles
-   * rawfiles
+   * /corfiles
+   * /rawfiles
 * /figures - contains plots generated during analyis
 * /results - contains tables and results generated during analysis
 * /notebooks - contains interactive Jupyter notebooks taking you through my data analysis process
