@@ -1,0 +1,18 @@
+
+Time
+ ==================== 
+Time,Unit,Category,Time,NS-labs,TrackID,ID,
+0,min,Spot,1,PRE;targeted,1000000000,0,
+0,min,Spot,1,PRE;targeted,1000000001,1,
+0,min,Spot,1,PRE;targeted,1000000002,2,
+0,min,Spot,1,PRE;targeted,1000000003,3,
+0.0166667,min,Spot,2,PRE;targeted,1000000002,4,
+0.0166667,min,Spot,2,PRE;targeted,1000000001,6,
+0.0166667,min,Spot,2,PRE;targeted,1000000000,8,
+0.0166667,min,Spot,2,PRE;targeted,1000000003,10,
+0.0333333,min,Spot,3,Apoptosis;PRE;targeted,1000000002,11,
+0.0333333,min,Spot,3,Apoptosis;PRE;targeted,1000000001,12,
+0.0333333,min,Spot,3,Apoptosis;PRE;targeted,1000000000,13,
+0.0333333,min,Spot,3,PRE;targeted,1000000003,14,
+0.05,min,Spot,4,PRE;targeted,1000000003,15,
+0.0666667,min,Spot,5,Apoptosis;PRE;targeted,1000000003,16,
