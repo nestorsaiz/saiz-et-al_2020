@@ -1,0 +1,10 @@
+metaData	metaData
+Quandl	Quandl
+quandl.api	quandl.api
+Quandl.api_key	Quandl.api_key
+Quandl.auth	Quandl.auth
+Quandl.database.bulk_download_to_file	Quandl.database.bulk_download_to_file
+Quandl.database.bulk_download_url	Quandl.database.bulk_download_url
+Quandl.dataset.get	Quandl.dataset.get
+Quandl.datatable	Quandl.datatable
+Quandl.search	Quandl.search

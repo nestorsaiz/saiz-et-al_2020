@@ -1,0 +1,16 @@
+Quandl                  Retrieves Data from the Quandl Dataset endpoint
+                        and formats
+Quandl.api_key          Query or set Quandl API key
+Quandl.auth             Query or set Quandl API token
+Quandl.database.bulk_download_to_file
+                        Downloads a zip with all data from a Quandl
+                        database
+Quandl.database.bulk_download_url
+                        Returns the bulk download url
+Quandl.dataset.get      Retrieves Data from the Quandl Dataset endpoint
+Quandl.datatable        Retrieves Data from the Quandl Datatable
+                        endpoint
+Quandl.search           Search the Quandl database
+metaData                Retrieve metadata from a Quandl series or
+                        search results
+quandl.api              Executes Quandl API calls

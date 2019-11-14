@@ -1,0 +1,23 @@
+FANG                    Stock prices for the "FANG" stocks.
+av_api_key              Set Alpha Vantage API Key
+coord_x_date            Zoom in on plot regions using date ranges or
+                        date-time ranges
+deprecated              Deprecated functions
+geom_bbands             Plot Bollinger Bands using Moving Averages
+geom_chart              Plot Financial Charts in ggplot2
+geom_ma                 Plot moving averages
+palette_tq              tidyquant palettes for use with scales
+quandl_api_key          Query or set Quandl API Key
+quandl_search           Search the Quandl database
+scale_manual            tidyquant colors and fills for ggplot2.
+theme_tq                tidyquant themes for ggplot2.
+tidyquant               tidyquant: Integrating quantitative financial
+                        analysis tools with the tidyverse
+tq_get                  Get quantitative data in 'tibble' format
+tq_index                Get all stocks in a stock index or stock
+                        exchange in 'tibble' format
+tq_mutate               Mutates quantitative data
+tq_performance          Computes a wide variety of summary performance
+                        metrics from stock or portfolio returns
+tq_portfolio            Aggregates a group of returns by asset into
+                        portfolio returns

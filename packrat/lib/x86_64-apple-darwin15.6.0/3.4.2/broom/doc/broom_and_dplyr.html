@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>broom and dplyr</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<!--
+%\VignetteBuilder{knitr::knitr}
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{broom and dplyr}
+-->
+
+<h1>broom and dplyr</h1>
+
+<p>While broom is useful for summarizing the result of a single analysis in a consistent format, it is really designed for high-throughput applications, where you must combine results from multiple analyses. These could be subgroups of data, analyses using different models, bootstrap replicates, permutations, and so on. In particular, it plays well with the <code>group_by</code> and <code>do</code> functions in <code>dplyr</code>.</p>
+
+<p>Let&#39;s try this on a simple dataset, the built-in <code>Orange</code> data.frame.</p>
+
+<pre><code class="r">library(broom)
+library(dplyr)
+data(Orange)
+
+dim(Orange)
+</code></pre>
+
+<pre><code>## [1] 35  3
+</code></pre>
+
+<pre><code class="r">head(Orange)
+</code></pre>
+
+<pre><code>## Grouped Data: circumference ~ age | Tree
+##   Tree  age circumference
+## 1    1  118            30
+## 2    1  484            58
+## 3    1  664            87
+## 4    1 1004           115
+## 5    1 1231           120
+## 6    1 1372           142
+</code></pre>
+
+<p>This contains 35 observations of three variables: <code>Tree</code>, <code>age</code>, and <code>circumference</code>. <code>Tree</code> is a factor with five levels describing five trees. As might be expected, age and circumference are correlated:</p>
+
+<pre><code class="r">cor(Orange$age, Orange$circumference)
+</code></pre>
+
+<pre><code>## [1] 0.9135189
+</code></pre>
+
+<pre><code class="r">library(ggplot2)
+ggplot(Orange, aes(age, circumference, color = Tree)) + geom_line()
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-1"/></p>
+
+<p>Suppose you want to test for correlations individually <em>within</em> each tree. You can do this with dplyr&#39;s <code>group_by</code>:</p>
+
+<pre><code class="r">Orange %&gt;% group_by(Tree) %&gt;% summarize(correlation = cor(age, circumference))
+</code></pre>
+
+<pre><code>## # A tibble: 5 x 2
+##   Tree  correlation
+##   &lt;ord&gt;       &lt;dbl&gt;
+## 1 3           0.988
+## 2 1           0.985
+## 3 5           0.988
+## 4 2           0.987
+## 5 4           0.984
+</code></pre>
+
+<p>(Note that the correlations are much higher than the aggregated one, and furthermore we can now see it is similar across trees).</p>
+
+<p>Suppose that instead of simply estimating a correlation, we want to perform a hypothesis test with <code>cor.test</code>:</p>
+
+<pre><code class="r">cor.test(Orange$age, Orange$circumference)
+</code></pre>
+
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  Orange$age and Orange$circumference
+## t = 12.9, df = 33, p-value = 1.931e-14
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.8342364 0.9557955
+## sample estimates:
+##       cor 
+## 0.9135189
+</code></pre>
+
+<p>This contains multiple values we could want in our output. Some are vectors of length 1, such as the p-value and the estimate, and some are longer, such as the confidence interval. broom&#39;s <code>tidy</code> S3 method, combined with dplyr&#39;s <code>do</code>, makes it easy to summarize the information about each test:</p>
+
+<pre><code class="r">Orange %&gt;% group_by(Tree) %&gt;% do(tidy(cor.test(.$age, .$circumference)))
+</code></pre>
+
+<pre><code>## # A tibble: 5 x 9
+## # Groups:   Tree [5]
+##   Tree  estimate statistic  p.value parameter conf.low conf.high method   
+##   &lt;ord&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;fct&gt;    
+## 1 3        0.988      14.4  2.90e-5         5    0.919     0.998 Pearson&#39;~
+## 2 1        0.985      13.0  4.85e-5         5    0.901     0.998 Pearson&#39;~
+## 3 5        0.988      14.1  3.18e-5         5    0.916     0.998 Pearson&#39;~
+## 4 2        0.987      13.9  3.43e-5         5    0.914     0.998 Pearson&#39;~
+## 5 4        0.984      12.5  5.73e-5         5    0.895     0.998 Pearson&#39;~
+## # ... with 1 more variable: alternative &lt;fct&gt;
+</code></pre>
+
+<p>This becomes even more useful when applied to regressions, which give more than one row of output within each model:</p>
+
+<pre><code class="r">Orange %&gt;% group_by(Tree) %&gt;% do(tidy(lm(age ~ circumference, data=.)))
+</code></pre>
+
+<pre><code>## # A tibble: 10 x 6
+## # Groups:   Tree [5]
+##    Tree  term          estimate std.error statistic   p.value
+##    &lt;ord&gt; &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+##  1 3     (Intercept)    -210.      85.3      -2.46  0.0574   
+##  2 3     circumference    12.0      0.835    14.4   0.0000290
+##  3 1     (Intercept)    -265.      98.6      -2.68  0.0436   
+##  4 1     circumference    11.9      0.919    13.0   0.0000485
+##  5 5     (Intercept)     -54.5     76.9      -0.709 0.510    
+##  6 5     circumference     8.79     0.621    14.1   0.0000318
+##  7 2     (Intercept)    -132.      83.1      -1.59  0.172    
+##  8 2     circumference     7.80     0.560    13.9   0.0000343
+##  9 4     (Intercept)     -76.5     88.3      -0.867 0.426    
+## 10 4     circumference     7.17     0.572    12.5   0.0000573
+</code></pre>
+
+<p>You can just as easily perform multiple regressions within each group, as shown here on the <code>mtcars</code> dataset. We group the data into automatic and manual cars (the <code>am</code> column), then perform the regression within each.</p>
+
+<pre><code class="r">data(mtcars)
+head(mtcars)
+</code></pre>
+
+<pre><code>##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
+</code></pre>
+
+<pre><code class="r">mtcars %&gt;% group_by(am) %&gt;% do(tidy(lm(wt ~ mpg + qsec + gear, .)))
+</code></pre>
+
+<pre><code>## # A tibble: 8 x 6
+## # Groups:   am [2]
+##      am term        estimate std.error statistic  p.value
+##   &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1     0 (Intercept)   4.92      1.40      3.52   0.00309 
+## 2     0 mpg          -0.192     0.0443   -4.33   0.000591
+## 3     0 qsec          0.0919    0.0983    0.935  0.365   
+## 4     0 gear          0.147     0.368     0.398  0.696   
+## 5     1 (Intercept)   4.28      3.46      1.24   0.247   
+## 6     1 mpg          -0.101     0.0294   -3.43   0.00750 
+## 7     1 qsec          0.0398    0.151     0.264  0.798   
+## 8     1 gear         -0.0229    0.349    -0.0656 0.949
+</code></pre>
+
+<p>What if you want not just the <code>tidy</code> output, but the <code>augment</code> and <code>glance</code> outputs as well, while still performing each regression only once? First, save the modeling result into a column <code>fit</code>.</p>
+
+<pre><code class="r">regressions &lt;- mtcars %&gt;% group_by(cyl) %&gt;%
+    do(fit = lm(wt ~ mpg + qsec + gear, .))
+regressions
+</code></pre>
+
+<pre><code>## Source: local data frame [3 x 2]
+## Groups: &lt;by row&gt;
+## 
+## # A tibble: 3 x 2
+##     cyl fit     
+## * &lt;dbl&gt; &lt;list&gt;  
+## 1     4 &lt;S3: lm&gt;
+## 2     6 &lt;S3: lm&gt;
+## 3     8 &lt;S3: lm&gt;
+</code></pre>
+
+<p>This creates a rowwise data frame. Tidying methods are designed to work seamlessly with rowwise data frames, grouping them and performing tidying on each row:</p>
+
+<pre><code class="r">regressions %&gt;% tidy(fit)
+</code></pre>
+
+<pre><code>## # A tibble: 12 x 6
+## # Groups:   cyl [3]
+##      cyl term        estimate std.error statistic p.value
+##    &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+##  1     4 (Intercept) -0.773      2.23    -0.347   0.739  
+##  2     4 mpg         -0.0818     0.0238  -3.44    0.0109 
+##  3     4 qsec         0.217      0.0759   2.85    0.0245 
+##  4     4 gear         0.267      0.245    1.09    0.310  
+##  5     6 (Intercept) -7.79       3.35    -2.32    0.103  
+##  6     6 mpg          0.0433     0.0520   0.833   0.466  
+##  7     6 qsec         0.422      0.0914   4.62    0.0191 
+##  8     6 gear         0.638      0.205    3.11    0.0529 
+##  9     8 (Intercept)  0.00597    4.27     0.00140 0.999  
+## 10     8 mpg         -0.177      0.0557  -3.18    0.00989
+## 11     8 qsec         0.369      0.193    1.91    0.0848 
+## 12     8 gear         0.143      0.317    0.451   0.662
+</code></pre>
+
+<pre><code class="r">regressions %&gt;% augment(fit)
+</code></pre>
+
+<pre><code>## # A tibble: 32 x 12
+## # Groups:   cyl [3]
+##      cyl    wt   mpg  qsec  gear .fitted .se.fit    .resid  .hat .sigma
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1     4  2.32  22.8  18.6     4    2.46   0.142 -0.143    0.197  0.339
+##  2     4  3.19  24.4  20       4    2.63   0.120  0.556    0.141  0.243
+##  3     4  3.15  22.8  22.9     4    3.39   0.299 -0.243    0.876  0.199
+##  4     4  2.2   32.4  19.5     4    1.86   0.174  0.336    0.296  0.304
+##  5     4  1.62  30.4  18.5     4    1.82   0.148 -0.207    0.213  0.332
+##  6     4  1.84  33.9  19.9     4    1.83   0.210  0.000505 0.432  0.345
+##  7     4  2.46  21.5  20.0     3    2.61   0.249 -0.141    0.610  0.332
+##  8     4  1.94  27.3  18.9     4    2.16   0.105 -0.223    0.107  0.331
+##  9     4  2.14  26    16.7     5    2.06   0.218  0.0849   0.464  0.342
+## 10     4  1.51  30.4  16.9     5    1.74   0.201 -0.225    0.396  0.324
+## # ... with 22 more rows, and 2 more variables: .cooksd &lt;dbl&gt;,
+## #   .std.resid &lt;dbl&gt;
+</code></pre>
+
+<pre><code class="r">regressions %&gt;% glance(fit)
+</code></pre>
+
+<pre><code>## # A tibble: 3 x 12
+## # Groups:   cyl [3]
+##     cyl r.squared adj.r.squared  sigma statistic p.value    df  logLik
+##   &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+## 1     4     0.780         0.686 0.319       8.27 0.0106      4  -0.567
+## 2     6     0.970         0.940 0.0873     32.3  0.00874     4  10.1  
+## 3     8     0.652         0.548 0.511       6.25 0.0116      4  -8.10 
+## # ... with 4 more variables: AIC &lt;dbl&gt;, BIC &lt;dbl&gt;, deviance &lt;dbl&gt;,
+## #   df.residual &lt;int&gt;
+</code></pre>
+
+<p>By combining the estimates and p-values across all groups into the same tidy data frame (instead of, for example, a list of output model objects), a new class of analyses and visualizations becomes straightforward. This includes</p>
+
+<ul>
+<li>Sorting by p-value or estimate to find the most significant terms across all tests</li>
+<li>P-value histograms</li>
+<li>Volcano plots comparing p-values to effect size estimates</li>
+</ul>
+
+<p>In each of these cases, we can easily filter, facet, or distinguish based on the <code>term</code> column. In short, this makes the tools of tidy data analysis available for the <em>results</em> of data analysis and models, not just the inputs.</p>
+
+</body>
+
+</html>

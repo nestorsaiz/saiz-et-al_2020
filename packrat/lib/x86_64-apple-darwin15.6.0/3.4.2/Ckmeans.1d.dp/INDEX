@@ -1,0 +1,11 @@
+Ckmeans.1d.dp-package   Optimal and Fast Univariate Clustering
+Univariate Clustering   Optimal and Fast Univariate Clustering
+Univariate Segmentation
+                        Optimal Univariate Segmentation
+ahist                   Adaptive Histograms
+plot.Ckmeans.1d.dp      Plot Optimal Univariate Clustering Results
+plot.Cksegs.1d.dp       Plot Optimal Univariate Segmentation Results
+plotBIC                 Plot Bayesian Information Criterion as a
+                        Function of Number of Clusters
+print.Ckmeans.1d.dp     Print Optimal Univariate Clustering Results
+print.Cksegs.1d.dp      Print Optimal Univariate Segmentation Results

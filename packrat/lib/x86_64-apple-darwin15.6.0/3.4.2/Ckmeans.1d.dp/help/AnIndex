@@ -1,0 +1,14 @@
+Ckmeans.1d.dp-package	Ckmeans.1d.dp-package
+ahist	ahist
+Ckmeans.1d.dp	Ckmeans.1d.dp
+Ckmedian.1d.dp	Ckmeans.1d.dp
+Cksegs.1d.dp	Cksegs.1d.dp
+plot.Ckmeans.1d.dp	plot.Ckmeans.1d.dp
+plot.Ckmedian.1d.dp	plot.Ckmeans.1d.dp
+plot.Cksegs.1d.dp	plot.Cksegs.1d.dp
+plotBIC	plotBIC
+print.Ckmeans.1d.dp	print.Ckmeans.1d.dp
+print.Ckmedian.1d.dp	print.Ckmeans.1d.dp
+print.Cksegs.1d.dp	print.Cksegs.1d.dp
+Univariate Clustering	Ckmeans.1d.dp
+Univariate Segmentation	Cksegs.1d.dp

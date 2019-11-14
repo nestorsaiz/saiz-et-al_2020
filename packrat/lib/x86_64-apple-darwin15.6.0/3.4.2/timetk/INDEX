@@ -1,0 +1,23 @@
+timetk                  timetk: a toolkit for time series
+timetk_internal         Internal Functions Used in timetk
+tk_augment_timeseries   Augment the time series signature to the data
+tk_get_timeseries       Get summary attributes from a time-series index
+tk_get_timeseries_unit_frequency
+                        Get the timeseries unit frequency for the
+                        primary time scales
+tk_get_timeseries_variables
+                        Get date or datetime variables (column names)
+tk_index                Extract an index of date or datetime from time
+                        series objects, models, forecasts
+tk_make_future_timeseries
+                        Make a future time series from an existing time
+                        series
+tk_tbl                  Coerce time-series objects to tibble.
+tk_ts                   Coerce time series objects and tibbles with
+                        date/date-time columns to ts.
+tk_xts                  Coerce time series objects and tibbles with
+                        date/date-time columns to xts.
+tk_zoo                  Coerce time series objects and tibbles with
+                        date/date-time columns to xts.
+tk_zooreg               Coerce time series objects and tibbles with
+                        date/date-time columns to ts.
