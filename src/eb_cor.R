@@ -27,6 +27,13 @@
 
 ebcor <- function(x, channel, embryo.var = 'Embryo_ID', Z.var = 'Z',
                   TI.var = 'TE_ICM', group = NULL, logadd = 0.0001) {
+    # Point at the Z variable
+    x$Z <- get(Z.var, x)
+    # Check if Z.var contains only numbers
+    zz <- as.numeric(x$Z, warning = F)
+    if(TRUE %in% unique(is.na(zz))) { 
+        stop("Darling, your Z axis has more than just numbers, go check that")
+        }
     # get unique embryo IDs in the dataset
     x$Embryo_ID <- get(embryo.var, x)
     embryos <- unique(x$Embryo_ID)
@@ -37,8 +44,7 @@ ebcor <- function(x, channel, embryo.var = 'Embryo_ID', Z.var = 'Z',
     }
     # else, use whatever channel name given
     x$CH.Avg <- get(channel, x)
-    # Point at the Z variable
-    x$Z <- get(Z.var, x)
+    
     ## Extract unique values of TI.var in x
     TI.vals <- as.data.frame(unique(x[which(colnames(x) == TI.var)]))
     ## Find which one may correspond to trophectoderm
