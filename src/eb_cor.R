@@ -1,6 +1,9 @@
 ## This function performs Empirical Bayes correction of Z-axis associated
 ## fluorescence decay on any given vector of values, 
-## as performed in Saiz *et al* (2016) *Nature Comms* and others subsequently
+## as performed in Saiz *et al* (2016) *Nature Comms* and others subsequently.
+## This transformation was devised and written by Venkat Seshan for our work
+## in Saiz *et al* (2016) *Nature Comms* and subsequently wrapped into a
+## more versatile function by myself for easier application to other analyses.
 
 ## The function requires these arguments: 
 ## * x: the dataframe to work with (a set of multiple embryos)
