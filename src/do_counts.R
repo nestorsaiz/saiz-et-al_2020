@@ -5,18 +5,20 @@
 ## 3. Average cell count per litter or experimental group 
 ##    (litter.median or group.median)
 
-## This function requires dplyr to run
+## It requires dplyr to run
 library("plyr")
 library("dplyr")
 
-## This function requires a dataset, as well as the names of the variables for
-## * embryo identifier (embryo.var), 
-## * experimental unit (expunit.var) 
-## * treatment (tt.var)
-## It also takes an option to separate the experimental unit
-## by experimental treatment or not - this option allows the user to calculate 
-## the median cell count for the entire experimental unit or 
-## for each of the treatment groups (median for controls vs each treatment)
+## This function takes a dataset as argument, 
+## as well as the names given to the variables for:
+## * embryo identifier (embryo.var, by default 'Embryo_ID'), 
+## * experimental unit (expunit.var, by default 'Experiment') 
+## * treatment (tt.var, by default 'Treatment')
+## It also takes a logical option to separate the experimental unit 
+## by experimental treatment (if TRUE, the default) or not (if FALSE) - 
+## this option allows the user to calculate the median cell count 
+## for the entire experimental unit or for each of the treatment groups
+## given by tt.var
 
 do.counts <- function(dataset, embryo.var = 'Embryo_ID', 
                       TI.var = 'TE_ICM', expunit.var = 'Experiment', 
@@ -40,8 +42,9 @@ do.counts <- function(dataset, embryo.var = 'Embryo_ID',
         dataset <- merge(dataset, tecounts)
         dataset$icm.count <- dataset$Cellcount - dataset$te.count
         dataset$te.count <- NULL
-        ## Calculate the median cellcount per experimental grp (litter or else) 
-        ## or per treatment group
+        ## Calculate the median cellcount per either experimental group 
+        ## (each litter, or whatever has been defined as such) 
+        ## or per treatment group within the experimental group
         if (sep.treatment == T) { 
                 med.litter <- dataset %>% 
                         group_by(!! as.name(expunit.var), 
@@ -53,7 +56,7 @@ do.counts <- function(dataset, embryo.var = 'Embryo_ID',
                         group_by(!! as.name(expunit.var)) %>% 
                         summarize(litter.median = median(Cellcount))
         }
-        ## Combine with main table and remove avg table
+        ## Combine with main table and return
         dataset <- merge(dataset, med.litter)
         return(dataset)
 }
