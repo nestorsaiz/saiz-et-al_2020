@@ -1,7 +1,8 @@
-## This script creates a series of named character vectors
-## containing the colors corresponding to values of some variables
-## as well as an object, looks, with some preset theme configuration
-## for ggplot2
+## This script creates a series of named character vectors containing 
+## my colors of choice to give to values of some variables
+
+## It also creates an object, looks, with some preset theme configuration
+## for ggplot2, to make plotting code simpler
 
 ## Load required packages
 library('ggplot2')
