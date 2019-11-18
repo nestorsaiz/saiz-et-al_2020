@@ -53,7 +53,7 @@ tx.channel <- function(dataset, what.subset, what.model,
         
         # Combine each transformed variable with corresponding data subset
         tx <- cbind(tx, tx.col)
-        notx <- cbind(no.tx, notx.col)
+        notx <- cbind(notx, notx.col)
         
         # Combine both subsets and return the transformed dataset
         dataset <- rbind(tx, notx)
