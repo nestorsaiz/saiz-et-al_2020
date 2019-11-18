@@ -1,9 +1,9 @@
-## This small function takes in a dataset to be explored
-## and a vector of marker gene names (capitalization doesn't matter) 
-## to search pairs of.
-## It returns a list of 2-element lists, each containing:
-## a) the pairs of antibodies for each marker found in the dataset
-## b) the names of the experiments where said antibody pairs were used
+# This small function takes in a dataset to be explored
+# and a vector of marker gene names (capitalization doesn't matter) 
+# to search pairs of.
+# It returns a list of 2-element lists, each containing:
+# a) the pairs of antibodies for each marker found in the dataset
+# b) the names of the experiments where said antibody pairs were used
 
 find.pairs <- function(dataset, markers = c('nanog', 'gata6')) {
         mms <- list()
