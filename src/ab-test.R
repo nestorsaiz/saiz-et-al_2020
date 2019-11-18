@@ -101,6 +101,12 @@ abtest <- cbind(abtest, ebLogCor)
 rm(ebLogCor)
 
 ################################################################################
+# Write out data to a file in ./data/interim
+################################################################################
+
+write.csv(abtest, file = './data/interim/abtest.csv', row.names = F)
+
+################################################################################
 # Fit a linear regression model to the relationship 
 # between NANOG and GATA6 antibodies 
 ################################################################################
