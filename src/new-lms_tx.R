@@ -23,6 +23,7 @@ rm(data.exsts)
 
 # Load functions that will be used in the script
 source('./src/eb_cor.R')
+source('./src/tx_channels.R')
 
 # Remove wt embryos used for antibody test, negative controls
 # and embryos of unknown genotype
@@ -135,7 +136,81 @@ rm(ebLogCor)
 # new.lms <- stage(new.lms)
 
 ################################################################################
-## Order factors
+## Transform fluorescence values obtained with NANOG.rat and GATA6.rb to
+## NANOG.rb and GATA6.gt equivalents and re-scale to 0-1
+################################################################################
+
+# Generate data frame containing the unique values 
+# for the markers associated with channels 2, 3 and 5 in the new-lms dataset
+unicos <- new.lms %>% filter(Channel %in% c('CH2', 'CH3', 'CH5')) %>% 
+  group_by(Experiment, Treatment, Genotype1, Channel, Marker) %>% 
+  summarize()
+unicos <- dcast(unicos, Experiment + Treatment + Genotype1 ~ 
+                  Channel, value.var = 'Marker')
+
+# Select Experiments where NANOG.rat was used or where GATA6.rb was used
+ng.rat <- unicos$Experiment[which(unicos$CH2 == 'NANOG.rat')]
+g6.rb <- unicos$Experiment[which(unicos$CH3 == 'GATA6.rb')]
+# g4.rb <- unicos$Experiment[which(unicos$CH3 == 'GATA4.rb')]
+# s17.gt <- unicos$Experiment[which(unicos$CH5 == 'SOX17.gt')]
+# g6.gt <- unicos$Experiment[which(unicos$CH5 == 'GATA6.gt')]
+# gfp <- unicos$Experiment[which(unicos$CH2 == 'GFP' & unicos$Genotype1 == 'het')]
+
+# Use tx.channel function to transform NANOG(rat) into NANOG(rb)-equivalents
+new.lms <- tx.channel(new.lms, what.subset = ng.rat, what.model = ng.model, 
+                      input.ch = 'CH2', end.ch = 'CH3')
+# Use tx.channel function to transform GATA6(rb) into GATA6(gt)-equivalents
+new.lms <- tx.channel(new.lms, what.subset = g6.rb, what.model = gata.model, 
+                      input.ch = 'CH3', end.ch = 'CH5')
+
+# Create vectors of names for the original and transformed fluorescence values
+pre.cols <- colnames(new.lms)[grep('ebLogCor$', colnames(new.lms))]
+post.cols <- paste(pre.cols, 's', sep = '.')
+mo.cols <- colnames(new.lms)[grep('ebLogCor.x', colnames(new.lms))]
+pre.cols <- c(pre.cols, mo.cols)
+post.cols <- c(post.cols, paste(mo.cols, 's', sep = ''))
+rm(mo.cols)
+
+# Create an empty matrix to hold the re-scaled values (.s) for each channel
+s.cols <- matrix(0, nrow = length(new.lms$CH1.ebLogCor), 
+                   ncol = length(post.cols), 
+                   dimnames = list(c(), post.cols))
+s.cols <- data.frame(s.cols)
+# and incorporate into main data frame
+new.lms <- cbind(new.lms, s.cols)
+rm(s.cols)
+
+# Create a vector with unique combinations of antibodies and stainings
+# and a list with the corresponding experiments stained that way
+stains <- unique(paste(unicos$CH2, unicos$CH3, unicos$CH5))
+exps <- list()
+for(s in 1:length(stains)) { 
+  exps[[s]] <- unique(unicos$Experiment[which(paste(unicos$CH2, 
+                                                    unicos$CH3, 
+                                                    unicos$CH5) == stains[s])])
+}
+
+# Cycle through the list of experiments and make the values of each channel 
+# relative to the maxima in that group - thus maintaining the relative levels
+# between embryos of different litters & stages while eliminating differences
+# due to antibody combinations (which are only technical)
+for(e in 1:length(exps)) { 
+  # Split data in a subset with relevant experiments and another without
+  sile <- subset(new.lms, Experiment %in% exps[[e]])
+  nole <- subset(new.lms, !Experiment %in% exps[[e]])
+  # Rescale each channel given in pre.cols to the maxima of that channel
+  # in the given group (sile) and store the re-scaled value in the
+  # corresponding transformed vairable (its cognate in post.col)
+  for(c in 1:length(pre.cols)) {
+    sile[post.cols[c]] <- sile[pre.cols[c]] / max(sile[pre.cols[c]])
+  }
+  # Combine both datasets again before next loop
+  new.lms <<- rbind(sile, nole)
+}
+rm(sile, nole)
+
+################################################################################
+# Order factors
 ################################################################################
 
 new.lms$TE_ICM <- factor(new.lms$TE_ICM, levels = c('TE', 'ICM'))
@@ -143,4 +218,7 @@ new.lms$Genotype1 <- factor(new.lms$Genotype1,
                             levels = c('wt', 'wt/fl', 'het', 'fl/ko', 
                                        'ko', 'tbd'))
 
+################################################################################
+# Write this transformed dataset out to the ./data/interim folder
+write.csv(new.lms, file = './data/interim/new-lms-tx.csv', row.names = F)
 
