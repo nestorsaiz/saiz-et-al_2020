@@ -21,7 +21,7 @@ if(model.exsts == F) {
 rm(model.exsts)
 
 
-tx.nanogata <- function(dataset, what.subset, what.model, 
+tx.channel <- function(dataset, what.subset, what.model, 
                         input.ch, end.ch) { 
         # Format input and end channel as "CHx"
         if (is.numeric(input.ch) == TRUE) {
