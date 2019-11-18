@@ -3,6 +3,7 @@
 # It defaults to the bins we typically use, namely 8-16, 16-32, 32-64, 64-90, 
 # 90-120, 120-150, >150 cells, as in our previous papers
 # but it can take in any integer indicating bin size, in number of cells.
+# If bin size is manually entered, it stores it as Stage2 (as opposed to Stage)
 
 # Optionally, it can also take in the name of the variable containing the
 # total number of cells - defaults to 'Cellcount'.
