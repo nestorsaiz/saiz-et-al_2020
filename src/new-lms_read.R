@@ -21,7 +21,7 @@ my.files <- dir(my.dir)
 new.lms <- do.call(rbind.fill, 
                    lapply(my.files, 
                           function(x) read.csv(paste(my.dir, x, sep = ''))))
-# Remove spurious variables
+# Remove spurious variable that MS Excel generated
 new.lms$X.1 <- NULL
 
 # And again for Fgf4 littermates
