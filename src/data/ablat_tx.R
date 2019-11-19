@@ -143,4 +143,4 @@ ablat.t0$CH1.ebLogCor <- ebcor(ablat.t0, 1)
 # Extract fixed littermates data and write them out as a separate file
 ablat.lms <- subset(ablat, Treatment == 'Littermate')
 ablat.lms[which(colnames(ablat.lms) %in% c('target', 'target_t0'))] <- NULL
-write.csv(ablat.lms, file = './data/raw/ablat-lms-raw.csv', row.names = F)
+write.csv(ablat.lms, file = './data/interim/ablat-lms-tx.csv', row.names = F)
