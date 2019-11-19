@@ -25,10 +25,11 @@ rm(data.exsts)
 source('./src/functions/eb_cor.R')
 source('./src/functions/tx_channels.R')
 
-# Remove wt embryos used for antibody test, negative controls
-# and embryos of unknown genotype
+# Remove wt embryos used for antibody test, negative controls,
+# embryos of genotype unknown and embryos that are fl/ko or wt/fl
+# for Fgf4, which are only a small handful and thus insignificant
 new.lms <- subset(new.lms, Treatment == 'Littermate' & 
-                    Genotype1 != 'unknown')
+                    !Genotype1 %in% c('unknown', 'tbd', 'fl/ko', 'wt/fl'))
 
 # Load immunofluorescence reference files
 new.lms.if <- read.csv('./references/new-littermates_if.csv')
