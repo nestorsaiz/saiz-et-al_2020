@@ -16,7 +16,7 @@
 # run ab-test.R, which generates the models
 model.exsts <- exists('ng.model')
 if(model.exsts == F) { 
-        source('./src/ab-test.R')
+        source('./src/models/ab-test.R')
 }
 rm(model.exsts)
 

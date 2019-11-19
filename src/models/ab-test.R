@@ -26,10 +26,10 @@ if (setup.ran == F) {
 rm(setup.ran)
 
 # Load functions that will be used in the script
-source('./src/do_counts.R')
-source('./src/stage.R')
-source('./src/eb_cor.R')
-source('./src/find-pairs.R')
+source('./src/functions/do_counts.R')
+source('./src/functions/stage.R')
+source('./src/functions/eb_cor.R')
+source('./src/functions/find-pairs.R')
 
 # Define the location of files to be loaded (relative path to working directory)
 my.dir <- './data/corfiles/ab-test_corf/'

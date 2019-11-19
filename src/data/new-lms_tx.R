@@ -115,25 +115,25 @@ rm(ebLogCor)
 ## Incorporate littermate data from ablations experiments
 ################################################################################
 
-# ## Read in all littermates from the ablation dataset
-# ## In these, values have been corrected for fluorescence decay on Z
-# ## but are otherwise untransformed and have no identity assigned
-# ablat.lms <- read.csv('./data/interim/lms-ablation-raw.csv')
-# 
-# # Rename the variable group.median to litter.median
-# ablat.lms <- rename(ablat.lms, litter.median = group.median)
-# 
-# # Select variables on each data set that are contained in the other
-# # WARNING: I have verified this step doesn't drop any critical variable 
-# # in these dataset, do not apply directly to other data without checking first
-# ablat.lms <- ablat.lms[colnames(ablat.lms)[
-#   which(colnames(ablat.lms) %in% colnames(new.lms))]]
-# new.lms <- new.lms[colnames(new.lms)[
-#   which(colnames(new.lms) %in% colnames(ablat.lms))]]
-# 
-# # Combine both datasets
-# new.lms <- rbind(new.lms, ablat.lms)
-# new.lms <- stage(new.lms)
+# Read in reference littermates from the ablation dataset
+# In these, values have been corrected for fluorescence decay along Z
+# but are otherwise untransformed and have no identity assigned
+ablat.lms <- read.csv('./data/interim/ablat-lms-tx.csv')
+
+# Rename the variable group.median to litter.median
+ablat.lms <- rename(ablat.lms, litter.median = group.median)
+
+# Select variables on each data set that are contained in the other
+# WARNING: I have verified this step doesn't drop any critical variable
+# in these dataset, do not apply directly to other data without checking first
+ablat.lms <- ablat.lms[colnames(ablat.lms)[
+  which(colnames(ablat.lms) %in% colnames(new.lms))]]
+new.lms <- new.lms[colnames(new.lms)[
+  which(colnames(new.lms) %in% colnames(ablat.lms))]]
+
+# Combine both datasets
+new.lms <- rbind(new.lms, ablat.lms)
+new.lms <- stage(new.lms)
 
 ################################################################################
 ## Transform fluorescence values obtained with NANOG.rat and GATA6.rb to
