@@ -31,6 +31,10 @@ unicos <- ablat %>% filter(Channel %in% c('CH2', 'CH3', 'CH5')) %>%
   summarize()
 unicos <- dcast(unicos, Experiment + Treatment + Genotype1 ~ 
                          Channel, value.var = 'Marker')
+
+# Write out unicos table to disk
+write.csv(unicos, file = './references/ablat_unicos.csv')
+
 # Pluck out only Channel 2 information, necessary to group embryos
 # for fluorescence correction below
 ablat.ch2 <- unicos %>% select(Experiment, Treatment, Genotype1, CH2)

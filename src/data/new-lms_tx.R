@@ -148,6 +148,9 @@ unicos <- new.lms %>% filter(Channel %in% c('CH2', 'CH3', 'CH5')) %>%
 unicos <- dcast(unicos, Experiment + Treatment + Genotype1 ~ 
                   Channel, value.var = 'Marker')
 
+# Write out the unicos table to disk
+write.csv(unicos, file = './references/new-lms_unicos.csv', row.names = F)
+
 # Select Experiments where NANOG.rat was used or where GATA6.rb was used
 ng.rat <- unicos$Experiment[which(unicos$CH2 == 'NANOG.rat')]
 g6.rb <- unicos$Experiment[which(unicos$CH3 == 'GATA6.rb')]
