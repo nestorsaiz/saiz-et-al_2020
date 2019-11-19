@@ -72,6 +72,14 @@ ablat$Cellcount_t0[which(ablat$Treatment == 'Littermate')] <-
 # Convert target to 'none' for Controls and Littermates (all untargeted)
 ablat$target[which(ablat$Treatment %in% c('Control', 'Littermate'))] <- 'none'
 
+# Drop 'Test' embryos, which were used to test ablation conditions
+ablat <- subset(ablat, Treatment != 'Test')
+# Drop embryos that have less than 60 cells (the lower end of control range) 
+# at the end of the experiment or embryos which look sick by visual inspecton
+lil <- unique(subset(ablat, Treatment == 'Ablated' & Cellcount < 60)$Embryo_ID)
+goners <- c(lil, '013018Abl_CK2')
+ablat <- subset(ablat, !Embryo_ID %in% goners)
+
 ################################################################################
 # Determine the stage of embryos at beginning of experiment (time of ablation)
 # in the main data frame containing fixed, end point data (ablat)
