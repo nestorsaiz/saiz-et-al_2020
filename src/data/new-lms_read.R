@@ -9,8 +9,8 @@ if (setup.ran == F) {
 rm(setup.ran)
 
 # Load functions that will be used in the script
-source('./src/do_counts.R')
-source('./src/stage.R')
+source('./src/functions/do_counts.R')
+source('./src/functions/stage.R')
 
 # Define the location of files to be loaded (relative path to working directory)
 my.dir <- './data/corfiles/new-lms_corf/'

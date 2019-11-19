@@ -22,8 +22,8 @@ if(data.exsts == F) {
 rm(data.exsts)
 
 # Load functions that will be used in the script
-source('./src/eb_cor.R')
-source('./src/tx_channels.R')
+source('./src/functions/eb_cor.R')
+source('./src/functions/tx_channels.R')
 
 # Remove wt embryos used for antibody test, negative controls
 # and embryos of unknown genotype
