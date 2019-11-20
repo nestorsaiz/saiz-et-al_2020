@@ -16,7 +16,9 @@ The repository tries to follow a standard structure, broadly based on the [Cooki
    * /interim - intermediate tables to be read in by other scripts
 * /figures - contains plots generated during analyis
 * /results - contains tables and results generated during analysis
-* /notebooks - contains interactive Jupyter notebooks taking you through my data analysis process
+* /notebooks - contains interactive Jupyter notebooks detailing the main the data transformations
+   * Z-correction compares raw with transformed data after correcting for fluorescence decay along teh Z-axis. Code can be found in ```./src/data```
+   * nanogata-tx describes the conversion of NANOG and GATA6 intensitiy levels obtained with different antibodies to a common scale
 * /references - contains the experimental reference files (metadata), generated manually as logs over the course of experimentation
    * ```*_exp_ref.csv``` are files with experimental data for each experiment, such as experimental date, experimental group, etc
    * ```*_if.csv``` are files containing details about the antibodies used to stain the corresponding embryos in each experiment
