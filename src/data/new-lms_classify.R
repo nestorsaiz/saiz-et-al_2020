@@ -61,7 +61,7 @@ nanogata <- subset(new.lms,
 # Embryos in these two last subsets also express Pdgfra:H2B-GFP. 
 # Since they represent a rather small set of observations, 
 # they will be classified using thresholding, instead of K-means clustering
-# and also using Hierarchical clustering
+# for NANOG vs GFP levels, and also using Hierarchical clustering
 s17 <- subset(new.lms, Experiment %in% exps[[6]])
 g4 <- subset(new.lms, Experiment %in% exps[[5]])
 
