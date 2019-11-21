@@ -56,6 +56,8 @@ mkay <- function(dataset, miniset, k, ids,
   dataset$Identity.km[is.esc] <- 'ESC'
   # Determine ICM population based on min.ssq values
   dataset$Identity.km[is.icm] <- ids[min.ssq]
+  dataset$Identity.km <- factor(dataset$Identity.km, 
+                                levels = c('TE', 'PRE', 'DP', 'EPI', 'DN'))
   return(dataset)
 }
 
