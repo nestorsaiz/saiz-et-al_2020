@@ -89,3 +89,7 @@ for(m in 1:length(folders)) {
   movies[[m]] <- my.mov
   cycles <- cycles + 1
 }
+
+# Print out the cycle counter
+print(paste('Number of files loaded:', cycles, sep = ' '))
+
