@@ -1,6 +1,6 @@
 # Saiz *et al* (2020) 
 
-This repository contains the data and code associated with the article by Saiz *et al.*, *INSERT CURRENT TITLE VERSION HERE* **JOURNAL** ISSUE, PPs (2020) [LINKTO ARTICLE](WEBSITE HERE).
+This repository contains the data and code associated with the article by Saiz *et al.*, *Coupling between lineage size and cell fate specification underlies developmental robustness* soon to be deposited in [bioRXiv](https://www.biorxiv.org).
 
 The repository tries to follow a standard structure, broadly based on the [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/#cookiecutter-data-science) project and other best practices recommendations. This repository was made post-hoc, in 2019, based on rawer code written between 2017 and 2019 (sorry - trying to be better).
 
