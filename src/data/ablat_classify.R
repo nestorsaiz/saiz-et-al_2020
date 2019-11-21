@@ -208,3 +208,44 @@ ablat.a$Identity.hc <- factor(ablat.a$Identity.hc,
                               levels = c('TE', 'PRE', 'DP', 'EPI', 
                                          'EPI.lo', 'DN'))
 
+# Uncomment below to see the outcome
+## Visualize the result
+# qplot(CH5.ebLogCor,  CH3.ebLogCor.x,
+#       data = subset(ablat.a, TE_ICM == 'ICM'), color = Identity.hc) +
+#   looks + scale_color_manual(values = idcols) +
+#   facet_grid(Treatment ~ Stage.t0) + theme(aspect.ratio = 1)
+
+################################################################################
+# Incorporate data for littermates that were processed with new-littermates
+# when running new-lms_tx.R and were stained for NANOG and GATA6
+################################################################################
+
+new.lms.red <- read.csv('./data/processed/new-lms-processed.csv')
+# Select only embryos in new-littermates.A which are in ablat.b
+new.lms.red <- subset(new.lms.red, Embryo_ID %in% unique(ablat.b$Embryo_ID))
+# Rename column litter.median back to group.median
+new.lms.red <- rename(new.lms.red, group.median = litter.median)
+# Slim down the data and merge with ablat.b to incorporate identity info
+# as well as transformed CH3 and CH5 data
+new.lms.red <- new.lms.red %>% filter(Channel == 'CH2') %>% 
+  select(Embryo_ID, Cell_ID, Identity.km, 
+         Identity.hc, id.cluster, 
+         CH1.ebLogCor.s, CH2.ebLogCor.s, 
+         CH3.ebLogCor.s, CH5.ebLogCor.s, 
+         CH3.ebLogCor.x,  CH3.ebLogCor.xs, 
+         CH3.ebLogCor.xl, CH5.ebLogCor.xl)
+ablat.b[which(colnames(ablat.b) %in% c('CH3.ebLogCor.x', 
+                                    'CH1.ebLogCor.s', 
+                                    'CH2.ebLogCor.s', 
+                                    'CH3.ebLogCor.s', 
+                                    'CH5.ebLogCor.s', 
+                                    'CH3.ebLogCor.xs'))] <- NULL
+ablat.b <- merge(ablat.b, new.lms.red)
+
+# Combine ablat.a and ablat.b back into ablat
+ablat <- rbind(ablat.a, ablat.b)
+
+################################################################################
+# Write out data to the ./data/processed folder
+write.csv(ablat, file = './data/processed/ablat-processed.csv', row.names = F)
+
