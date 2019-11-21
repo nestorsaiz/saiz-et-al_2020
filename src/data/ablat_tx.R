@@ -20,10 +20,15 @@ rm(data.exsts)
 
 # Load functions that will be used in the script
 source('./src/functions/eb_cor.R')
+source('./src/functions/tx_channels.R')
 
 # Load Immunofluorescence reference file and incorporate into data
 ablat.if <- read.csv('./references/ablat_if.csv')
 ablat <- merge(ablat, ablat.if)
+
+# Modify the Experiment variable to account for genotypes
+ablat$Experiment <- paste(ablat$Experiment, ablat$Treatment, 
+                          ablat$Gene1, ablat$Genotype1, sep = '.')
 
 # Extract marker info for each experiment
 unicos <- ablat %>% filter(Channel %in% c('CH2', 'CH3', 'CH5')) %>% 
@@ -94,12 +99,6 @@ n.embryos[is.na(n.embryos)] <- '--'
 write.csv(n.embryos, file = './references/ablat_N-embryos.csv', row.names = F)
 
 ################################################################################
-
-# Modify the Experiment variable to account for genotypes
-ablat$Experiment <- paste(ablat$Experiment, ablat$Treatment, 
-                          ablat$Gene1, ablat$Genotype1, sep = '.')
-
-################################################################################
 ## Correct for fluorescence decay along the Z-axis
 ################################################################################
 
@@ -139,6 +138,69 @@ ablat.t0$CH1.ebLogCor <- ebcor(ablat.t0, 1)
 # Some embryos are mKate2/+ or mKate2/mKate2, which signal is in CH2,
 # however, we are not analyizing those values for the time being, 
 # so there is no correction applied to CH2
+
+################################################################################
+# Transform fluorescence values obtained with NANOG.rat and GATA6.rb to
+# NANOG.rb and GATA6.gt equivalents and re-scale to 0-1
+################################################################################
+
+# Subset only embryos stained with NANOG.rat and GATA6.gt 
+# that are not littermates - they get incorporated and processed with
+# new-littermates
+ng.rat <- unicos$Experiment[which(unicos$CH2 == 'NANOG.rat' & 
+                                    unicos$Treatment != 'Littermate')]
+
+# Use tx.channel function to transform NANOG(rat) into NANOG(rb)-equivalents
+ablat <- tx.channel(ablat, what.subset = ng.rat, what.model = ng.model, 
+                    input.ch = 'CH2', end.ch = 'CH3')
+
+# Re-scale fluorescence values to 0-1 scale
+
+# Create vectors of names for the original and transformed fluorescence values
+pre.cols <- colnames(ablat)[grep('ebLogCor$', colnames(ablat))]
+post.cols <- paste(pre.cols, 's', sep = '.')
+mo.cols <- colnames(ablat)[grep('ebLogCor.x', colnames(ablat))]
+pre.cols <- c(pre.cols, mo.cols)
+post.cols <- c(post.cols, paste(mo.cols, 's', sep = ''))
+rm(mo.cols)
+
+# Create an empty matrix to hold the re-scaled values (.s) for each channel
+s.cols <- matrix(0, nrow = length(ablat$CH1.ebLogCor), 
+                 ncol = length(post.cols), 
+                 dimnames = list(c(), post.cols))
+s.cols <- data.frame(s.cols)
+# and incorporate into main data frame
+ablat <- cbind(ablat, s.cols)
+rm(s.cols)
+
+# Create a vector with unique combinations of antibodies and stainings
+# and a list with the corresponding experiments stained that way
+stains <- unique(paste(unicos$CH2, unicos$CH3, unicos$CH5))
+exps <- list()
+for(s in 1:length(stains)) { 
+  exps[[s]] <- unique(unicos$Experiment[which(paste(unicos$CH2, 
+                                                    unicos$CH3, 
+                                                    unicos$CH5) == stains[s])])
+}
+
+# Cycle through the list of experiments and make the values of each channel 
+# relative to the maxima in that group - thus maintaining the relative levels
+# between embryos of different litters & stages while eliminating differences
+# due to antibody combinations (which are only technical)
+for(e in 1:length(exps)) { 
+  # Split data in a subset with relevant experiments and another without
+  sile <- subset(ablat, Experiment %in% exps[[e]])
+  nole <- subset(ablat, !Experiment %in% exps[[e]])
+  # Rescale each channel given in pre.cols to the maxima of that channel
+  # in the given group (sile) and store the re-scaled value in the
+  # corresponding transformed vairable (its cognate in post.col)
+  for(c in 1:length(pre.cols)) {
+    sile[post.cols[c]] <- sile[pre.cols[c]] / max(sile[pre.cols[c]])
+  }
+  # Combine both datasets again before next loop
+  ablat <<- rbind(sile, nole)
+}
+rm(sile, nole)
 
 ################################################################################
 # Write files out to disk for later use
