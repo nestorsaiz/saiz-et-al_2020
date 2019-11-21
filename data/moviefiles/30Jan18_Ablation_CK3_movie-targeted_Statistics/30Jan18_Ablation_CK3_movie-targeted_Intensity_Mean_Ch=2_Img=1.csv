@@ -1,0 +1,14 @@
+
+Intensity Mean Ch=2 Img=1
+ ==================== 
+Intensity Mean,Unit,Category,Channel,Image,Time,NS-labs,TrackID,ID,
+193.785,,Spot,2,Image 1,1,PRE;targeted,1000000000,0,
+285.192,,Spot,2,Image 1,1,Apoptosis;PRE;targeted,,2,
+253.243,,Spot,2,Image 1,1,Apoptosis;PRE;targeted,,3,
+205.558,,Spot,2,Image 1,1,Apoptosis;PRE;targeted,,4,
+199.157,,Spot,2,Image 1,1,Apoptosis;PRE;targeted,,5,
+227.995,,Spot,2,Image 1,2,PRE;targeted,1000000000,6,
+244.738,,Spot,2,Image 1,3,PRE;targeted,1000000000,7,
+230.386,,Spot,2,Image 1,4,PRE;targeted,1000000000,8,
+263.588,,Spot,2,Image 1,5,PRE;targeted,1000000000,9,
+268.976,,Spot,2,Image 1,6,Apoptosis;PRE;targeted,1000000000,10,

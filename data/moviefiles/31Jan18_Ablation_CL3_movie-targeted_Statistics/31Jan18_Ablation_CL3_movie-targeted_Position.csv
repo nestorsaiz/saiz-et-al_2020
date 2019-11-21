@@ -1,0 +1,18 @@
+
+Position
+ ==================== 
+Position X,Position Y,Position Z,Unit,Category,Collection,Time,NS-labs,TrackID,ID,
+16053.1,-379.184,-202.069,um,Spot,Position,1,PRE;targeted,1000000000,0,
+16059.7,-377.801,-194.592,um,Spot,Position,1,PRE;targeted,1000000001,1,
+16084.4,-366.454,-195.661,um,Spot,Position,1,PRE;targeted,1000000002,2,
+16059.3,-355.247,-195.702,um,Spot,Position,1,PRE;targeted,1000000003,3,
+16078,-362.302,-191.638,um,Spot,Position,2,PRE;targeted,1000000002,4,
+16055.5,-373.137,-191.513,um,Spot,Position,2,PRE;targeted,1000000001,6,
+16050.2,-375.122,-203.717,um,Spot,Position,2,PRE;targeted,1000000000,8,
+16055.5,-353.143,-195.123,um,Spot,Position,2,PRE;targeted,1000000003,10,
+16054.3,-344.859,-195.032,um,Spot,Position,3,PRE;targeted,1000000003,14,
+16075.8,-355.937,-190.313,um,Spot,Position,3,Apoptosis;PRE;targeted,1000000002,11,
+16052.4,-366.531,-193.124,um,Spot,Position,3,Apoptosis;PRE;targeted,1000000001,12,
+16046,-368.022,-201.988,um,Spot,Position,3,Apoptosis;PRE;targeted,1000000000,13,
+16051,-335.734,-193.651,um,Spot,Position,4,PRE;targeted,1000000003,15,
+16049.6,-335.457,-189.96,um,Spot,Position,5,Apoptosis;PRE;targeted,1000000003,16,

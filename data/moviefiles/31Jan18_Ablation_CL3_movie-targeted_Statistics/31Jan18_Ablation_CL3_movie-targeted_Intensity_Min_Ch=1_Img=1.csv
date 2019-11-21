@@ -1,0 +1,18 @@
+
+Intensity Min Ch=1 Img=1
+ ==================== 
+Intensity Min,Unit,Category,Channel,Image,Time,NS-labs,TrackID,ID,
+8,,Spot,1,Image 1,1,PRE;targeted,1000000000,0,
+10,,Spot,1,Image 1,1,PRE;targeted,1000000001,1,
+11,,Spot,1,Image 1,1,PRE;targeted,1000000002,2,
+8,,Spot,1,Image 1,1,PRE;targeted,1000000003,3,
+7,,Spot,1,Image 1,2,PRE;targeted,1000000002,4,
+7,,Spot,1,Image 1,2,PRE;targeted,1000000001,6,
+9,,Spot,1,Image 1,2,PRE;targeted,1000000000,8,
+4,,Spot,1,Image 1,2,PRE;targeted,1000000003,10,
+9,,Spot,1,Image 1,3,Apoptosis;PRE;targeted,1000000002,11,
+6,,Spot,1,Image 1,3,Apoptosis;PRE;targeted,1000000001,12,
+7,,Spot,1,Image 1,3,Apoptosis;PRE;targeted,1000000000,13,
+6,,Spot,1,Image 1,3,PRE;targeted,1000000003,14,
+8,,Spot,1,Image 1,4,PRE;targeted,1000000003,15,
+7,,Spot,1,Image 1,5,Apoptosis;PRE;targeted,1000000003,16,

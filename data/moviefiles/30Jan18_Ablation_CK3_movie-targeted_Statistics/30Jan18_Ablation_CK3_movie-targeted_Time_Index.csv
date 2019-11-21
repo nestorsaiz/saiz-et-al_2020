@@ -1,0 +1,14 @@
+
+Time Index
+ ==================== 
+Time Index,Unit,Category,Time,NS-labs,TrackID,ID,
+1,,Spot,1,PRE;targeted,1000000000,0,
+1,,Spot,1,Apoptosis;PRE;targeted,,2,
+1,,Spot,1,Apoptosis;PRE;targeted,,3,
+1,,Spot,1,Apoptosis;PRE;targeted,,4,
+1,,Spot,1,Apoptosis;PRE;targeted,,5,
+2,,Spot,2,PRE;targeted,1000000000,6,
+3,,Spot,3,PRE;targeted,1000000000,7,
+4,,Spot,4,PRE;targeted,1000000000,8,
+5,,Spot,5,PRE;targeted,1000000000,9,
+6,,Spot,6,Apoptosis;PRE;targeted,1000000000,10,

@@ -1,0 +1,14 @@
+
+Intensity Median Ch=2 Img=1
+ ==================== 
+Intensity Median,Unit,Category,Channel,Image,Time,NS-labs,TrackID,ID,
+188.12,,Spot,2,Image 1,1,PRE;targeted,1000000000,0,
+284.98,,Spot,2,Image 1,1,Apoptosis;PRE;targeted,,2,
+248.976,,Spot,2,Image 1,1,Apoptosis;PRE;targeted,,3,
+207.928,,Spot,2,Image 1,1,Apoptosis;PRE;targeted,,4,
+196.896,,Spot,2,Image 1,1,Apoptosis;PRE;targeted,,5,
+229.032,,Spot,2,Image 1,2,PRE;targeted,1000000000,6,
+247.076,,Spot,2,Image 1,3,PRE;targeted,1000000000,7,
+228.064,,Spot,2,Image 1,4,PRE;targeted,1000000000,8,
+263.184,,Spot,2,Image 1,5,PRE;targeted,1000000000,9,
+273.002,,Spot,2,Image 1,6,Apoptosis;PRE;targeted,1000000000,10,
