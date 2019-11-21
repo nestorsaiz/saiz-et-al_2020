@@ -35,7 +35,7 @@ source('./src/functions/mkay.R')
 # and only data for Channel == 'CH2' (all rows are present x5, one per channel)
 new.lms <- subset(new.lms, Cellcount > 31 & Channel == 'CH2')
 
-# Read in unicos table previously
+# Read in unicos table previously generated
 unicos <- read.csv('./references/new-lms_unicos.csv')
 
 # Extract unique staining patterns and corresponding experiments, 
