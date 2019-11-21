@@ -167,6 +167,8 @@ new.lms <- tx.channel(new.lms, what.subset = ng.rat, what.model = ng.model,
 new.lms <- tx.channel(new.lms, what.subset = g6.rb, what.model = gata.model, 
                       input.ch = 'CH3', end.ch = 'CH5')
 
+# Re-scale fluorescence values to 0-1 scale
+
 # Create vectors of names for the original and transformed fluorescence values
 pre.cols <- colnames(new.lms)[grep('ebLogCor$', colnames(new.lms))]
 post.cols <- paste(pre.cols, 's', sep = '.')
