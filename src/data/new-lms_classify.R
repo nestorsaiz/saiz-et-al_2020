@@ -283,3 +283,71 @@ new.lms$Identity.hc <- factor(new.lms$Identity.hc,
                               levels = c('TE', 'PRE', 'DP', 'EPI', 
                                          'EPI.lo', 'DN', 'n/a'))
 
+# Create an agnostic Identity variable that takes the values of 
+# Identity.km for embryos from the Fgf4 dataset and of Identity.hc for the rest
+f4 <- subset(new.lms, Gene1 == 'Fgf4')
+f4$Identity <- f4$Identity.km
+no.f4 <- subset(new.lms, Gene1 != 'Fgf4')
+no.f4$Identity <- no.f4$Identity.hc
+new.lms <- rbind(no.f4, f4)
+rm(f4, no.f4)
+
+new.lms$Identity <- factor(new.lms$Identity, 
+                              levels = c('TE', 'PRE', 'DP', 'EPI', 
+                                         'EPI.lo', 'DN'))
+
+################################################################################
+# Count cells of each identity
+################################################################################
+
+# Calculate cell counts using new Identity variable
+new.lms.counts <- new.lms %>% filter(Channel == 'CH2') %>% 
+  group_by(Exp_date, Img_date, Experiment, 
+           Litter, Embryo_ID, Treatment, 
+           Gene1, Gene2, Genotype1, Genotype2, 
+           Cellcount, Stage, TE_ICM, 
+           litter.median, Identity, 
+           icm.count, Background) %>% 
+  summarize(count = n())
+
+# In embryos that lack a certain cell type, that isn't registered as a 0
+# by default summarizing the data in the step above
+
+# Split ICM from TE cells
+m.new <- subset(new.lms.counts, TE_ICM == 'ICM')
+t.new <- subset(new.lms.counts, TE_ICM != 'ICM')
+
+# Cast ICM cells to wide format so that each ICM denomination
+# becomes a variable (PRE, DP, etc)
+m.new <- dcast(m.new, Exp_date + Img_date + Experiment + Litter + Embryo_ID + 
+                 Cellcount + TE_ICM + Stage + Treatment + Background + 
+                 icm.count + litter.median + Genotype1 + Gene1 + 
+                 Genotype2 + Gene2 ~ Identity, value.var = 'count')
+# Replace the resulting NAs in each ICM lineage denomination with zeros
+m.new[is.na(m.new)] <- 0
+
+# Melt ICM back to long format where all cell types are under Identity
+m.new <- melt(m.new, id.vars = c('Exp_date', 'Img_date', 'Experiment', 'Litter', 
+                                 'Embryo_ID', 'Cellcount', 'TE_ICM', 
+                                 'Treatment', 'Stage', 'Background', 
+                                 'Gene1', 'Genotype1', 'Gene2', 'Genotype2', 
+                                 'icm.count', 'litter.median'), 
+              variable.name = 'Identity', value.name = 'count')
+
+# Combine TE and ICM cells again
+new.lms.counts <- rbind.fill(m.new, t.new)
+rm(m.new, t.new)
+
+# Calculate the % of the ICM that each lineage represents
+new.lms.counts$pc.icm <- new.lms.counts$count / 
+  new.lms.counts$icm.count * 100
+
+################################################################################
+# Write out data to the ./data/processed folder
+
+write.csv(new.lms, file = './data/processed/new-lms-processed.csv', 
+          row.names = F)
+write.csv(new.lms.counts, file = './data/processed/new-lms-counts.csv', 
+          row.names = F)
+
+##
