@@ -70,7 +70,7 @@ new.lms <- rbind.fill(aa, bb)
 rm(newlms.ch2, f4.lms.ch2, aa, bb)
 
 ## Merge IF tables, as they will be used later
-new.lms.if <- merge(new.lms.if, f4.lms.if)
+new.lms.if <- rbind.fill(new.lms.if, f4.lms.if)
 
 # Modify Experiment variable to account for different genotypes
 new.lms$Experiment <- paste(new.lms$Experiment, new.lms$Genotype1, sep = '.')
