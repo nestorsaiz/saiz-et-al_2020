@@ -78,7 +78,7 @@ new.lms.if$Experiment <- paste(new.lms.if$Experiment,
                                new.lms.if$Genotype1, sep = '.')
 
 ################################################################################
-## Correct for fluorescence decay along the Z-axis
+# Correct for fluorescence decay along the Z-axis
 ################################################################################
 
 # Since eb.cor() is designed to correct one channel (variable) at a time
@@ -113,7 +113,7 @@ new.lms <- cbind(new.lms, ebLogCor)
 rm(ebLogCor)
 
 ################################################################################
-## Incorporate littermate data from ablations experiments
+# Incorporate littermate data from ablations experiments
 ################################################################################
 
 # Read in reference littermates from the ablation dataset
@@ -137,8 +137,8 @@ new.lms <- rbind(new.lms, ablat.lms)
 new.lms <- stage(new.lms)
 
 ################################################################################
-## Transform fluorescence values obtained with NANOG.rat and GATA6.rb to
-## NANOG.rb and GATA6.gt equivalents and re-scale to 0-1
+# Transform fluorescence values obtained with NANOG.rat and GATA6.rb to
+# NANOG.rb and GATA6.gt equivalents and re-scale to 0-1
 ################################################################################
 
 # Generate data frame containing the unique values 
