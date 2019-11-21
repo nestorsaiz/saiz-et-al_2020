@@ -16,11 +16,12 @@ rm(setup.ran)
 source('./src/data/new-lms_read.R')
 
 # Check if ablat.lms has been generated
-if(exists(ablat.lms) == F) { 
+if(exists('ablat.lms') == F) {
   ablat.lms <- read.csv('./data/interim/ablat-lms-tx.csv')
 }
+
 # If the interim *-tx.csv file does not exist, source the scripts to generate it
-if(exists(ablat.lms) == F) { 
+if(exists('ablat.lms') == F) { 
   source('./src/data/ablat_read.R')
   source('./src/data/ablat_tx.R')
 }
