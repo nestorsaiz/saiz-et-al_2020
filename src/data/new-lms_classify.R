@@ -135,6 +135,18 @@ g4$Identity.km <-
 new.lms <- rbind(nanogata, s17, g4)
 rm(nanogata, s17, g4)
 
+# Split the DN cluster according to embryonic stage.
+# DN cells are a mix of multiple populations. In embryos > 120 cells
+# most of these cells are epiblast cells that have downregulated NANOG levels
+# (but don't express GATA6, and thus cluster separately). We will call these
+# cells NANOG-low epiblast (EPI.lo). In embryos <120 cells, DN cells should
+# be rare (although K-means overestimates them), but mostly will capture some
+# dividing cells, some cells with low expression of both markers, perhaps 
+# some apoptotic cells, and segmentation errors. We call these DN
+
+new.lms$Identity.km[which(new.lms$Cellcount > 120 & 
+                            new.lms$Identity.km == 'DN')] <- 'EPI.lo'
+
 ################################################################################
 # Hierarchical clustering
 ################################################################################
