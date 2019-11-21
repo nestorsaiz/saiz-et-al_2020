@@ -1,0 +1,9 @@
+﻿ESC_line,ESC_genotype
+NA,no.esc
+CAG:H2B-GFP,wt
+CAG:H2B-mCherry,wt
+H2B-tdTomato,wt
+F103_CAG:H2B-GFP-B2,het
+F103_CAG:H2B-GFP-C1,het
+E14_CAG:H2B-GFP-F2,wt
+F105_GFP,ko
