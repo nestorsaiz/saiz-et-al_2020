@@ -21,7 +21,7 @@ if(data.exsts == F) {
 }
 rm(data.exsts)
 
-# Load functions that will be used in the script
+# Source functions that will be used in the script
 source('./src/functions/eb_cor.R')
 source('./src/functions/tx_channels.R')
 

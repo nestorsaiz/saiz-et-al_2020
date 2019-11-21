@@ -22,8 +22,6 @@ rm(setup.ran)
 data.exsts <- exists('ablat')
 if(data.exsts == F) { 
   ablat <- read.csv('./data/interim/ablat-fixedall-tx.csv')
-  ablat.t0 <- read.csv('./data/interim/ablat-t0-tx.csv')
-  ablat.ref <- rbind(read.csv('./references/ablat_exp_ref.csv'))
 }
 rm(data.exsts)
 
@@ -245,7 +243,16 @@ ablat.b <- merge(ablat.b, new.lms.red)
 # Combine ablat.a and ablat.b back into ablat
 ablat <- rbind(ablat.a, ablat.b)
 
+# Record number of embryos at end
+n.end <- unique(ablat$Embryo_ID)
+
+print(paste('N embryos loaded at beginning', length(n.start), sep = ": "))
+print(paste('N embryos after processing', length(n.end), sep = ": "))
+
 ################################################################################
 # Write out data to the ./data/processed folder
+# All embryos
 write.csv(ablat, file = './data/processed/ablat-processed.csv', row.names = F)
-
+# processed littermates only
+write.csv(subset(ablat, Treatment == 'Littermate'), 
+          file = './data/processed/lms-ablat-processed.csv', row.names = F)
