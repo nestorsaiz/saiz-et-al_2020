@@ -13,9 +13,6 @@ rm(setup.ran)
 # Load functions that will be used in the script
 source('./src/functions/do_counts.R')
 
-# Load some extra packages
-library('Ckmeans.1d.dp')
-
 # Define the location of files to be loaded (relative path to working directory)
 my.dir <- './data/corfiles/emb-xim_corf/'
 
