@@ -1,5 +1,6 @@
 # This file reads in curated files for the ablation dataset
 # from the corresponding folder (data/corfiles)
+# combines them into one table and cleans up the data
 
 # Check that setup.R has been ran
 setup.ran <- exists('looks')
