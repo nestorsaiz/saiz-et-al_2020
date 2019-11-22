@@ -55,6 +55,9 @@ ebcor <- function(x, channel, embryo.var = 'Embryo_ID', Z.var = 'Z',
                                                  'Trophectoderm', 'TB', 
                                                  'tb', 'Tb', 
                                                  'Trophoblast'))]
+    if(length(te) == 0) {
+        te <- 'TE'
+    }
     ## and point at TE vs ICM variable
     x$TE_ICM <- get(TI.var, x)
     # fitted regression coefficients and their standard errors
