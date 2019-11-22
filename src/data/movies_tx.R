@@ -16,12 +16,17 @@ library('tidyquant')
 
 # Source functions that will be used in the script
 source('./src/functions/eb_cor.R')
-# source('./src/functions/el-classifier.R')
 
 # Check if data is already loaded and read it in if not
 if(exists('movies') == F) { 
   movies <- read.csv('./data/raw/movies-all.csv')
-  }
+}
+
+# If there is no raw data, run script to generate it
+if(exists('movies') == F) { 
+  source('./src/data/movies_read.R')
+  movies <- read.csv('./data/raw/movies-all.csv')
+}
 
 # Convert time frames into minutes (each time interval is 15 minutes)
 movies$minutes <- (movies$timeframe - 1) * 15
