@@ -96,7 +96,7 @@ n.embryos <- dcast(n.embryos, target + Stage.t0 + Cell_diff ~ Treatment,
                    value.var = 'N')
 n.embryos[is.na(n.embryos)] <- '--'
 # and write it out as a .csv file
-write.csv(n.embryos, file = './references/ablat_N-embryos.csv', row.names = F)
+write.csv(n.embryos, file = './results/ablat_N-embryos.csv', row.names = F)
 
 ################################################################################
 ## Correct for fluorescence decay along the Z-axis

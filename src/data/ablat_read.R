@@ -109,7 +109,7 @@ rm(tt.stage, ablat.a)
 
 # Extract Stage.t0 information and write it out to ./data/interim
 tt.stage <- ablat %>% group_by(Litter, Stage.t0) %>% summarize()
-write.csv(tt.stage, file = './data/interim/ablat_t0-stage.csv', row.names = F)
+write.csv(tt.stage, file = './references//ablat_t0-stage.csv', row.names = F)
 rm(tt.stage)
 
 ################################################################################
