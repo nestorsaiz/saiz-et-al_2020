@@ -10,14 +10,6 @@ if (setup.ran == F) {
 }
 rm(setup.ran)
 
-# Load some extra packages
-library('zoo')
-library('tidyquant')
-
-# Source functions that will be used in the script
-source('./src/functions/eb_cor.R')
-source('./src/functions/el-classifier.R')
-
 # Define the location of files to be loaded (relative path to working directory
 my.dir <- './data/moviefiles/'
 
@@ -170,7 +162,7 @@ print(paste('Number of movies loaded:', length(n.movies), sep = ' '))
 
 # Read in experimental reference
 ablat.ref <- read.csv('./references/ablat_exp_ref.csv')
-ablat.t0.stage <- read.csv('./references//ablat_t0-stage.csv')
+ablat.t0.stage <- read.csv('./references/ablat_t0-stage.csv')
 
 # Extract data from ablat.ref only for embryos contained in ablat.movs dataset
 # and extract just some of the variables in it
