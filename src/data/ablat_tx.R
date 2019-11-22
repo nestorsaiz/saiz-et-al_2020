@@ -9,7 +9,7 @@ if (setup.ran == F) {
 }
 rm(setup.ran)
 
-# Check if data is already loaded 
+# Check if data is already loaded and read it in if not
 data.exsts <- exists('ablat')
 if(data.exsts == F) { 
   ablat <- read.csv('./data/raw/ablat-fixed-raw.csv')
