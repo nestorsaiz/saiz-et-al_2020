@@ -25,6 +25,13 @@ if(data.exsts == F) {
 }
 rm(data.exsts)
 
+# If there is no interim data table, run the script to generate it
+data.exsts <- exists('ablat')
+if(data.exsts == F) { 
+  source('./src/data/ablat_tx.R')
+}
+rm(data.exsts)
+
 # Load functions that will be used in the script
 source('./src/functions/icm_spread.R')
 source('./src/functions/mkay.R')

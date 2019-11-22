@@ -27,6 +27,15 @@ if(data.exsts == F) {
 }
 rm(data.exsts)
 
+# If there is no interim data frame, run scripts to generate it
+data.exsts <- exists('new.lms')
+if(data.exsts == F) { 
+  source('./src/data/new-lms_tx.R')
+  new.lms.ref <- rbind(read.csv('./references/new-littermates_exp_ref.csv'), 
+                       read.csv('./references/fgf4-lms_exp_ref.csv'))
+}
+rm(data.exsts)
+
 # Load functions that will be used in the script
 source('./src/functions/icm_spread.R')
 source('./src/functions/mkay.R')

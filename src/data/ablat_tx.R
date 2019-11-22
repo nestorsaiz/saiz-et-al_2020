@@ -18,6 +18,14 @@ if(data.exsts == F) {
 }
 rm(data.exsts)
 
+# If raw data has not been generated, run script to do it
+data.exsts <- exists('ablat')
+if(data.exsts == F) { 
+  source('./src/data/ablat_read.R')
+  ablat.ref <- read.csv('./references/ablat_exp_ref.csv')
+}
+rm(data.exsts)
+
 # Load functions that will be used in the script
 source('./src/functions/eb_cor.R')
 source('./src/functions/tx_channels.R')

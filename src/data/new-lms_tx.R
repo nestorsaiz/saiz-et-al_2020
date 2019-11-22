@@ -21,6 +21,15 @@ if(data.exsts == F) {
 }
 rm(data.exsts)
 
+# If raw data doesn't exist, run script to generate it
+data.exsts <- exists('new.lms')
+if(data.exsts == F) { 
+  source('./src/data/new-lms_read.R')
+  new.lms.ref <- rbind(read.csv('./references/new-littermates_exp_ref.csv'), 
+                       read.csv('./references/fgf4-lms_exp_ref.csv'))
+}
+rm(data.exsts)
+
 # Source functions that will be used in the script
 source('./src/functions/eb_cor.R')
 source('./src/functions/tx_channels.R')
