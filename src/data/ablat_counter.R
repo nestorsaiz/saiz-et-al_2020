@@ -18,6 +18,15 @@ if(data.exsts == F) {
 }
 rm(data.exsts)
 
+# If there is no interim data table, run the script to generate it
+data.exsts <- exists('ablat')
+if(data.exsts == F) { 
+  source('./src/data/ablat_classify.R')
+  ablat.t0 <- read.csv('./data/interim/ablat-t0-tx.csv')
+  ablat.ref <- rbind(read.csv('./references/ablat_exp_ref.csv'))
+}
+rm(data.exsts)
+
 ################################################################################
 # Calculate the number of cells per lineage for each embryo 
 # for fixed end point data
