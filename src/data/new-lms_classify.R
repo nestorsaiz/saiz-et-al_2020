@@ -89,7 +89,7 @@ icm.spread(ng)
 # Define a vector of identities - this should run on the provided dataset 
 # but may need to be changed, if new data is added. 
 # Assess the order of centers printed out, re-order the id.vector and re-run
-# lines 61-86
+# lines 95-98
 id.vector <- c('EPI', 'DP', 'PRE', 'DN')
 
 # Run mkay() to perform k-means and classify cells according to id.vector
