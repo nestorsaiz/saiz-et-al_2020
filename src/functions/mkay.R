@@ -39,10 +39,10 @@ mkay <- function(dataset, miniset, k, ids,
   print(centers)
   
   # Make matrix to hold sum of squares (rows = icm rows, k columns)
-  ssq <- matrix(0, length(dataset[TI.var][is.icm]), k)
+  ssq <- matrix(0, length(dataset[TI.var][is.icm]), length(centers[, 1]))
   # and populate with min sum of squares for each cell
   # (min distance to each center for each cell's [GATA6] vs [NANOG] value)
-  for(i in 1:k) {
+  for(i in 1:length(centers[, 1])) {
     ssq[,i] <- (dataset[x.var][is.icm] - centers[i,1])^2 + 
       (dataset[y.var][is.icm] - centers[i,2])^2
   }
