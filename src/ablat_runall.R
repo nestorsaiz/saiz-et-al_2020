@@ -3,6 +3,7 @@
 # * read in the manually curated files (ablat_read.R)
 # * correct and transform data (ablat_tx.R)
 # * classify cells into lineages (ablat_classify.R)
+# * count cell populations (ablat_counter.R)
 # * generate associated graphs
 
 # Check if setup.R has been ran
