@@ -1,0 +1,10 @@
+"Embryo_size","H_genotype","0","25","50","75"
+"Double","het",NA,NA,5,NA
+"Double","ko",NA,NA,4,NA
+"Double","mosaic",NA,NA,2,NA
+"Double","wt",NA,NA,15,NA
+"Single","CAG:H2B-GFP",9,NA,NA,NA
+"Single","het",6,20,17,5
+"Single","ko",5,14,15,7
+"Single","mosaic",NA,1,9,1
+"Single","wt",73,24,38,35
