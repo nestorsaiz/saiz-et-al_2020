@@ -105,6 +105,17 @@ esc.chimeras <- stage(esc.chimeras)
 # Rename Tt_stage to Stage.t0
 esc.chimeras <- rename(esc.chimeras, Stage.t0 = Tt_stage)
 
+# The experiments (litters) done between Feb 14 2018 and Feb 22 2018 did not
+# grow beyond 85 cells, unlike most of the other experiments.
+# Around those dates we discovered an issue with the mineral oil 
+# under which we grow embryos (Sigma BioReagent light mineral oil (neat), 
+# cat# M8410). We had this issue in the past, and we had determined the oil
+# was killing embryos. Other labs had the same problem. 
+# Therefore we exclude these embryos from later analyses
+small.odd <- unique(subset(esc.chimeras, 
+                           Exp_date >= 20180214 & 
+                             Exp_date <= 20180222)$Litter)
+
 ################################################################################
 # Write this raw, unprocessed data frame out to file
 write.csv(esc.chimeras, file = './data/raw/esc-xim-raw.csv')
