@@ -107,6 +107,15 @@ rm(ebLogCor)
 write.csv(esc.chimeras, file = './data/interim/esc-xim-tx.csv', 
           row.names = F)
 
+# If esc-xim_read.R has not been ran before and data is loaded
+# directly from ./data/interim/, generate vector of embryos to 
+# exclude from analysis (see ./src/data/esc-xim_read.R for details)
+if(exists('small.odd') == F) { 
+  small.odd <- unique(subset(esc.chimeras, 
+                             Exp_date >= 20180214 & 
+                               Exp_date <= 20180222)$Litter)
+  }
+
 # Calculate the number of embryos per treatment
 n.embryos <- esc.chimeras %>% 
   filter(interaction(Channel, Marker) != 'CH2.no.ab', 
