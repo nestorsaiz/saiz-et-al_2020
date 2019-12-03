@@ -43,6 +43,9 @@ unicos <- read.csv('./references/esc-xim_unicos.csv')
 esc.chimeras <- subset(esc.chimeras, Channel == 'CH2' & 
                          Genotype2 != 'unknown')
 
+# Record the number of embryos loaded
+n.start <- unique(esc.chimeras$Embryo_ID)
+
 # Extract unique staining patterns and corresponding experiments, 
 # as done esc-xim_tx.R
 if(exists('stains') == F) { 
@@ -236,8 +239,10 @@ for(i in 1:length(list.chimeras)) {
   list.chimeras[[i]] <- do.call(rbind, list.chimeras[[i]])
 }
 
-# Cycle through list.chimeras and do Hierarchical clustering for each subset
+# Define the number of clusters to separate in each subset
 ks <- c(3, 5, 5, 2)
+
+# Cycle through list.chimeras and do Hierarchical clustering for each subset
 for(x in 1:length(list.chimeras)) { 
   # Split TE and ICM cells
   te <- subset(list.chimeras[[x]], TE_ICM == 'TE')
@@ -339,4 +344,9 @@ esc.chimeras <- do.call(rbind, list.chimeras)
 esc.chimeras$Identity.hc <- factor(esc.chimeras$Identity.hc, 
                                    levels = c('TE', 'PRE', 'DP', 'EPI', 
                                               'EPI.lo', 'DN', 'ESC'))
+
+################################################################################
+# Write out data to the ./data/processed folder
+write.csv(esc.chimeras, file = './data/processed/esc-xim-processed.csv', 
+          row.names = F)
 
