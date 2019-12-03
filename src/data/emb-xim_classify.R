@@ -29,7 +29,6 @@ if(data.exsts == F) {
 }
 rm(data.exsts)
 
-
 # Load functions that will be used in the script
 source('./src/functions/icm_spread.R')
 source('./src/functions/mkay.R')
