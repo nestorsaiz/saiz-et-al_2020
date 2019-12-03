@@ -52,6 +52,9 @@ unicos <- esc.chimeras %>% filter(Channel %in% c('CH2', 'CH3', 'CH5')) %>%
 unicos <- dcast(unicos, Experiment + Treatment + Genotype1 + Genotype2 ~ 
                   Channel, value.var = 'Marker')
 
+# Write out the unicos table to disk
+write.csv(unicos, file = './references/esc-xim_unicos.csv', row.names = F)
+
 # Extract Channel 2 IF information
 ch2.marker <- unicos[, c(1:5)]
 ch2.marker <- rename(ch2.marker, 'CH2.marker' = 'CH2')
