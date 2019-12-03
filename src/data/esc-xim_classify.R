@@ -132,6 +132,10 @@ for(i in 1:3) {
                                ids = id.vectors[[i]], x.var = 'CH5.ebLogCor.x',
                                y.var = 'CH3.ebLogCor.x')
   }
+  # Order factor levels
+  list.chimeras[[i]]$Identity.km <- factor(list.chimeras[[i]]$Identity.km, 
+                                           levels = c('TE', 'PRE', 'DP', 
+                                                      'EPI', 'DN', 'ESC'))
   # Uncomment below to visualize the result for each subset
   # if(i == 2) {
   #   my.plot <- qplot(CH2.ebLogCor,  CH3.ebLogCor,
@@ -187,6 +191,10 @@ list.chimeras[[4]]$Identity.km[is.te] <- 'TE'
 list.chimeras[[4]]$Identity.km[is.esc] <- 'ESC'
 # Assign identity to ICM cells based on min.ssq values
 list.chimeras[[4]]$Identity.km[is.icm] <- c('EPI', 'PRE')[min.ssq]
+# Order factor levels
+list.chimeras[[4]]$Identity.km <- factor(list.chimeras[[4]]$Identity.km, 
+                                         levels = c('TE', 'PRE', 'DP', 
+                                                    'EPI', 'DN', 'ESC'))
 
 # Uncomment below to visualize outcome
 # qplot(CH5.ebLogCor.x,  CH1.ebLogCor,
@@ -194,21 +202,141 @@ list.chimeras[[4]]$Identity.km[is.icm] <- c('EPI', 'PRE')[min.ssq]
 #               color = Identity.km) + scale_color_manual(values = idcols) +
 #           facet_grid(Stage.t0 ~ Treatment) + looks + theme(aspect.ratio = 1)
 
-# Unlist data into a data frame
-esc.chimeras <- do.call(rbind, list.chimeras)
-rm(list.chimeras)
-
-# Order levels in Identity.km factor
-esc.chimeras$Identity.km <- factor(esc.chimeras$Identity.km, 
-                                   levels = c('TE', 'PRE', 'DP', 
-                                              'EPI', 'DN', 'ESC'))
-
 ################################################################################
 # Hierarchical clustering
 ################################################################################
 
+# Standardize the levels of each channel that we will use for classification
+# to the maxima of each litter, only for Hierarchical clustering purposes
+# as we have done for other datasets
+for(i in 1:length(list.chimeras)) { 
+  list.chimeras[[i]] <- split(list.chimeras[[i]], 
+                              as.factor(list.chimeras[[i]]$Litter))
+  for(l in 1:length(list.chimeras[[i]])){
+    list.chimeras[[i]][[l]]$CH1.ebLogCor.l <- 
+      list.chimeras[[i]][[l]]$CH1.ebLogCor / 
+      max(list.chimeras[[i]][[l]]$CH1.ebLogCor)
+    
+    list.chimeras[[i]][[l]]$CH2.ebLogCor.l <- 
+      list.chimeras[[i]][[l]]$CH2.ebLogCor / 
+      max(list.chimeras[[i]][[l]]$CH2.ebLogCor)
+    
+    list.chimeras[[i]][[l]]$CH3.ebLogCor.l <- 
+      list.chimeras[[i]][[l]]$CH3.ebLogCor / 
+      max(list.chimeras[[i]][[l]]$CH3.ebLogCor)
+    
+    list.chimeras[[i]][[l]]$CH3.ebLogCor.xl <- 
+      list.chimeras[[i]][[l]]$CH3.ebLogCor.x / 
+      max(list.chimeras[[i]][[l]]$CH3.ebLogCor.x)
+    
+    list.chimeras[[i]][[l]]$CH5.ebLogCor.xl <- 
+      list.chimeras[[i]][[l]]$CH5.ebLogCor.x / 
+      max(list.chimeras[[i]][[l]]$CH5.ebLogCor.x)
+  }
+  list.chimeras[[i]] <- do.call(rbind, list.chimeras[[i]])
+}
 
+# Cycle through list.chimeras and do Hierarchical clustering for each subset
+ks <- c(3, 5, 5, 2)
+for(x in 1:length(list.chimeras)) { 
+  # Split TE and ICM cells
+  te <- subset(list.chimeras[[x]], TE_ICM == 'TE')
+  esc <- subset(list.chimeras[[x]], Identity == 'ESC')
+  icm <- subset(list.chimeras[[x]], Identity == 'ICM')
+  
+  ## Classify ICM cells using hierarchical clustering
+  ## for the appropriate channels
+  if(x %in% c(1, 3)) {
+    my.x <- icm$CH5.ebLogCor.xl
+    my.y <- icm$CH3.ebLogCor.xl
+  }
+  ## For elements 2 and 4, cluster including ESCs to add a weight
+  ## to compensate for the small NANOG+ population
+  if(x == 2) {
+    icm <- rbind(icm, esc)
+    my.x <- icm$CH2.ebLogCor.l
+    my.y <- icm$CH3.ebLogCor.l
+  }
+  my.clusters <- hclust(dist(data.frame(my.x, my.y)), 
+                        method = 'average')
+  ## For element 4, cluster only along Channel 5 (GATA6)
+  ## as the other channels are GFP and tdTomato
+  if(x == 4) {
+    icm <- rbind(icm, esc)
+    my.x <- icm$CH5.ebLogCor.xl
+    my.y <- icm$CH1.ebLogCor.l
+    my.clusters <- hclust(dist(my.x), 
+                          method = 'average')
+  }
+  # plot(my.clusters)
+  icm$id.cluster <- cutree(my.clusters, ks[x])
+  
+  ## Scatter plots to visualize the outcomes
+  ## Uncomment to plot
+  # my.plot <- qplot(my.x,  my.y,
+  #                  data = icm, color = id.cluster) +
+  #   looks + scale_color_gradient2(low = 'black', mid = 'green',
+  #                                 high = 'yellow',
+  #                                 midpoint = (ks[x]+1)/2) +
+  #   facet_wrap(Stage ~ Treatment, nrow = 3) +
+  #   theme(aspect.ratio = 1)
+  # print(my.plot)
+  
+  ## Split ESC from ICM cells again
+  esc <- subset(list.chimeras[[x]], Identity == 'ESC')
+  icm <- subset(icm, Identity == 'ICM')
+  
+  ## Assign TE cells to a made up cluster 0
+  te$id.cluster <- 0
+  ## And ESC to a made up cluster 8
+  esc$id.cluster <- 8
+  
+  ## Combine all three populations again into each element of the list
+  list.chimeras[[x]] <- rbind(te, esc, icm)
+}
 
+# Assign identity to each cluster
+idxclust <- list(data.frame(id.cluster = c(0, 1:ks[1], 8), 
+                            Identity.hc = c('TE', 'PRE', 'EPI', 'DP', 'ESC')), 
+                 data.frame(id.cluster = c(0, 1:ks[2], 8), 
+                            Identity.hc = c('TE', 'DP', 'EPI', 'PRE', 
+                                            'EPI', 'EPI.lo', 'ESC')), 
+                 data.frame(id.cluster = c(0, 1:ks[3], 8), 
+                            Identity.hc = c('TE', 'PRE', 'EPI', 'DP', 
+                                            'EPI', 'PRE', 'ESC')), 
+                 data.frame(id.cluster = c(0, 1:ks[4], 8), 
+                            Identity.hc = c('TE', 'PRE', 'EPI', 'ESC')))
 
+## Combine identities and clusters for each element of list.chimeras
+for(x in 1:length(list.chimeras)) { 
+  list.chimeras[[x]] <- merge(list.chimeras[[x]], idxclust[[x]])
+}
 
+# Uncomment below to visualize result, with ESCs overlaid for subsets 1 and 3
+# for(i in c(1, 3)) {
+#         my.plot <- qplot(CH5.ebLogCor.xl, CH3.ebLogCor.xl,
+#                          data = subset(list.chimeras[[i]], TE_ICM == 'ICM'),
+#                          color = Identity.hc) +
+#                 looks + scale_color_manual(values = idcols) +
+#                 facet_wrap(Stage ~ Treatment, nrow = 3) +
+#                 theme(aspect.ratio = 1)
+#         print(my.plot)
+# }
+
+# And for subset 2
+# my.plot <- qplot(CH2.ebLogCor.l, CH3.ebLogCor.l,
+#                    data = subset(list.chimeras[[2]], TE_ICM == 'ICM'),
+#                    color = Identity.hc) +
+#     looks + scale_color_manual(values = idcols) +
+#     facet_wrap(Stage ~ Treatment, nrow = 3) +
+#     theme(aspect.ratio = 1)
+#   print(my.plot)
+
+# Re-generate esc.chimeras with all elements of list.chimeras
+esc.chimeras <- do.call(rbind, list.chimeras)
+
+# Order levels in Identity.hc factor
+esc.chimeras$Identity.hc <- factor(esc.chimeras$Identity.hc, 
+                                   levels = c('TE', 'PRE', 'DP', 'EPI', 
+                                              'EPI.lo', 'DN', 'ESC'))
 
