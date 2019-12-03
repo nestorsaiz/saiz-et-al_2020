@@ -339,6 +339,7 @@ for(x in 1:length(list.chimeras)) {
 
 # Re-generate esc.chimeras with all elements of list.chimeras
 esc.chimeras <- do.call(rbind, list.chimeras)
+rm(list.chimeras)
 
 # Order levels in Identity.hc factor
 esc.chimeras$Identity.hc <- factor(esc.chimeras$Identity.hc, 
