@@ -346,6 +346,21 @@ esc.chimeras$Identity.hc <- factor(esc.chimeras$Identity.hc,
                                               'EPI.lo', 'DN', 'ESC'))
 
 ################################################################################
+# Make and tidy factors where needed
+################################################################################
+esc.chimeras$ES_culture <- factor(esc.chimeras$ES_culture, 
+                                  levels = c('S/LIF', '2i/LIF', 'no.esc'))
+esc.chimeras$Genotype1 <- factor(esc.chimeras$Genotype1, 
+                                 levels = c('wt', 'fl/fl',
+                                            'fl/ko', 'ko', 
+                                            'mosaic', 'unknown', 'tbd'))
+esc.chimeras$ESC_genotype <- factor(esc.chimeras$ESC_genotype, 
+                                    levels = c('wt', 'het', 'ko', 'no.esc'))
+
+################################################################################
+# Record number of embryos at end
+n.end <- unique(esc.chimeras$Embryo_ID)
+
 # Write out data to the ./data/processed folder
 write.csv(esc.chimeras, file = './data/processed/esc-xim-processed.csv', 
           row.names = F)
