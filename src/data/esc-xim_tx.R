@@ -27,6 +27,7 @@ rm(data.exsts)
 
 # Load functions that will be used in the script
 source('./src/functions/eb_cor.R')
+source('./src/functions/tx_channels.R')
 
 # Load immunofluorescence reference file and merge with main table
 esc.if <- read.csv('./references/esc-xim_if.csv')
@@ -36,9 +37,6 @@ esc.chimeras <- merge(esc.chimeras, esc.if)
 esc.chimeras$Treatment <- factor(esc.chimeras$Treatment, 
                                  levels = c('Littermate', 'Control', 'Chimera'))
 esc.chimeras$TE_ICM <- factor(esc.chimeras$TE_ICM, levels = c('TE', 'ICM'))
-# esc.chimeras$Genotype1 <- factor(esc.chimeras$Genotype1, 
-#                                  levels = c('wt', 'fl/fl', 'fl/ko', 'ko', 
-#                                             'unclear', 'unknown', 'tbd'))
 
 # Rename experiment variable to account for treatments
 esc.chimeras$Experiment <- paste(esc.chimeras$Experiment, 
@@ -104,6 +102,75 @@ ebLogCor <- rename(ebLogCor, CH1.ebLogCor = CH1.Avg,
 # Combine chimeras with the EB corrected values
 esc.chimeras <- cbind(esc.chimeras, ebLogCor)
 rm(ebLogCor)
+
+################################################################################
+# Transform fluorescence values obtained with NANOG.rat and GATA6.rb to
+# NANOG.rb and GATA6.gt equivalents and re-scale to 0-1
+################################################################################
+
+# Perform a similar transformation as that done for the new-littermates dataset
+# to bring values from different staining groups into the same scale
+
+# Select Experiments where NANOG.rat was used or where GATA6.rb was used
+ng.rat <- unicos$Experiment[which(unicos$CH2 == 'NANOG.rat')]
+g6.rb <- unicos$Experiment[which(unicos$CH3 == 'GATA6.rb')]
+
+# Use tx.channel function to transform NANOG(rat) into NANOG(rb)-equivalents
+esc.chimeras <- tx.channel(esc.chimeras, what.subset = ng.rat, 
+                           what.model = ng.model, 
+                           input.ch = 'CH2', end.ch = 'CH3')
+# Use tx.channel function to transform GATA6(rb) into GATA6(gt)-equivalents
+esc.chimeras <- tx.channel(esc.chimeras, what.subset = g6.rb, 
+                           what.model = gata.model, 
+                           input.ch = 'CH3', end.ch = 'CH5')
+
+# Re-scale fluorescence values to 0-1 scale
+
+# Create vectors of names for the original and transformed fluorescence values
+pre.cols <- colnames(esc.chimeras)[grep('ebLogCor$', colnames(esc.chimeras))]
+post.cols <- paste(pre.cols, 's', sep = '.')
+mo.cols <- colnames(esc.chimeras)[grep('ebLogCor.x', colnames(esc.chimeras))]
+pre.cols <- c(pre.cols, mo.cols)
+post.cols <- c(post.cols, paste(mo.cols, 's', sep = ''))
+rm(mo.cols)
+
+# Create an empty matrix to hold the re-scaled values (.s) for each channel
+s.cols <- matrix(0, nrow = length(esc.chimeras$CH1.ebLogCor), 
+                 ncol = length(post.cols), 
+                 dimnames = list(c(), post.cols))
+s.cols <- data.frame(s.cols)
+# and incorporate into main data frame
+esc.chimeras <- cbind(esc.chimeras, s.cols)
+rm(s.cols)
+
+# Create a vector with unique combinations of antibodies and stainings
+# and a list with the corresponding experiments stained that way
+stains <- unique(paste(unicos$CH2, unicos$CH3, unicos$CH5))
+exps <- list()
+for(s in 1:length(stains)) { 
+  exps[[s]] <- unique(unicos$Experiment[which(paste(unicos$CH2, 
+                                                    unicos$CH3, 
+                                                    unicos$CH5) == stains[s])])
+}
+
+# Cycle through the list of experiments and make the values of each channel 
+# relative to the maxima in that group - thus maintaining the relative levels
+# between embryos of different litters & stages while eliminating differences
+# due to antibody combinations (which are only technical)
+for(e in 1:length(exps)) { 
+  # Split data in a subset with relevant experiments and another without
+  sile <- subset(esc.chimeras, Experiment %in% exps[[e]])
+  nole <- subset(esc.chimeras, !Experiment %in% exps[[e]])
+  # Rescale each channel given in pre.cols to the maxima of that channel
+  # in the given group (sile) and store the re-scaled value in the
+  # corresponding transformed vairable (its cognate in post.col)
+  for(c in 1:length(pre.cols)) {
+    sile[post.cols[c]] <- sile[pre.cols[c]] / max(sile[pre.cols[c]])
+  }
+  # Combine both datasets again before next loop
+  esc.chimeras <<- rbind(sile, nole)
+}
+rm(sile, nole)
 
 ################################################################################
 # Write data out to interim folder
