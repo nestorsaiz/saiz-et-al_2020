@@ -262,4 +262,4 @@ print(paste('N embryos after processing', length(n.end), sep = ": "))
 write.csv(ablat, file = './data/processed/ablat-processed.csv', row.names = F)
 # processed littermates only
 write.csv(subset(ablat, Treatment == 'Littermate'), 
-          file = './data/processed/lms-ablat-processed.csv', row.names = F)
+          file = './data/processed/ablat-lms-processed.csv', row.names = F)
