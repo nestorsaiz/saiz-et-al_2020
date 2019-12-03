@@ -29,6 +29,9 @@ rm(data.exsts)
 source('./src/functions/eb_cor.R')
 source('./src/functions/tx_channels.R')
 
+# Record the number of embryos loaded
+n.start <- unique(esc.chimeras$Embryo_ID)
+
 # Load immunofluorescence reference file and merge with main table
 esc.if <- read.csv('./references/esc-xim_if.csv')
 esc.chimeras <- merge(esc.chimeras, esc.if)
