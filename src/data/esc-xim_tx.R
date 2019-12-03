@@ -179,32 +179,3 @@ rm(sile, nole)
 # Write data out to interim folder
 write.csv(esc.chimeras, file = './data/interim/esc-xim-tx.csv', 
           row.names = F)
-
-# If esc-xim_read.R has not been ran before and data is loaded
-# directly from ./data/interim/, generate vector of embryos to 
-# exclude from analysis (see ./src/data/esc-xim_read.R for details)
-if(exists('small.odd') == F) { 
-  small.odd <- unique(subset(esc.chimeras, 
-                             Exp_date >= 20180214 & 
-                               Exp_date <= 20180222)$Litter)
-  }
-
-# Calculate the number of embryos per treatment
-n.embryos <- esc.chimeras %>% 
-  filter(interaction(Channel, Marker) != 'CH2.no.ab', 
-         !Litter %in% small.odd) %>% 
-  group_by(Embryo_ID, Treatment, 
-           ESC_line, ES_culture, 
-           ESC_genotype, Stage.t0, 
-           Genotype1, D_cells) %>% 
-  summarize() %>% 
-  group_by(Treatment, ESC_line, ES_culture, ESC_genotype, 
-           Stage.t0, Genotype1, D_cells) %>% 
-  summarize(N = n())
-n.embryos <- dcast(n.embryos, Treatment + Genotype1 + D_cells ~ 
-                     Stage.t0 + ESC_line + ESC_genotype + ES_culture, 
-                   value.var = 'N')
-n.embryos[is.na(n.embryos)] <- '--'
-# and write it out as a .csv file
-write.csv(n.embryos, file = './results/esc-xim_N-embryos.csv', row.names = F)
-
