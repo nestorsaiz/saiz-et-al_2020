@@ -3,6 +3,7 @@
 # * read in the manually curated files (new-lms_read.R)
 # * correct and transform data (new-lms_tx.R)
 # * classify cells into lineages (new-lms_classify.R)
+# * count number of cells for each lineage (new-lms_counter.R)
 # * generate associated graphs
 
 # Check if setup.R has been ran
@@ -32,3 +33,6 @@ source('./src/data/new-lms_tx.R')
 
 # Run classify script to assign identity to ICM cells
 source('./src/data/new-lms_classify.R')
+
+# Run script to count cells in each lineage and write them out to disk
+source('./src/data/new-lms_counter.R')
