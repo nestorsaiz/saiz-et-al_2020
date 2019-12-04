@@ -135,6 +135,11 @@ if(exists('spry.lms') == F) {
   source('./src/data/all-lms_tx.R')
 }
 
+# Reorder factor in case data was loaded from file
+spry.lms$Identity.hc <- factor(spry.lms$Identity.hc, 
+                               levels = c('TE', 'PRE', 'DP', 'EPI', 'EPI.lo', 
+                                          'DN', 'morula'))
+
 # Calculate cell counts for each ICM lineage
 spry.counts <- spry.lms %>% 
   group_by(Experiment, Litter, Embryo_ID, 
@@ -175,8 +180,105 @@ spry.counts$pc.icm <- spry.counts$count / spry.counts$icm.count * 100
 write.csv(spry.counts, file = './data/processed/spry4-lms-counts.csv', 
           row.names = F)
 
+################################################################################
+# Read in littermates generated in this study
+################################################################################
+
+# Read in processed new litttermates data
+new.lms <- read.csv('./data/processed/new-lms-processed.csv')
+
+# Remove some unnecessary variables
+new.lms[which(colnames(new.lms) %in% 
+                    c('MINS_correct', 'CH1.Sum', 'CH2.Sum', 'CH3.Sum', 
+                      'CH4.Sum', 'CH5.Sum', 'id.cluster'))] <- NULL
+
+# Order factors
+new.lms$Identity.km <- factor(new.lms$Identity.km,
+                                  levels = c('TE', 'PRE', 'DP', 'EPI', 'DN'))
+new.lms$Identity.hc <- factor(new.lms$Identity.hc, 
+                                  levels = c('TE', 'PRE', 'DP', 'EPI',
+                                             'EPI.lo', 'DN', 'n/a'))
+new.lms$Identity <- factor(new.lms$Identity, 
+                           levels = c('TE', 'PRE', 'DP', 'EPI',
+                                      'EPI.lo', 'DN'))
+new.lms$Stage <- factor(new.lms$Stage,
+                            levels = c('<8', '8_16', '16_32', '32_64', 
+                                       '64_90', '90_120', '120_150', '>150'))
+
+# Read in counts table
+new.lms.counts <- read.csv('./data/processed/new-lms-counts.csv')
+new.lms.counts$Identity <- factor(new.lms.counts$Identity, 
+                                  levels = c('TE', 'PRE', 'DP', 'EPI', 
+                                             'EPI.lo', 'DN'))
+
+# Read in processed ablations littermates data, some of which
+# are contained within new.lms
+ablat.lms <- read.csv('./data/processed/ablat-lms-processed.csv')
+
+# Rename group.median as litter.median, 
+# since the only group here are littermates
+ablat.lms <- rename(ablat.lms, litter.median = group.median)
+# Remove unnecessary variables
+ablat.lms[which(colnames(ablat.lms) %in% 
+                      c('MINS_correct', 'Cellcount_t0', 'id.cluster', 
+                        'Recovery', 'Cell_diff', 'target', 
+                        'target_t0', 'target_killed', 
+                        'CH1.Sum', 'CH2.Sum', 'CH3.Sum', 
+                        'CH4.Sum', 'CH5.Sum', 
+                        'Gene3', 'Genotype3'))] <- NULL
+
+# Order factors and duplicate Identity.hc as Identity
+ablat.lms$Identity.hc <- factor(ablat.lms$Identity.hc,
+                                    levels = c('TE', 'PRE', 'DP', 'EPI', 
+                                               'EPI.lo', 'DN'))
+ablat.lms$Identity.km <- factor(ablat.lms$Identity.km,
+                                    levels = c('TE', 'PRE', 'DP', 'EPI', 'DN'))
+ablat.lms$Identity <- ablat.lms$Identity.hc
+
+# Read in ICM lineage counts
+ablat.lms.counts <- read.csv('./data/processed/ablat-counts.csv')
+ablat.lms.counts <- subset(ablat.lms.counts, Treatment == 'Littermate')
+
+# Drop unnecessary columns
+ablat.lms.counts[which(colnames(ablat.lms.counts) %in% 
+                         c('Recovery', 'Cell_diff', 'target', 
+                           'target_t0', 'Gene3', 'Genotype3', 
+                           'Cellcount_t0', 'litter.median.t0'))] <- NULL
+# Rename variables to match other datasets
+# Call Identity.hc Identity, group.median litter.median, etc, 
+# to match other .counts datasets
+ablat.lms.counts <- rename(ablat.lms.counts, 
+                           litter.median = group.median, 
+                           Stage = Stage.t0, 
+                           Identity = Identity.hc)
+
+# Order Identity levels
+ablat.lms.counts$Identity <- factor(ablat.lms.counts$Identity,
+                                       levels = c('TE', 'PRE', 'DP', 'EPI', 
+                                                  'EPI.lo', 'DN'))
+
+# Re-organize these data to separate:
+# - Ablation littermates
+# - New CD1 littermates, excluding ablation littermates and Fgf4 embryos
+# - FVB littermates
+# - Fgf4 littermates
+fvb.raw <- subset(new.lms, Background == 'FVB')
+fvb.counts <- subset(new.lms.counts, Background == 'FVB')
+
+f4.lms.raw <- subset(new.lms, Gene1 == 'Fgf4')
+f4.lms.raw$Genotype1[which(f4.lms.raw$Genotype1 == 'wt/fl')] <- 'wt'
+f4.lms.raw$Genotype1[which(f4.lms.raw$Genotype1 == 'fl/ko')] <- 'het'
+
+f4.lms.counts <- subset(new.lms.counts, Gene1 == 'Fgf4')
+f4.lms.counts$Genotype1[which(f4.lms.counts$Genotype1 == 'wt/fl')] <- 'wt'
+f4.lms.counts$Genotype1[which(f4.lms.counts$Genotype1 == 'fl/ko')] <- 'het'
+
+new.lms <- subset(new.lms, Background != 'FVB' & 
+                    !Embryo_ID %in% unique(ablat.lms$Embryo_ID) & 
+                    Gene1 != 'Fgf4')
+new.lms.counts <- subset(new.lms.counts, 
+                         Background != 'FVB' & 
+                           !Embryo_ID %in% unique(ablat.lms.counts$Embryo_ID) & 
+                           Gene1 != 'Fgf4')
 
 
-
-# spry.counts$Identity <- spry.counts$Identity.hc
-# spry.raw$Identity <- spry.raw$Identity.hc
