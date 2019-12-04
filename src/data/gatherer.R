@@ -17,6 +17,9 @@ library('RCurl')
 my.path <- getURL('https://raw.githubusercontent.com/nestorsaiz/saiz-et-al_2016/master/FGF_all_pooled_trans.csv')
 ncoms.all <- read.csv(text = my.path)
 
+# Extract Littermates only from the dataset
+ncoms.lms <- subset(ncoms.all, Treatment == 'Littermate')
+
 # Incorporate experiment and imaging date, from experimental reference file, 
 # which are missing for some reason.
 
@@ -25,16 +28,16 @@ my.path <- getURL('https://raw.githubusercontent.com/nestorsaiz/saiz-et-al_2016/
 ncoms.ref <- read.csv(text = my.path)
 # Extract Exp_date and Img_date for each experiment present in main table
 ncoms.ref <- ncoms.ref %>% 
-  filter(Experiment %in% unique(ncoms.all$Experiment)) %>% 
+  filter(Experiment %in% unique(ncoms.all$Experiment), 
+         Treatment == 'Littermate') %>% 
   group_by(Experiment, Exp_date, Img_date) %>% 
   summarize()
 
 # Merge into main data frame
-ncoms.all <- merge(ncoms.all, ncoms.ref)
+ncoms.lms <- merge(ncoms.lms, ncoms.ref)
 rm(ncoms.ref)
 
-# Extract Littermates only from the dataset and write them out to disk
-ncoms.lms <- subset(ncoms.all, Treatment == 'Littermate')
+# Write file out to disk
 write.csv(ncoms.lms, file = './data/raw/ncoms-lms-raw.csv', row.names = F)
 
 
