@@ -33,7 +33,8 @@ do.counts <- function(dataset, embryo.var = 'Embryo_ID',
         ## Find which one may correspond to trophectoderm
         te <- TI.vals[, 1][which(TI.vals[, 1] %in% c('TE', 'Te', 'te', 'T', 
                                                      'Trophectoderm', 'TB', 
-                                                     'tb', 'Tb', 
+                                                     'tb', 'Tb', 'outside', 
+                                                     'outer', 'out', 
                                                      'Trophoblast'))]
         ## Calculate the number of ICM cells per embryo
         tecounts <- dataset %>% filter(!! as.name(TI.var) == te) %>% 
