@@ -172,6 +172,4 @@ ablat.t0.counts <- rename(ablat.t0.counts, PRE.t0 = PRE,
 write.csv(ablat.lincounts, './data/processed/ablat-counts.csv', row.names = F)
 write.csv(ablat.t0.counts, './data/processed/ablat-t0-counts.csv', 
           row.names = F)
-write.csv(fixed.lincounts, './data/processed/ablat-lms-counts.csv', 
-          row.names = F)
 
