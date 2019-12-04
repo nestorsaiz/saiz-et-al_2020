@@ -66,8 +66,8 @@ spry.lms <- rbind(icm, rbind(te, rest))
 rm(icm, te, rest, my.clusters, idxclust)
 
 spry.lms$Identity.hc <- factor(spry.lms$Identity.hc, 
-                               levels = c('TE', 'PRE', 'DP', 'EPI', 'DN', 
-                                          'morula'))
+                               levels = c('TE', 'PRE', 'DP', 'EPI', 'EPI.lo', 
+                                          'DN', 'morula'))
 
 # Write transformed data to file
 write.csv(spry.lms, file = './data/processed/spry4-lms-processed.csv', 
