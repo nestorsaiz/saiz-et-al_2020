@@ -276,6 +276,19 @@ for(x in 1:length(list.chimeras)) {
   # plot(my.clusters)
   icm$id.cluster <- cutree(my.clusters, ks[x])
   
+  ## Split ESC from ICM cells again
+  esc <- subset(list.chimeras[[x]], Identity == 'ESC')
+  icm <- subset(icm, Identity == 'ICM')
+  
+  ## Assign TE cells to a made up cluster 0
+  te$id.cluster <- 0
+  ## And ESC to a made up cluster 8
+  esc$id.cluster <- 8
+  
+  # Make and print table comparing Hc clusters and Km clusters
+  my.table <- table(icm$id.cluster, icm$Identity.km)
+  print(my.table)
+  
   ## Scatter plots to visualize the outcomes
   ## Uncomment to plot
   # my.plot <- qplot(my.x,  my.y,
@@ -286,15 +299,6 @@ for(x in 1:length(list.chimeras)) {
   #   facet_wrap(Stage ~ Treatment, nrow = 3) +
   #   theme(aspect.ratio = 1)
   # print(my.plot)
-  
-  ## Split ESC from ICM cells again
-  esc <- subset(list.chimeras[[x]], Identity == 'ESC')
-  icm <- subset(icm, Identity == 'ICM')
-  
-  ## Assign TE cells to a made up cluster 0
-  te$id.cluster <- 0
-  ## And ESC to a made up cluster 8
-  esc$id.cluster <- 8
   
   ## Combine all three populations again into each element of the list
   list.chimeras[[x]] <- rbind(te, esc, icm)

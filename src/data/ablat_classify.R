@@ -195,6 +195,10 @@ icm[[1]] <- merge(icm[[1]], idxclust[[1]])
 icm[[2]] <- merge(icm[[2]], idxclust[[2]])
 icm <- do.call(rbind, icm)
 
+# Print table comparing Identity.hc and Identity.km result
+my.table <- table(icm$Identity.hc, icm$Identity.km)
+print(my.table)
+
 # Re generate ablat.a from TE and ICM cells
 ablat.a <- rbind(te, icm)
 rm(te, icm)

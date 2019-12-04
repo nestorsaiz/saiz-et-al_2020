@@ -197,6 +197,8 @@ for(i in 1:2) {
   # Uncomment below to plot dendrogram
   # plot(my.clusters)
   icm[[i]]$id.cluster <- cutree(my.clusters, ks[i])
+  my.table <- table(icm[[i]]$id.cluster, icm[[i]]$Identity.km)
+  print(my.table)
   my.plot <- qplot(CH5.ebLogCor,  CH3.ebLogCor,
                    data = icm[[i]], color = id.cluster) +
     looks + scale_color_gradient2(low = 'black', mid = 'green',
