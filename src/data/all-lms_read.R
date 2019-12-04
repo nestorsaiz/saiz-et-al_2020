@@ -1,5 +1,10 @@
 # This script reads in Littermates data from multiple sources
-# cleans up the data and combines them into lists for plotting
+# cleans up the data and combines them into lists for plotting.
+# It generates some output tables along the way, but does not write out
+# the clean datasets. These are all combined in a list, that is 
+# meant to be used for plotting.
+# It generates some summary statistics tables that are written out to 
+# ./results
 
 # Check if setup.R has been ran
 setup.ran <- exists('looks')
@@ -10,6 +15,7 @@ rm(setup.ran)
 
 # Source necessary functions
 source('./src/functions/do_counts.R')
+source('./src/functions/stage.R')
 
 ################################################################################
 # Read in littermates from Saiz et al (2016) Nature Communications 
@@ -68,6 +74,9 @@ ncoms.counts <- ncoms.lms %>%
 # Calculate the % of ICM that each ICM lineage represents
 # (the result will be > 100% for TE cells, but it's irrelevant)
 ncoms.counts$pc.icm <- ncoms.counts$count / ncoms.counts$icm.count * 100
+
+# Force ncoms.counts into a data.frame
+ncoms.counts <- data.frame(ncoms.counts)
 
 # Write out tidy datasets to file
 write.csv(ncoms.lms, file = './data/interim/ncoms-lms-tidy.csv', row.names = F)
@@ -140,8 +149,9 @@ spry.lms$Identity.hc <- factor(spry.lms$Identity.hc,
                                levels = c('TE', 'PRE', 'DP', 'EPI', 'EPI.lo', 
                                           'DN', 'morula'))
 
-# Calculate cell counts for each ICM lineage
+# Calculate cell counts for each ICM lineage in blastocysts only
 spry.counts <- spry.lms %>% 
+  filter(Cellcount > 31) %>% 
   group_by(Experiment, Litter, Embryo_ID, 
            TE_ICM, Exp_date, Img_date, 
            Treatment, Gene1, Gene2, 
@@ -281,4 +291,175 @@ new.lms.counts <- subset(new.lms.counts,
                            !Embryo_ID %in% unique(ablat.lms.counts$Embryo_ID) & 
                            Gene1 != 'Fgf4')
 
+################################################################################
+## Read in FGF4 lineage counts data from *Kang et al.*, (Development) 2014
+## and those acquired in this study
+################################################################################
+
+# Load table with embryo data from a series of studies:
+# * Kang et al., (2013) *Development*
+# * Artus et al., (2010) *Development*
+# * Artus et al., (2011) *Developmental Biology*
+f4.counts <- read.csv('./data/raw/mining-lms-counts.csv')
+# Extract data for Fgf4 embryos only, from Kang et al, (2013)
+f4.counts <- subset(f4.counts, Gene == 'FGF4')
+# Rename variables and add missing ones
+f4.counts <- rename(f4.counts, Gene1 = Gene, 
+                    Genotype1 = Genotype, 
+                    count = Count)
+f4.counts$Gene1 <- 'Fgf4'
+f4.counts$Gene2 <- 'any'
+f4.counts$Genotype2 <- 'wt'
+f4.counts$Litter <- 'unknown'
+f4.counts$Background <- "CD1/mixed"
+# Create Experiment variable from Litter, to match other datasets
+f4.counts$Experiment <- f4.counts$Litter
+
+# Calculate number of ICM cells as the difference of Cellcount - TE
+# Extract number of TE cells
+f4.icm <- f4.counts %>% filter(TE_ICM == 'TE') %>% 
+  group_by(Embryo_ID, count, Cellcount) %>% 
+  summarize()
+# Substract from total and reduce dataset to icm count to merge with main table
+f4.icm$icm.count <- f4.icm$Cellcount - f4.icm$count
+f4.icm <- f4.icm %>% group_by(Embryo_ID, icm.count) %>% 
+  summarize()
+f4.counts <- merge(f4.counts, f4.icm)
+# Calculate the % of ICM that each lineage represents
+f4.counts$pc.icm <- f4.counts$count / f4.counts$icm.count * 100
+
+## Combine with Fgf4 littermates acquired in this study
+f4.counts <- rbind.fill(f4.counts, f4.lms.counts)
+
+# Drop markers variable, which isn't informative
+f4.counts$Markers <- NULL
+
+################################################################################
+## Combine all counts datasets 
+################################################################################
+
+# Rename Identity variables to Identity in Nat Comms and Spry4 datasets
+ncoms.counts <- rename(ncoms.counts, Identity = Identity.km)
+spry.counts <- rename(spry.counts, Identity = Identity.hc)
+
+# Make a list with desired datasets
+allcounts.list <- list(ncoms.counts, spry.counts, 
+                       ablat.lms.counts, new.lms.counts, 
+                       fvb.counts, #compos.counts, 
+                       f4.counts #, fgfr.counts, 
+                       #gata4.counts, gata6.counts
+                       )
+
+# Re-stage embryos
+for(e in 1:length(allcounts.list)) { 
+  allcounts.list[[e]] <- stage(allcounts.list[[e]])
+}
+
+# Exclude possible mosaic embryos and morulas 
+# and slim down the data frame by dropping unnecessary variables
+droppers <- c('Markers', 'Treatment', 'Exp_date', 
+              'Img_date', 'Litter',  'pc.icm')
+
+for(e in 1:length(allcounts.list)) {
+  allcounts.list[[e]] <- filter(allcounts.list[[e]], 
+                                Genotype1 != 'mosaic', 
+                                Genotype2 != 'mosaic', 
+                                Cellcount > 29)
+  allcounts.list[[e]][which(colnames(allcounts.list[[e]]) %in% 
+                              droppers)] <- NULL
+}
+rm(droppers)
+
+# Add up EPI and EPI.lo cells in each dataset
+# and re-calculate the % of ICM each compartment represents (including all.EPI)
+for(e in 1:length(allcounts.list)) {
+  # Split TE and ICM cells
+  te <- subset(allcounts.list[[e]], TE_ICM == 'TE')
+  icm <- subset(allcounts.list[[e]], TE_ICM == 'ICM')
+  
+  # Cast data frame to wide format
+  te <- dcast(te, Experiment + Embryo_ID + Cellcount + 
+                TE_ICM + Stage + 
+                icm.count + litter.median +
+                Genotype1 + Genotype2 + 
+                Gene1 + Gene2 + 
+                Background ~ Identity, 
+              value.var = 'count')
+  te[which(colnames(te) == 'NA')] <- NULL
+  
+  icm <- dcast(icm, Experiment + Embryo_ID + Cellcount + 
+                 TE_ICM + Stage + 
+                 icm.count + litter.median + 
+                 Genotype1 + Genotype2 + 
+                 Gene1 + Gene2 + 
+                 Background ~ Identity, 
+               value.var = 'count')
+  icm[which(colnames(icm) == 'NA')] <- NULL
+  
+  # Turn NAs into zeroes
+  icm[is.na(icm)] <- 0
+  icm$all.EPI <- 0
+  # Add the missing DN variable to Gata6 dataset, if present
+  # and fill with zeroes
+  if(e == 10) {
+    icm$DN <- 0
+  }
+  
+  # In Nat Comms dataset, where there is no EPI.lo category
+  # split embryos into late and early and 
+  # add EPI and DN cells as all.EPI in late embryos only
+  if(e == 1) { 
+    # Split into early and late blastocysts
+    early <- subset(icm, Cellcount < 100)
+    late <- subset(icm, Cellcount >= 100)
+    # Add EPI and DN cell numbers in late embryos only
+    early$all.EPI <- early$EPI
+    late$all.EPI <- late$EPI + late$DN
+    # Combine early and late embryos again
+    icm <- rbind(early, late)
+    }
+  
+  # For the rest of datasets, add EPI and EPI.lo cell numbers 
+  else {
+    icm$all.EPI <- icm$EPI + icm$EPI.lo
+  }
+  
+  # Split data frame into embryos with both EPI and PrE
+  # and embryos that are missing either lineage
+  conepi <- subset(icm, all.EPI > 0 & PRE > 0)
+  sinepi <- subset(icm, all.EPI == 0 | PRE == 0)
+  # Calculate the PrE:EPI ratio in embryos with both EPI & PrE
+  conepi$prepi.ratio <- conepi$PRE / conepi$all.EPI
+  icm <- rbind.fill(conepi, sinepi)
+  
+  # Melt data frame back to long format
+  te <- melt(te, id.vars = colnames(te)[
+    which(!colnames(te) %in%
+            c('TE'))],
+    variable.name = 'Identity',
+    value.name = 'count')
+
+  icm <- melt(icm, id.vars = colnames(icm)[
+    which(!colnames(icm) %in%
+            c('PRE', 'DP', 'EPI', 'EPI.lo',
+              'DN', 'all.EPI', 'morula'))],
+    variable.name = 'Identity',
+    value.name = 'count')
+  # Rbind TE and ICM again
+  allcounts.list[[e]] <- rbind.fill(te, icm)
+
+  # Calculate the percentage of the ICM that each lineage represents
+  allcounts.list[[e]]$pc.icm <-
+    allcounts.list[[e]]$count / allcounts.list[[e]]$icm.count * 100
+
+  # Order Genotypes & Identity
+  allcounts.list[[e]]$Genotype1 <- factor(allcounts.list[[e]]$Genotype1,
+                                          levels = c('wt', 'het', 'ko'))
+  allcounts.list[[e]]$Genotype2 <- factor(allcounts.list[[e]]$Genotype2,
+                                          levels = c('wt', 'het', 'mKate/+',
+                                                     'ko', 'mKate/mKate'))
+  allcounts.list[[e]]$Identity <- factor(allcounts.list[[e]]$Identity,
+                                         levels = c('TE', 'PRE', 'DP', 'EPI',
+                                                    'EPI.lo', 'all.EPI', 'DN'))
+}
 
