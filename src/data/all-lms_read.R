@@ -345,8 +345,8 @@ spry.counts <- rename(spry.counts, Identity = Identity.hc)
 # Make a list with desired datasets
 allcounts.list <- list(ncoms.counts, spry.counts, 
                        ablat.lms.counts, new.lms.counts, 
-                       fvb.counts, #compos.counts, 
-                       f4.counts #, fgfr.counts, 
+                       fvb.counts, f4.counts #,
+                       #compos.counts, fgfr.counts, 
                        #gata4.counts, gata6.counts
                        )
 
