@@ -172,7 +172,7 @@ rm(m.spy, t.spy)
 spry.counts$pc.icm <- spry.counts$count / spry.counts$icm.count * 100
 
 # Write counts file out to ./data/processed
-write.csv(spry.counts, file = './data/processed/spry-lms-counts.csv', 
+write.csv(spry.counts, file = './data/processed/spry4-lms-counts.csv', 
           row.names = F)
 
 
