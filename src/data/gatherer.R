@@ -1,6 +1,7 @@
-# This script reads in Littermates data from the studies by
-# Saiz *et al* (2016) in *Nature Communications* and by
-# Morgani *et al* (2018) in *Developmental Biology*
+# This script reads in data from the studies by
+# * Saiz *et al* (2016) in *Nature Communications* and by
+# * Morgani *et al* (2018) in *Developmental Biology*
+# and writes out Littermates data as files to ./data/raw
 
 # Check if setup.R has been ran
 setup.ran <- exists('looks')
