@@ -13,6 +13,9 @@ if (setup.ran == F) {
 }
 rm(setup.ran)
 
+# Set seed for reproducibility
+set.seed(21)
+
 # Check if data is already loaded and read it in if not
 data.exsts <- exists('g6.chimeras')
 if(data.exsts == F) { 
@@ -155,7 +158,7 @@ icm.spread(gg)
 
 # Define a vector of identities - this should run on the provided dataset 
 # but may need to be changed, if new data is added. 
-id.vector <- c('EPI', 'PRE', 'DP', 'DN')
+id.vector <- c('PRE', 'EPI', 'DP')
 
 # Run mkay() to perform k-means and classify cells according to id.vector
 g6.chimeras <- mkay(dataset = g6.chimeras, miniset = gg, 
@@ -213,8 +216,8 @@ for(i in 1:2) {
 idxclust <- list(data.frame(id.cluster = 1:ks[1], 
                             Identity.hc = c('EPI', 'EPI.lo', 'PRE', 'EPI')), 
                  data.frame(id.cluster = 1:ks[2], 
-                            Identity.hc = c('DP', 'EPI', 'PRE', 'PRE', 
-                                            'EPI.lo')))
+                            Identity.hc = c('EPI', 'DP', 'EPI.lo', 
+                                            'PRE', 'DN')))
 
 # Merge identities with icm dataset
 for(e in 1:length(icm)) { 
