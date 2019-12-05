@@ -92,6 +92,11 @@ if(exists('spry.lms') == F) {
   spry.lms <- read.csv('./data/raw/spry4-lms-raw.csv')
 }
 
+# If raw table has not been generated, source gatherer.R
+if(exists('spry.lms') == F) { 
+  source('./src/data/gatherer.R')
+}
+
 # Rename Spry4:H2B-Venus/H2B-Venus (homozygous, 'homo') to 'ko'
 # for consistency with other datasets (it is a knockin knockout)
 spry.lms$Genotype1[which(spry.lms$Genotype1 == 'homo')] <- 'ko'
