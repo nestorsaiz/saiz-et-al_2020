@@ -9,7 +9,7 @@ library('ggplot2')
 library('colorspace')
 
 ## Create vector to define cell lineage identity colors
-idcols <- c('EPI' = '#e5331a', 'EPI.DN' = '#e5331a', 'EPI.lo' = '#ff6666',  
+idcols <- c('EPI' = '#e5331a', 'all.EPI' = '#e5331a', 'EPI.lo' = '#ff6666',  
             'PRE' = '#1a33e5', 'DP' = '#993399', 'DN' = '#acacac', 
             'TE' = '#a1d99b', 'ICM' = '#993399', 'morula' = '#ce1256', 
             'ESC' = '#ccff33', 'out' = '#339933', 'in' = '#993399')
