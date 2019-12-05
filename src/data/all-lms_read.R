@@ -202,6 +202,11 @@ write.csv(spry.counts, file = './data/processed/spry4-lms-counts.csv',
 # Read in processed new litttermates data
 new.lms <- read.csv('./data/processed/new-lms-processed.csv')
 
+# If data doesn't exist, generate it
+if(exists('new.lms') == F) {
+  source('./src/new-lms_runall.R')
+}
+
 # Remove some unnecessary variables
 new.lms[which(colnames(new.lms) %in% 
                     c('MINS_correct', 'CH1.Sum', 'CH2.Sum', 'CH3.Sum', 
@@ -229,6 +234,11 @@ new.lms.counts$Identity <- factor(new.lms.counts$Identity,
 # Read in processed ablations littermates data, some of which
 # are contained within new.lms
 ablat.lms <- read.csv('./data/processed/ablat-lms-processed.csv')
+
+# If table is not present, generate it from scratch
+if(exists('ablat.lms') == F) {
+  source('./src/ablat_runall.R')
+}
 
 # Rename group.median as litter.median, 
 # since the only group here are littermates
