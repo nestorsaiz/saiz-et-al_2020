@@ -217,3 +217,8 @@ write.csv(g6.lincounts, file = './data/processed/emb-xim-counts.csv',
           row.names = F)
 write.csv(g6.lintype, file = './data/processed/emb-xim-typecounts.csv', 
           row.names = F)
+
+# Overrite processed data file, incorporating the data added here
+write.csv(g6.chimeras, file = './data/processed/emb-xim-processed.csv', 
+          row.names = F)
+
