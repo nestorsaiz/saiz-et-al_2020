@@ -20,6 +20,14 @@ if (exists('esc.chimeras') ==  F) {
   source('./src/esc-xim_runall.R')
 }
 
+# Order Identity levels for plotting
+esc.chimeras$Identity.hc <- factor(esc.chimeras$Identity.hc, 
+                                   levels = c('TE', 'PRE', 'DP', 
+                                              'EPI', 'EPI.lo', 'DN', 'ESC'))
+esc.xim.lincounts$Identity.hc <- factor(esc.xim.lincounts$Identity.hc, 
+                                        levels = c('TE', 'PRE', 'DP', 
+                                                   'EPI', 'EPI.lo', 'DN', 'ESC'))
+
 ################################################################################
 # Generate table with embryo counts for reference
 ################################################################################
@@ -123,11 +131,6 @@ fig.3d <- fig.3d + labs(x = '#ESCs at 48h (as xEPI)',
 # ICM composition per embryo. Each bar is the ICM of one embryo, 
 # arrangedby increasing absolute number of ESCs
 ################################################################################
-
-# Order Identity levels for plotting
-esc.chimeras$Identity.hc <- factor(esc.chimeras$Identity.hc, 
-                                   levels = c('TE', 'PRE', 'DP', 
-                                              'EPI', 'EPI.lo', 'DN', 'ESC'))
 
 # Extract the absolute number of ESCs per embryo from counts table
 esc.counts <- select(esc.xim.lincounts2, Embryo_ID, ESC, esc.end)
