@@ -215,7 +215,7 @@ fig.s4h <- fig.s4h + geom_bar(position = 'fill')
 fig.s4h <- fig.s4h + looks + scale_fill_manual(values = idcols)
 fig.s4h <- fig.s4h + facet_wrap( ~ ESC_line) 
 fig.s4h <- fig.s4h + labs(y = '% of ICM', title = 'Figure S4h')
-fig.s4h <- fig.s4h + theme(aspect.ratio = 9/4, 
+fig.s4h <- fig.s4h + theme(aspect.ratio = 9/4.5, 
                            axis.text.x = element_text(angle = 30, hjust = 1))
 # Uncomment print() below to visualize plot
 # print(fig.s4h)

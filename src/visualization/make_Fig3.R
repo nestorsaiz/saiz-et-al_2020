@@ -60,23 +60,26 @@ write.csv(fig.3N, file = './results/fig3_N-numbers.csv', row.names = F)
 
 ################################################################################
 # Figure 3c
-# TOtal number of ICM cells in series of chimeras (host-derived + ESCs)
+# Total number of ICM cells in series of chimeras (host-derived + ESCs)
 ################################################################################
 
+# Define data to plot
+my.data <- esc.xim.lincounts %>%
+  filter(!Litter %in% small.odd, 
+         Genotype1 == 'wt', 
+         ES_culture == 'S/LIF', 
+         Stage.t0 == '8cell', 
+         ESC_line %in% c('CAG:H2B-GFP', 
+                         'H2B-tdTomato', 
+                         'no.esc'), 
+         Exp_date > 20170101) %>% 
+  group_by(Embryo_ID, Treatment, 
+           esc.end, icm.count, 
+           ESC_line) %>%
+  summarize()
+
 # Generate plot
-fig.3c <- ggplot(data = esc.xim.lincounts %>%
-                   filter(!Litter %in% small.odd, 
-                          Genotype1 == 'wt', 
-                          ES_culture == 'S/LIF', 
-                          Stage.t0 == '8cell', 
-                          ESC_line %in% c('CAG:H2B-GFP', 
-                                          'H2B-tdTomato', 
-                                          'no.esc'), 
-                          Exp_date > 20170101) %>% 
-                   group_by(Embryo_ID, Treatment, 
-                            esc.end, icm.count, 
-                            ESC_line) %>%
-                   summarize(), 
+fig.3c <- ggplot(data = my.data, 
                  aes(x = esc.end, y = icm.count))
 fig.3c <- fig.3c + geom_boxplot(color = 'black',
                                 outlier.shape = 1, outlier.size = 2) +
@@ -90,26 +93,29 @@ fig.3c <- fig.3c + labs(x = '#ESCs at 48h (as xEPI)',
                         y = 'Total ICM cells at 48h', 
                         title = 'Figure 3c') 
 # Uncomment print() below to visualize plot
-# print(fig.3c)
+print(fig.3c)
 
 ################################################################################
 # Figure 3d
 # Number of host-derived ICM cells only 
 ################################################################################
 
+# Define data to plot
+my.data <- esc.xim.lincounts %>%
+  filter(!Litter %in% small.odd, 
+         Genotype1 == 'wt', 
+         ES_culture == 'S/LIF',
+         Stage.t0 == '8cell', 
+         ESC_line %in% c('CAG:H2B-GFP', 
+                         'H2B-tdTomato', 
+                         'no.esc')) %>% 
+  group_by(Embryo_ID, Treatment, 
+           esc.end, host.icm, 
+           ES_culture, ESC_line) %>%
+  summarize()
+  
 # Generate plot
-fig.3d <- ggplot(data = esc.xim.lincounts %>%
-                   filter(!Litter %in% small.odd, 
-                          Genotype1 == 'wt', 
-                          ES_culture == 'S/LIF',
-                          Stage.t0 == '8cell', 
-                          ESC_line %in% c('CAG:H2B-GFP', 
-                                          'H2B-tdTomato', 
-                                          'no.esc')) %>% 
-                   group_by(Embryo_ID, Treatment, 
-                            esc.end, host.icm, 
-                            ES_culture, ESC_line) %>%
-                   summarize(), 
+fig.3d <- ggplot(data = my.data, 
                  aes(x = esc.end, y = host.icm))
 fig.3d <- fig.3d + geom_boxplot(color = 'black',
                                 outlier.shape = 1, outlier.size = 2) +
