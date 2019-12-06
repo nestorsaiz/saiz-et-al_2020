@@ -1,0 +1,17 @@
+"Treatment","ESC_line","ES_culture","ESC_genotype","esc.end","N"
+"Chimera","CAG:H2B-GFP","S/LIF","wt","0",3
+"Chimera","CAG:H2B-GFP","S/LIF","wt","0.5x",7
+"Chimera","CAG:H2B-GFP","S/LIF","wt","1x",4
+"Chimera","CAG:H2B-GFP","S/LIF","wt","2x",12
+"Chimera","CAG:H2B-GFP","S/LIF","wt","4x",10
+"Chimera","CAG:H2B-GFP","S/LIF","wt","8x",2
+"Chimera","F105_GFP","S/LIF","ko","0.5x",2
+"Chimera","F105_GFP","S/LIF","ko","2x",1
+"Chimera","H2B-tdTomato","S/LIF","wt","0",2
+"Chimera","H2B-tdTomato","S/LIF","wt","0.5x",1
+"Chimera","H2B-tdTomato","S/LIF","wt","1x",5
+"Chimera","H2B-tdTomato","S/LIF","wt","2x",9
+"Chimera","H2B-tdTomato","S/LIF","wt","4x",13
+"Chimera","H2B-tdTomato","S/LIF","wt","8x",2
+"Control","CAG:H2B-GFP","S/LIF","no.esc","0",13
+"Control","H2B-tdTomato","S/LIF","no.esc","0",8
