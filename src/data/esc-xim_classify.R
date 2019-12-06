@@ -128,14 +128,16 @@ for(i in 1:3) {
   icm.spread(minilist[[i]])
   if(i == 2) {
     list.chimeras[[i]] <- mkay(dataset = list.chimeras[[i]],
-                               miniset = minilist[[i]], k = ks[i],
-                               ids = id.vectors[[i]], x.var = 'CH2.ebLogCor',
+                               miniset = minilist[[i]], k = ks[i], 
+                               TI.var = 'Identity', ids = id.vectors[[i]], 
+                               x.var = 'CH2.ebLogCor',
                                y.var = 'CH3.ebLogCor')
   }
   else {
     list.chimeras[[i]] <- mkay(dataset = list.chimeras[[i]],
                                miniset = minilist[[i]], k = ks[i], DP = T,
-                               ids = id.vectors[[i]], x.var = 'CH5.ebLogCor.x',
+                               TI.var = 'Identity', ids = id.vectors[[i]], 
+                               x.var = 'CH5.ebLogCor.x',
                                y.var = 'CH3.ebLogCor.x')
   }
   # Order factor levels
