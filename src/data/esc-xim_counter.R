@@ -130,12 +130,13 @@ rm(hostcells)
 ################################################################################
 esc.xim.lincounts2 <- esc.xim.lincounts %>% 
   filter(Identity.hc %in% c('PRE', 'ESC', 'EPI')) %>% 
-  group_by(Exp_date, Embryo_ID, Litter, Genotype1, Stage.t0, 
-           ESC_line, ESC_genotype, ES_culture, D_cells, 
+  group_by(Exp_date, Embryo_ID, Litter, Genotype1, Cellcount, 
+           Stage.t0, ESC_line, ESC_genotype, ES_culture, D_cells, 
            Treatment, icm.count, Identity.hc, count) %>% 
   summarize() 
 esc.xim.lincounts2 <- dcast(esc.xim.lincounts2, Exp_date + 
-                              Embryo_ID + Litter + Genotype1 + Stage.t0 + 
+                              Embryo_ID + Litter + Genotype1 + 
+                              Stage.t0 + Cellcount + 
                               Treatment + ES_culture + 
                               ESC_line + ESC_genotype + 
                               icm.count + D_cells ~ Identity.hc, 
