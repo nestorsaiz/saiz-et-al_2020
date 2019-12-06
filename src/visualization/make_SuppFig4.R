@@ -94,6 +94,9 @@ fig.s4a <- fig.s4a + labs(x = 'Initial number of ESCs',
 # Same data as in Figure 3e but binned and averaged by group
 ################################################################################
 
+# Extract the absolute number of ESCs per embryo from counts table
+esc.counts <- select(esc.xim.lincounts2, Embryo_ID, ESC, esc.end)
+
 # Define data to plot
 my.data <- merge(esc.chimeras, esc.counts) %>% 
   filter(TE_ICM == 'ICM', 
@@ -206,16 +209,16 @@ my.data <- esc.chimeras %>%
          ES_culture == 'S/LIF')
 
 # Generate plot
-fig.s4g <- ggplot(data = my.data, 
+fig.s4h <- ggplot(data = my.data, 
                   aes(x = Treatment, fill = Identity.hc))
-fig.s4g <- fig.s4g + geom_bar(position = 'fill')
-fig.s4g <- fig.s4g + looks + scale_fill_manual(values = idcols)
-fig.s4g <- fig.s4g + facet_wrap( ~ ESC_line) 
-fig.s4g <- fig.s4g + labs(y = '% of ICM', title = 'Figure S4h')
-fig.s4g <- fig.s4g + theme(aspect.ratio = 9/4, 
+fig.s4h <- fig.s4h + geom_bar(position = 'fill')
+fig.s4h <- fig.s4h + looks + scale_fill_manual(values = idcols)
+fig.s4h <- fig.s4h + facet_wrap( ~ ESC_line) 
+fig.s4h <- fig.s4h + labs(y = '% of ICM', title = 'Figure S4h')
+fig.s4h <- fig.s4h + theme(aspect.ratio = 9/4, 
                            axis.text.x = element_text(angle = 30, hjust = 1))
 # Uncomment print() below to visualize plot
-# print(fig.s4g)
+# print(fig.s4h)
 
 ################################################################################
 # Generate PDF
