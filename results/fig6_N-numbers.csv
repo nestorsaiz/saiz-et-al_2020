@@ -1,4 +1,6 @@
 "Treatment","ESC_line","ES_culture","ESC_genotype","esc.end","N"
+"Control","CAG:H2B-GFP","S/LIF","no.esc","0",13
+"Control","H2B-tdTomato","S/LIF","no.esc","0",8
 "Chimera","CAG:H2B-GFP","S/LIF","wt","0",3
 "Chimera","CAG:H2B-GFP","S/LIF","wt","0.5x",7
 "Chimera","CAG:H2B-GFP","S/LIF","wt","1x",4
@@ -13,5 +15,3 @@
 "Chimera","H2B-tdTomato","S/LIF","wt","2x",9
 "Chimera","H2B-tdTomato","S/LIF","wt","4x",13
 "Chimera","H2B-tdTomato","S/LIF","wt","8x",2
-"Control","CAG:H2B-GFP","S/LIF","no.esc","0",13
-"Control","H2B-tdTomato","S/LIF","no.esc","0",8
