@@ -350,5 +350,15 @@ fig.s8h <- fig.s8h + theme(aspect.ratio = 1,
 # Generate PDF
 ################################################################################
 
+pdf(file = './figures/figS8all_NS.pdf', width = 11, paper = 'a4r')
+print(fig.s8a)
+print(fig.s8b)
+print(fig.s8c)
+print(fig.s8d)
+print(fig.s8e)
+print(fig.s8f)
+print(fig.s8h)
+dev.off()
 
 
+##
