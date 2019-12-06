@@ -100,14 +100,14 @@ fig.6c <- fig.6c + geom_jitter(color = idcols['PRE'],
                                shape = 20, width = 0.2, 
                                show.legend = F)
 fig.6c <- fig.6c + looks + facet_wrap( ~ ES_culture, nrow = 1)
-fig.6c <- fig.6c + theme(aspect.ratio = 9/6, 
+fig.6c <- fig.6c + theme(aspect.ratio = 9/7, 
                          axis.text.x = element_text(angle = 30, hjust = 1))
 fig.6c <- fig.6c + scale_color_manual(values = escols)
 fig.6c <- fig.6c + labs(x = 'Final #ESCs (as xEPI)', 
                         y = 'Final number of PrE cells', 
                         title = 'Figure 6c')
 # Uncomment print() below to visualize plot
-print(fig.6c)
+# print(fig.6c)
 
 ################################################################################
 # Figure 6d
@@ -150,7 +150,16 @@ fig.6d <- fig.6d + annotate('text', y = 0.05,
                                             unique(my.data$Embryo_ID))), 
                                           sep = ' '))
 # Uncomment print() below to visualize plot
+# print(fig.6d)
+
+################################################################################
+# Generate PDF
+################################################################################
+
+pdf(file = './figures/fig6all_NS.pdf', width = 11, paper = 'a4r')
+print(fig.6c)
 print(fig.6d)
+dev.off()
 
 
 
