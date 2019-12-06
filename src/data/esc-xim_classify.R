@@ -38,6 +38,9 @@ library('Ckmeans.1d.dp')
 # Read in unicos table previously generated
 unicos <- read.csv('./references/esc-xim_unicos.csv')
 
+# Set seed for reproducibility
+set.seed(21)
+
 # Data is represented x5, for the 5 channels. Slim down to one
 # and drop embryos of unknown genotype
 esc.chimeras <- subset(esc.chimeras, Channel == 'CH2' & 
@@ -274,7 +277,19 @@ for(x in 1:length(list.chimeras)) {
                           method = 'average')
   }
   # plot(my.clusters)
+  # Cut tree at the indicated number of clusters
   icm$id.cluster <- cutree(my.clusters, ks[x])
+  
+  ## Scatter plots to visualize the outcomes
+  ## Uncomment to plot
+  my.plot <- qplot(my.x,  my.y,
+                   data = icm, color = id.cluster) +
+    looks + scale_color_gradient2(low = 'black', mid = 'green',
+                                  high = 'yellow',
+                                  midpoint = (ks[x]+1)/2) +
+    facet_wrap(Stage ~ Treatment, nrow = 3) +
+    theme(aspect.ratio = 1)
+  print(my.plot)
   
   ## Split ESC from ICM cells again
   esc <- subset(list.chimeras[[x]], Identity == 'ESC')
@@ -288,17 +303,6 @@ for(x in 1:length(list.chimeras)) {
   # Make and print table comparing Hc clusters and Km clusters
   my.table <- table(icm$id.cluster, icm$Identity.km)
   print(my.table)
-  
-  ## Scatter plots to visualize the outcomes
-  ## Uncomment to plot
-  # my.plot <- qplot(my.x,  my.y,
-  #                  data = icm, color = id.cluster) +
-  #   looks + scale_color_gradient2(low = 'black', mid = 'green',
-  #                                 high = 'yellow',
-  #                                 midpoint = (ks[x]+1)/2) +
-  #   facet_wrap(Stage ~ Treatment, nrow = 3) +
-  #   theme(aspect.ratio = 1)
-  # print(my.plot)
   
   ## Combine all three populations again into each element of the list
   list.chimeras[[x]] <- rbind(te, esc, icm)
@@ -314,7 +318,7 @@ idxclust <- list(data.frame(id.cluster = c(0, 1:ks[1], 8),
                             Identity.hc = c('TE', 'PRE', 'EPI', 'DP', 
                                             'EPI', 'PRE', 'ESC')), 
                  data.frame(id.cluster = c(0, 1:ks[4], 8), 
-                            Identity.hc = c('TE', 'PRE', 'EPI', 'ESC')))
+                            Identity.hc = c('TE', 'EPI', 'PRE', 'ESC')))
 
 ## Combine identities and clusters for each element of list.chimeras
 for(x in 1:length(list.chimeras)) { 
