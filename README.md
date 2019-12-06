@@ -31,5 +31,5 @@ The repository tries to follow a standard structure, mostly based on the [Cookie
       - ```*_classify.R``` classify cells in ```*_tx.csv``` data tables into populations as necessary. Generate ```*-processed.csv``` files stored in ```./data/processed```.
       - ```*_counter.R``` count number of cells in each lineage in ```*-processed.csv``` data tables and writes them to ```./data/processed```. 
    * /functions - scripts defining functions used throughout analysis.
-   * / models - scripts that fit models to transform some of the data.
-
+   * /models - scripts that fit models to transform some of the data.
+   * /visualization - scripts to generate the plots in the figures of the paper. Outputs are stored in ```./figures```.
