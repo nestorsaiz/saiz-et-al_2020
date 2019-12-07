@@ -33,7 +33,7 @@ ablat.t0$timepoint <- 't0'
 ablat.t0$TE_ICM <- ifelse(ablat.t0$Identity %in% c('EPI', 'PRE', 'DP'), 'ICM', 
                           ifelse(is.na(ablat.t0$Identity), 'unknown', 'TE'))
 
-##Order identity levels
+# Order identity levels
 ablat.t0$Identity <- factor(ablat.t0$Identity, 
                             levels = c('PRE', 'DP', 'EPI', 'TE', 'unknown'))
 
