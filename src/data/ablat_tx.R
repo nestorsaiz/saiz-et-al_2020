@@ -223,5 +223,6 @@ write.csv(ablat.lms, file = './data/interim/ablat-lms-tx.csv', row.names = F)
 
 # Write all fixed embryos as an interim file and t0 embryos too
 write.csv(ablat, file = './data/interim/ablat-fixedall-tx.csv', row.names = F)
-write.csv(ablat.t0, file = './data/processed/ablat-t0-processed',row.names = F)
+write.csv(ablat.t0, file = './data/processed/ablat-t0-processed.csv', 
+          row.names = F)
 
