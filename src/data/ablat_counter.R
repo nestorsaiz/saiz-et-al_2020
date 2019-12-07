@@ -13,7 +13,7 @@ rm(setup.ran)
 data.exsts <- exists('ablat')
 if(data.exsts == F) { 
   ablat <- read.csv('./data/processed/ablat-processed.csv')
-  ablat.t0 <- read.csv('./data/processed/ablat-t0-processed')
+  ablat.t0 <- read.csv('./data/processed/ablat-t0-processed.csv')
   ablat.ref <- rbind(read.csv('./references/ablat_exp_ref.csv'))
 }
 rm(data.exsts)
@@ -22,7 +22,7 @@ rm(data.exsts)
 data.exsts <- exists('ablat')
 if(data.exsts == F) { 
   source('./src/data/ablat_classify.R')
-  ablat.t0 <- read.csv('./data/processed/ablat-t0-processed')
+  ablat.t0 <- read.csv('./data/processed/ablat-t0-processed.csv')
   ablat.ref <- rbind(read.csv('./references/ablat_exp_ref.csv'))
 }
 rm(data.exsts)
