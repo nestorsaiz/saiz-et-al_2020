@@ -173,3 +173,11 @@ write.csv(ablat.lincounts, './data/processed/ablat-counts.csv', row.names = F)
 write.csv(ablat.t0.counts, './data/processed/ablat-t0-counts.csv', 
           row.names = F)
 
+# Write out live.lincounts and fixed.lincounts  to ./data/interim folder
+# for plotting later
+write.csv(live.lincounts, './data/interim/live-lincounts.csv', row.names = F)
+write.csv(fixed.lincounts, './data/interim/fixed-lincounts.csv', 
+          row.names = F)
+
+
+##
