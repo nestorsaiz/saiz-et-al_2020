@@ -1,4 +1,4 @@
-# This script generates the plots contained in Figure 1 of the paper
+# This script generates the plots in Figure 1 of the paper
 
 # Check if setup.R has been ran
 setup.ran <- exists('looks')

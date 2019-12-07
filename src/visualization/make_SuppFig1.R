@@ -1,4 +1,4 @@
-# This script generates the plots contained in Supplementary Figure 1
+# This script generates the plots in Supplementary Figure 1
 
 # Check if setup.R has been ran
 setup.ran <- exists('looks')
