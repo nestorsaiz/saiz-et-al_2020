@@ -20,3 +20,7 @@ source('./src/data/movies_tx.R')
 
 # Run classify script to assign identity to ICM cells
 source('./src/data/movies_classify.R')
+
+# Run counter to generate tables with cell numbers 
+# that will be used for plotting (does not write tables to disk)
+source('./src/data/movies_counter.R')
