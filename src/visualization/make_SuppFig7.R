@@ -142,7 +142,7 @@ panel.d <- panel.d + facet_wrap( ~ interaction(TrackID, identity_t0.th) +
                                    cell_treatment)
 panel.d <- panel.d + looks + 
   scale_color_manual(values = idcols) + 
-  labs(title = paste(my.pre[i]), y = 'log(PdgfraH2B-GFP)') + 
+  labs(title = paste('Figure S7d', my.pre[i]), y = 'log(PdgfraH2B-GFP)') + 
   theme(aspect.ratio = 0.75, 
         # strip.text.x = element_text(size = 8))
         strip.text.x = element_blank())
@@ -181,7 +181,7 @@ panel.e <- panel.e + facet_wrap( ~ interaction(TrackID, identity_t0.th) +
                                    cell_treatment)
 panel.e <- panel.e + looks + 
   scale_color_manual(values = idcols) + 
-  labs(title = paste(my.epi[i]), y = 'log(PdgfraH2B-GFP)') + 
+  labs(title = paste('Figure S7e', my.epi[i]), y = 'log(PdgfraH2B-GFP)') + 
   theme(aspect.ratio = 0.75, 
         # strip.text.x = element_text(size = 8))
         strip.text.x = element_blank())
