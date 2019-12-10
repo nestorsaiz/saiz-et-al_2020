@@ -11,6 +11,11 @@ rm(setup.ran)
 # Load necessary data
 if(exists('movies') == F) {
   movies <- read.csv('./data/processed/movies-all-processed.csv')
+  endings <- read.csv('./references/movies-endings.csv')
+}
+
+if(exists('endings') == F) {
+  source('./src/data/movies_classify.R')
 }
 
 ################################################################################
