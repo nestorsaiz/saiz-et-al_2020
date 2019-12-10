@@ -365,3 +365,6 @@ movies$target <- factor(movies$target, levels = c('none', 'PRE', 'EPI'))
 # Write processed data to file
 write.csv(movies, file = './data/processed/movies-all-processed.csv', 
           row.names = F)
+write.csv(endings, file = './references/movies-endings.csv', row.names = F)
+
+##
