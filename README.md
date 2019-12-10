@@ -1,4 +1,4 @@
-# Saiz *et al* (2020) 
+# Saiz *et al*. (2020) 
 
 This repository contains the data and code associated with the article by Saiz *et al.*, *Coupling between lineage size and cell fate specification underlies developmental robustness* soon to be deposited in [bioRXiv](https://www.biorxiv.org).
 
