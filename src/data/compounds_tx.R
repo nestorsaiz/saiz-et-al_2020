@@ -115,17 +115,19 @@ rm(ebLogCor)
 # NANOG.rb and GATA6.gt equivalents and re-scale to 0-1
 ################################################################################
 
-# List experiments that were stained for NANOG.rat and GATA6.rb
-# (in this dataset they either have NANOG.rb and GATA6.gt or 
-# NANOG.rat and GATA6.rb)
-ng.rat <- unicos$Experiment[which(unicos$CH2 == 'NANOG.rat')]
+# Create a vector with unique combinations of antibodies and stainings
+# and a list with the corresponding experiments stained that way
+stains <- unique(paste(unicos$CH2, unicos$CH3, unicos$CH5))
+exps <- list()
+for(s in 1:length(stains)) { 
+  exps[[s]] <- unique(unicos$Experiment[which(paste(unicos$CH2, 
+                                                    unicos$CH3, 
+                                                    unicos$CH5) == stains[s])])
+}
 
 # Use tx.channel function to transform NANOG(rat) into NANOG(rb)-equivalents
-compos <- tx.channel(compos, what.subset = ng.rat, what.model = ng.model, 
+compos <- tx.channel(compos, what.subset = exps[[1]], what.model = ng.model, 
                       input.ch = 'CH2', end.ch = 'CH3')
-# Use tx.channel function to transform GATA6(rb) into GATA6(gt)-equivalents
-compos <- tx.channel(compos, what.subset = ng.rat, what.model = gata.model, 
-                      input.ch = 'CH3', end.ch = 'CH5')
 
 # Re-scale fluorescence values to 0-1 scale
 
@@ -145,16 +147,6 @@ s.cols <- data.frame(s.cols)
 # and incorporate into main data frame
 compos <- cbind(compos, s.cols)
 rm(s.cols)
-
-# Create a vector with unique combinations of antibodies and stainings
-# and a list with the corresponding experiments stained that way
-stains <- unique(paste(unicos$CH2, unicos$CH3, unicos$CH5))
-exps <- list()
-for(s in 1:length(stains)) { 
-  exps[[s]] <- unique(unicos$Experiment[which(paste(unicos$CH2, 
-                                                    unicos$CH3, 
-                                                    unicos$CH5) == stains[s])])
-}
 
 # Cycle through the list of experiments and make the values of each channel 
 # relative to the maxima in that group - thus maintaining the relative levels
