@@ -8,9 +8,12 @@ if (setup.ran == F) {
 }
 rm(setup.ran)
 
-# Load necessary data
+# Load necessary data if not loaded yet
 if(exists('movies') == F) {
   movies <- read.csv('./data/processed/movies-all-processed.csv')
+}
+
+if(exists('endings') == F) {
   endings <- read.csv('./references/movies-endings.csv')
 }
 
