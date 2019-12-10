@@ -1,0 +1,15 @@
+"Gene1","Genotype1","Gene2","Genotype2","N"
+"Gata6","wt","Gata4","wt",9
+"Gata6","wt","Gata4","het",9
+"Gata6","wt","Gata4","ko",2
+"Gata6","wt","Gata4","mosaic",5
+"Gata6","wt","Nanog","wt",13
+"Gata6","wt","Nanog","het",20
+"Gata6","het","Gata4","wt",16
+"Gata6","het","Gata4","het",26
+"Gata6","het","Gata4","ko",4
+"Gata6","het","Gata4","mosaic",1
+"Gata6","het","Nanog","wt",13
+"Gata6","het","Nanog","het",14
+"Gata6","mosaic","Gata4","wt",2
+"Gata6","mosaic","Gata4","het",2
