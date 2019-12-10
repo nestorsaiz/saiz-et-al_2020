@@ -218,7 +218,6 @@ ablat.a$Identity.hc <- factor(ablat.a$Identity.hc,
                                          'EPI.lo', 'DN'))
 
 # Uncomment below to see the outcome
-## Visualize the result
 # qplot(CH5.ebLogCor,  CH3.ebLogCor.x,
 #       data = subset(ablat.a, TE_ICM == 'ICM'), color = Identity.hc) +
 #   looks + scale_color_manual(values = idcols) +
