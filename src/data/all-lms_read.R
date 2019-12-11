@@ -428,6 +428,35 @@ gata6.counts <- rename(gata6.counts, Identity = Identity.man)
 gata4.counts <- rename(gata4.counts, Identity = Identity.man)
 
 ################################################################################
+# Read in lineage counts for the Fgfr1;2 allelic series
+# from Kang et al., (2017) Developmental Cell
+################################################################################
+
+# Read in lineage counts for littermates (embryos fixed upon collection)
+fgfr.lms.counts <- read.csv('./data/mined-data/fr1r2-lms-counts.csv')
+
+# Re-name Gene and Genotype to match rest of datasets
+fgfr.lms.counts$Gene1 <- 'Fgfr1'
+fgfr.lms.counts$Gene2 <- 'Fgfr2'
+fgfr.lms.counts$Gene <- NULL
+fgfr.lms.counts$Genotype1 <- ifelse(fgfr.lms.counts$Genotype %in% 
+                                  c(1, 4, 7), 'wt', 
+                                ifelse(fgfr.lms.counts$Genotype %in% 
+                                         c(2, 5, 8), 'het', 'ko'))
+fgfr.lms.counts$Genotype1 <- factor(fgfr.lms.counts$Genotype1, 
+                                levels = c('wt', 'het', 'ko'))
+fgfr.lms.counts$Genotype2 <- ifelse(fgfr.lms.counts$Genotype %in% 
+                                  c(1, 2, 3), 'wt', 
+                                ifelse(fgfr.lms.counts$Genotype %in% 
+                                         c(4, 5, 6), 'het', 'ko'))
+fgfr.lms.counts$Genotype2 <- factor(fgfr.lms.counts$Genotype2, 
+                                levels = c('wt', 'het', 'ko'))
+fgfr.lms.counts$Genotype <- NULL
+fgfr.lms.counts$Background <- "CD1/mixed"
+
+fgfr.lms.counts$Identity <- fgfr.lms.counts$Identity.km
+
+################################################################################
 ## Combine all counts datasets 
 ################################################################################
 
@@ -438,10 +467,9 @@ spry.counts <- rename(spry.counts, Identity = Identity.hc)
 # Make a list with desired datasets
 allcounts.list <- list(ncoms.counts, spry.counts, 
                        ablat.lms.counts, new.lms.counts, 
-                       fvb.counts, f4.counts #,
-                       #compos.counts, fgfr.counts, 
-                       #gata4.counts, gata6.counts
-                       )
+                       fvb.counts, f4.counts,
+                       compos.counts, fgfr.lms.counts, 
+                       gata4.counts, gata6.counts)
 
 # Re-stage embryos
 for(e in 1:length(allcounts.list)) { 
