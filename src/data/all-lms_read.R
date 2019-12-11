@@ -159,10 +159,11 @@ spry.counts <- spry.lms %>%
   filter(Cellcount > 31) %>% 
   group_by(Experiment, Litter, Embryo_ID, 
            TE_ICM, Exp_date, Img_date, 
+           Stage, Background, 
            Treatment, Gene1, Gene2, 
            Genotype1, Genotype2, 
-           Cellcount, Stage, Background, 
-           litter.median, Identity.hc, icm.count) %>% 
+           Cellcount,icm.count, 
+           litter.median, Identity.hc) %>% 
   summarize(count = n())
 
 # Account for zeroes
@@ -187,12 +188,12 @@ m.spy <- melt(m.spy, id.vars = c('Exp_date', 'Img_date', 'Experiment', 'Litter',
 spry.counts <- rbind.fill(m.spy, t.spy)
 rm(m.spy, t.spy)
 
-## Calculate the % of the ICM that each ICM lineage represents
+# Calculate the % of the ICM that each ICM lineage represents
 # (the result will be > 100% for TE cells, but it's irrelevant)
 spry.counts$pc.icm <- spry.counts$count / spry.counts$icm.count * 100
 
 # Write counts file out to ./data/processed
-write.csv(spry.counts, file = './data/processed/spry4-lms-counts.csv', 
+write.csv(spry.counts, file = './data/processed/spry4-lms-counts-Hc.csv', 
           row.names = F)
 
 ################################################################################
@@ -332,6 +333,7 @@ new.lms.counts <- subset(new.lms.counts,
 # * Artus et al., (2010) *Development*
 # * Artus et al., (2011) *Developmental Biology*
 f4.counts <- read.csv('./data/mined-data/mining-lms-counts.csv')
+
 # Extract data for Fgf4 embryos only, from Kang et al, (2013)
 f4.counts <- subset(f4.counts, Gene == 'FGF4')
 # Rename variables and add missing ones
@@ -359,8 +361,12 @@ f4.counts <- merge(f4.counts, f4.icm)
 # Calculate the % of ICM that each lineage represents
 f4.counts$pc.icm <- f4.counts$count / f4.counts$icm.count * 100
 
-## Combine with Fgf4 littermates acquired in this study
+# Combine with Fgf4 littermates acquired in this study
 f4.counts <- rbind.fill(f4.counts, f4.lms.counts)
+
+# Order identity levels
+f4.counts$Identity <- factor(f4.counts$Identity, 
+                             levels = levels(new.lms.counts$Identity))
 
 # Drop markers variable, which isn't informative
 f4.counts$Markers <- NULL
@@ -382,7 +388,7 @@ compos[which(colnames(compos) %in%
                c('MINS_correct', 'CH1.Sum', 'CH2.Sum', 'CH3.Sum', 
                  'CH4.Sum', 'CH5.Sum'))] <- NULL
 
-
+# Order factor levels
 compos$Identity.km <- factor(compos$Identity.km, 
                              levels = c('TE', 'PRE', 'DP', 'EPI', 
                                         'EPI.lo', 'DN'))
@@ -416,16 +422,28 @@ compos.counts$Identity.hc <- factor(compos.counts$Identity.hc,
 gata6.counts <- read.csv('./data/interim/gata6-counts-tidy.csv')
 
 # If not present, generate from scratch
-if(exists(gata6.data) == F) {
+if(exists('gata6.counts') == F) {
   source('./src/data/gata6_doall.R')
 }
+
+# Experiment variable is missing. Duplicate Embryo_ID as a dummy experiment var
+gata6.counts$Experiment <- gata6.counts$Embryo_ID
 
 # Read in Gata4 embryos lineage counts
 gata4.counts <- read.csv('./data/mined-data/gata4-lms-counts.csv')
 
+# Extract only littermates from the Gata4 dataset
+gata4.counts <- subset(gata4.counts, Treatment == 'Littermate')
+
 # Rename variables
 gata6.counts <- rename(gata6.counts, Identity = Identity.man)
 gata4.counts <- rename(gata4.counts, Identity = Identity.man)
+
+# Order factor levels
+gata6.counts$Identity <- factor(gata6.counts$Identity, 
+                                levels = levels(ncoms.counts$Identity.km))
+gata4.counts$Identity <- factor(gata4.counts$Identity, 
+                                levels = levels(ncoms.counts$Identity.km))
 
 ################################################################################
 # Read in lineage counts for the Fgfr1;2 allelic series
@@ -456,13 +474,19 @@ fgfr.lms.counts$Background <- "CD1/mixed"
 
 fgfr.lms.counts$Identity <- fgfr.lms.counts$Identity.km
 
+# Order Identity levels
+fgfr.lms.counts$Identity <- factor(fgfr.lms.counts$Identity, 
+                                   levels = levels(ncoms.counts$Identity.km))
+
 ################################################################################
 ## Combine all counts datasets 
 ################################################################################
 
-# Rename Identity variables to Identity in Nat Comms and Spry4 datasets
+# Rename Identity variables to Identity in Nat Comms, Spry4 
+# and compounds datasets
 ncoms.counts <- rename(ncoms.counts, Identity = Identity.km)
 spry.counts <- rename(spry.counts, Identity = Identity.hc)
+compos.counts <- rename(compos.counts, Identity = Identity.hc)
 
 # Make a list with desired datasets
 allcounts.list <- list(ncoms.counts, spry.counts, 
@@ -491,6 +515,12 @@ for(e in 1:length(allcounts.list)) {
 }
 rm(droppers)
 
+# Index list elements with 'EPI.lo' in the identity variable
+nuevas <- rep(0, times = length(allcounts.list))
+for(i in 1:length(allcounts.list)) {
+  nuevas[i] <- 'EPI.lo' %in% unique(allcounts.list[[i]]$Identity)
+}
+
 # Add up EPI and EPI.lo cells in each dataset
 # and re-calculate the % of ICM each compartment represents (including all.EPI)
 for(e in 1:length(allcounts.list)) {
@@ -500,8 +530,7 @@ for(e in 1:length(allcounts.list)) {
   
   # Cast data frame to wide format
   te <- dcast(te, Experiment + Embryo_ID + Cellcount + 
-                TE_ICM + Stage + 
-                icm.count + litter.median +
+                TE_ICM + Stage + icm.count +
                 Genotype1 + Genotype2 + 
                 Gene1 + Gene2 + 
                 Background ~ Identity, 
@@ -509,8 +538,7 @@ for(e in 1:length(allcounts.list)) {
   te[which(colnames(te) == 'NA')] <- NULL
   
   icm <- dcast(icm, Experiment + Embryo_ID + Cellcount + 
-                 TE_ICM + Stage + 
-                 icm.count + litter.median + 
+                 TE_ICM + Stage + icm.count + 
                  Genotype1 + Genotype2 + 
                  Gene1 + Gene2 + 
                  Background ~ Identity, 
@@ -519,17 +547,25 @@ for(e in 1:length(allcounts.list)) {
   
   # Turn NAs into zeroes
   icm[is.na(icm)] <- 0
-  icm$all.EPI <- 0
-  # Add the missing DN variable to Gata6 dataset, if present
-  # and fill with zeroes
-  if(e == 10) {
-    icm$DN <- 0
+  
+  # Add an empty DN column for Gata6 dataset
+  if(e == length(allcounts.list)) { 
+    icm$DN <- rep(0, times = length(icm$Embryo_ID))
   }
   
-  # In Nat Comms dataset, where there is no EPI.lo category
+  # Create empty all.EPI variable in all
+  icm$all.EPI <- rep(0, times = length(icm$Embryo_ID))
+  
+  # Embryos with EPI.lo in Identity, 
+  # add EPI and EPI.lo cell numbers as all.EPI
+  if(nuevas[e] == 1) { 
+    icm$all.EPI <- icm$EPI + icm$EPI.lo
+    }
+  
+  # In datasets, where there is no EPI.lo category
   # split embryos into late and early and 
   # add EPI and DN cells as all.EPI in late embryos only
-  if(e == 1) { 
+  else {
     # Split into early and late blastocysts
     early <- subset(icm, Cellcount < 100)
     late <- subset(icm, Cellcount >= 100)
@@ -538,11 +574,6 @@ for(e in 1:length(allcounts.list)) {
     late$all.EPI <- late$EPI + late$DN
     # Combine early and late embryos again
     icm <- rbind(early, late)
-    }
-  
-  # For the rest of datasets, add EPI and EPI.lo cell numbers 
-  else {
-    icm$all.EPI <- icm$EPI + icm$EPI.lo
   }
   
   # Split data frame into embryos with both EPI and PrE
@@ -563,7 +594,7 @@ for(e in 1:length(allcounts.list)) {
   icm <- melt(icm, id.vars = colnames(icm)[
     which(!colnames(icm) %in%
             c('PRE', 'DP', 'EPI', 'EPI.lo',
-              'DN', 'all.EPI', 'morula'))],
+              'DN', 'all.EPI'))],
     variable.name = 'Identity',
     value.name = 'count')
   # Rbind TE and ICM again
