@@ -30,7 +30,7 @@ rm(data.exsts)
 # using Identity as determined using Hierarchical Clustering (Identity.hc)
 ################################################################################
 
-comp.lincounts <- compos %>% 
+compos.counts <- compos %>% 
   group_by(Experiment, Litter, 
            Embryo_ID, TE_ICM, 
            Cellcount, Stage, 
@@ -44,8 +44,8 @@ comp.lincounts <- compos %>%
 
 # Account for zeroes in mutants (or elsewhere)
 ## Split ICM from TE cells
-m.comp <- subset(comp.lincounts, TE_ICM == 'ICM')
-t.comp <- subset(comp.lincounts, TE_ICM != 'ICM')
+m.comp <- subset(compos.counts, TE_ICM == 'ICM')
+t.comp <- subset(compos.counts, TE_ICM != 'ICM')
 ## Cast ICM cells to wide format
 m.comp <- dcast(m.comp, Experiment + Exp_date + Img_date + Litter + Embryo_ID + 
                   Cellcount + TE_ICM + Stage + Treatment + Background + 
@@ -62,15 +62,15 @@ m.comp <- melt(m.comp, id.vars = c('Experiment', 'Litter', 'Embryo_ID',
                                    'icm.count', 'litter.median'), 
                variable.name = 'Identity.hc', value.name = 'count')
 ## Combine TE and ICM cells again
-comp.lincounts <- rbind.fill(m.comp, t.comp)
+compos.counts <- rbind.fill(m.comp, t.comp)
 rm(m.comp, t.comp)
 
 # Calculate the percentage of the ICM each lineage represents
-comp.lincounts$pc.icm <- comp.lincounts$count / comp.lincounts$icm.count * 100
+compos.counts$pc.icm <- compos.counts$count / compos.counts$icm.count * 100
 
 ################################################################################
 # Write out counts to file
-write.csv(comp.lincounts, file = './data/processed/compounds-counts.csv', 
+write.csv(compos.counts, file = './data/processed/compounds-counts.csv', 
           row.names = F)
 
 
