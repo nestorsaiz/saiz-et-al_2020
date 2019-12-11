@@ -191,10 +191,10 @@ compos$Identity.hc <- factor(compos$Identity.hc,
                                          'EPI.lo', 'DN'))
 
 # Uncomment below to see the outcome
-qplot(CH5.ebLogCor,  CH3.ebLogCor.x,
-      data = subset(compos, TE_ICM == 'ICM'), color = Identity.hc) +
-  looks + scale_color_manual(values = idcols) +
-  facet_grid(Treatment ~ Stage) + theme(aspect.ratio = 1)
+# qplot(CH5.ebLogCor,  CH3.ebLogCor.x,
+#       data = subset(compos, TE_ICM == 'ICM'), color = Identity.hc) +
+#   looks + scale_color_manual(values = idcols) +
+#   facet_wrap( ~ Litter + Genotype1 + Genotype2) + theme(aspect.ratio = 1)
 
 ################################################################################
 # Write out data to the ./data/processed folder
