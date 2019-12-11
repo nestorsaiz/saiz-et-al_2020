@@ -30,13 +30,12 @@ my.data <- list(rbind.fill(subset(new.lms, TE_ICM == 'ICM' &
                            subset(ablat.lms, TE_ICM == 'ICM' & 
                                     Genotype1 == 'wt' & 
                                     Cellcount > 30 & 
-                                    Cellcount < 161) #, 
-                           # subset(compos, TE_ICM == 'ICM' & 
-                           #          Genotype1 == 'wt' & 
-                           #          Genotype2 == 'wt' & 
-                           #          Cellcount > 30 & 
-                           #          Cellcount < 161)
-                           ), 
+                                    Cellcount < 161), 
+                           subset(compos, TE_ICM == 'ICM' &
+                                    Genotype1 == 'wt' &
+                                    Genotype2 == 'wt' &
+                                    Cellcount > 30 &
+                                    Cellcount < 161)), 
                 subset(spry.lms, TE_ICM == 'ICM' & 
                          Genotype1 %in% c('wt', 'het') & 
                          Genotype2 == 'wt' & 
@@ -149,12 +148,14 @@ dev.off()
 my.axistitle <- list(family = 'Helvetica', size = 18, color = 'black')
 my.ticks <- list(family = 'Helvetica', size = 14, color = 'black')
 
+# Make a new data frame with data to plot
+my.data <- list(subset(new.lms, TE_ICM == 'ICM'), 
+                subset(ablat.lms, TE_ICM == 'ICM'))
+my.data <- do.call(rbind.fill, my.data)
+
 # Generate plots
 ## NANOG vs GATA6 vs SOX17
-s17.plot <- plot_ly(rbind.fill(subset(new.lms, TE_ICM == 'ICM' & 
-                                        Experiment %in% s17), 
-                               subset(ablat.lms, TE_ICM == 'ICM' & 
-                                        Experiment %in% s17)), 
+s17.plot <- plot_ly(subset(my.data, Experiment %in% s17), 
                     y = ~CH3.ebLogCor.xs, z = ~CH5.ebLogCor.s, 
                     x = ~CH5.ebLogCor.xs, color = ~Identity.hc, 
                     colors = idcols, 
@@ -176,10 +177,7 @@ s17.plot <- plot_ly(rbind.fill(subset(new.lms, TE_ICM == 'ICM' &
 print(s17.plot)
 
 ## NANOG vs GATA6 vs GATA4
-g4.plot <- plot_ly(rbind.fill(subset(new.lms, TE_ICM == 'ICM' & 
-                                       Experiment %in% g4), 
-                              subset(ablat.lms, TE_ICM == 'ICM' & 
-                                       Experiment %in% g4)), 
+g4.plot <- plot_ly(subset(my.data, Experiment %in% g4), 
                    y = ~CH3.ebLogCor.xs, z = ~CH3.ebLogCor.s, 
                    x = ~CH5.ebLogCor.xs, color = ~Identity.hc, 
                    colors = idcols, 
