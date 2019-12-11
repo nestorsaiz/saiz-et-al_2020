@@ -124,6 +124,11 @@ spry.lms <- rename(spry.lms, CH1.Avg = hoechst.Avg,
 spry.lms$Channel <- 'CH2'
 spry.lms$Background <- 'CD1/mixed'
 
+# Redo total and ICM counts and litter median to resolve a strange error
+spry.lms[which(colnames(spry.lms) %in% 
+                 c('Cellcount', 'icm.count', 'litter.median'))] <- NULL
+spry.lms <- do.counts(spry.lms, sep.treatment = F)
+
 # Order factor levels
 spry.lms$Identity.km <- factor(spry.lms$Identity.km, 
                                levels = c('TE', 'PRE', 'DP', 'EPI', 'DN', 
@@ -324,8 +329,8 @@ new.lms.counts <- subset(new.lms.counts,
                            Gene1 != 'Fgf4')
 
 ################################################################################
-## Read in FGF4 lineage counts data from *Kang et al.*, (Development) 2014
-## and those acquired in this study
+# Read in FGF4 lineage counts data from *Kang et al.*, (Development) 2014
+# and those acquired in this study
 ################################################################################
 
 # Load table with embryo data from a series of studies:
@@ -479,7 +484,7 @@ fgfr.lms.counts$Identity <- factor(fgfr.lms.counts$Identity,
                                    levels = levels(ncoms.counts$Identity.km))
 
 ################################################################################
-## Combine all counts datasets 
+# Combine all counts datasets 
 ################################################################################
 
 # Rename Identity variables to Identity in Nat Comms, Spry4 
