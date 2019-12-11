@@ -116,9 +116,9 @@ gata6.counts$pc.icm <- gata6.counts$count / gata6.counts$icm.count * 100
 # Write data out to file
 ################################################################################
 
-write.csv(gata6.data, file = './data/processed/gata6-processed.csv', 
+write.csv(gata6.data, file = './data/interim/gata6-tidy.csv', 
           row.names = F)
-write.csv(gata6.counts, file = './data/processed/gata6-counts.csv', 
+write.csv(gata6.counts, file = './data/interim/gata6-counts-tidy.csv', 
           row.names = F)
 
 
