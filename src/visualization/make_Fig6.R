@@ -1,4 +1,4 @@
-# This script generates the plots in Figure 5 of the paper
+# This script generates the plots in Figure 6 of the paper
 
 # Check if setup.R has been ran
 setup.ran <- exists('looks')
@@ -52,7 +52,7 @@ movies$identity_t0.th <- factor(movies$identity_t0.th,
 movies$target <- factor(movies$target, levels = c('none', 'PRE', 'EPI'))
 
 ################################################################################
-# Figure 5a
+# Figure 6a
 # Relative ICM composition of reference fixed embryos 
 # at sequential stages of development, at which cell ablation was performed
 ################################################################################
@@ -62,10 +62,10 @@ my.data <- ablat %>% filter(Treatment == 'Littermate',
                             TE_ICM == 'ICM')
 
 # Generate table with N numbers for data in this panel
-fig.5a.N <- my.data %>% group_by(Embryo_ID, Stage.t0) %>% summarize() %>%
+fig.6a.N <- my.data %>% group_by(Embryo_ID, Stage.t0) %>% summarize() %>%
   group_by(Stage.t0) %>% summarize(N = n())
 # And write out to disk
-write.csv(fig.5a.N, file = './results/fig5a_N-numbers.csv', row.names = F)
+write.csv(fig.6a.N, file = './results/fig6a_N-numbers.csv', row.names = F)
 
 # Generate plot
 panel.a <- ggplot(data = my.data, 
@@ -76,12 +76,12 @@ panel.a <- panel.a + theme(aspect.ratio = 9/5,
                              axis.text.x = element_text(angle = 45, 
                                                         hjust = 1))
 panel.a <- panel.a + labs(x = 'Stage', y = '% of ICM',
-                          title = 'Figure 5a')
+                          title = 'Figure 6a')
 # Uncomment print() below to visualize plot
 # print(panel.a)
 
 ################################################################################
-# Figure 5c
+# Figure 6c
 # PrE:EPI log(ratio) over developmental time, for each % of ablated PrE cells.
 # Best fitting lines (linear model) for each group overlaid in the same color
 # Gray box spans the log(1.2)-log(1.5) region (corresponding to composition 
@@ -154,14 +154,14 @@ panel.c <- panel.c +
   looks + 
   scale_color_manual(values = brewer.pal(9, 'Blues')[c(3, 5, 7, 9)]) + 
   theme(aspect.ratio = 1) + 
-  labs(title = 'Figure 5c - PrE ablation', y = 'log(PrE:EPI ratio)', 
+  labs(title = 'Figure 6c - PrE ablation', y = 'log(PrE:EPI ratio)', 
        x = 'Median cell count of litter at start') + 
   ylim(-3, 3)
 # Uncomment print() below to visualize plot
 # print(panel.c)
 
 ################################################################################
-# Figure 5d
+# Figure 6d
 # Same as above, for EPI ablations
 ################################################################################
 
@@ -198,14 +198,14 @@ panel.d <- panel.d +
   looks + 
   scale_color_manual(values = brewer.pal(9, 'Reds')[c(3, 6, 9)]) +
   theme(aspect.ratio = 1) + 
-  labs(title = 'Figure 5d - EPI ablation', y = 'log(PrE:EPI ratio)', 
+  labs(title = 'Figure 6d - EPI ablation', y = 'log(PrE:EPI ratio)', 
        x = 'Median cell count of litter at start') + 
   ylim(-3, 3)
 # Uncomment print() below to visualize plot
 # print(panel.d)
 
 ################################################################################
-# Figure 5g
+# Figure 6g
 # Pdgfra:H2B-GFP levels of intact DP cells over time 
 # for different experimental groups targeted at the 70-90 cell stage
 ################################################################################
@@ -252,7 +252,7 @@ panel.g <- panel.g +
   looks + 
   theme(aspect.ratio = 0.75, 
         strip.text.x = element_text(size = 6)) + 
-  labs(title = paste('Figure 5g -', 
+  labs(title = paste('Figure 6g -', 
                      'Ablation at', 
                      stages[s], 
                      'cells', sep = ' '))
@@ -260,7 +260,7 @@ panel.g <- panel.g +
 # print(panel.g)
 
 ################################################################################
-# Figure 5h
+# Figure 6h
 # Stacked bar plot showing the end fate of intact cells
 # that were DP at the beginning of the experiment
 ################################################################################
@@ -282,13 +282,13 @@ panel.h <- panel.h +
         axis.text.x = element_text(angle = 30, hjust = 1)) + 
   facet_grid(Stage.t0 ~ target + Cell_diff, 
              scales = 'free') + 
-  labs(title = 'Figure 5h', y = 'DP cells end fate (%)', 
+  labs(title = 'Figure 6h', y = 'DP cells end fate (%)', 
        x = 'Individual embryos (as in Fig. S7a-c)')
 # Uncomment print() below to visualize plot
 # print(panel.h)
 
 ################################################################################
-# Figure 5i
+# Figure 6i
 # Box plot of PrE:EPI log(ratio) at the end of the movie
 # in mKate/mKate or mKate/+ embryos targeted at the 70-90 cell stage 
 # In mKate/mKate often I was able to follow all/most ICM cells
@@ -357,7 +357,7 @@ panel.i <- panel.i +
 # Generate PDF
 ################################################################################
 
-pdf(file = './figures/fig5all_NS.pdf', width = 11, paper = 'a4r')
+pdf(file = './figures/fig6all_NS.pdf', width = 11, paper = 'a4r')
 print(panel.a)
 print(panel.c)
 print(panel.d)

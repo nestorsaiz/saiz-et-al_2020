@@ -1,4 +1,4 @@
-# This script generates the plots contained in Figure 6 of the paper
+# This script generates the plots contained in Figure 7 of the paper
 
 # Check if setup.R has been ran
 setup.ran <- exists('looks')
@@ -66,10 +66,10 @@ fig.6N <- fig.6_nums %>%
   summarize(N = n())
 
 # Write it out to file
-write.csv(fig.6N, file = './results/fig6_N-numbers.csv', row.names = F)
+write.csv(fig.6N, file = './results/fig7_N-numbers.csv', row.names = F)
 
 ################################################################################
-# Figure 6c
+# Figure 7c
 # Box plots showing the number of PrE cells for each group in the chimeric
 # series compared to the number of PrE cells in wild type controls
 ################################################################################
@@ -105,12 +105,12 @@ fig.6c <- fig.6c + theme(aspect.ratio = 9/7,
 fig.6c <- fig.6c + scale_color_manual(values = escols)
 fig.6c <- fig.6c + labs(x = 'Final #ESCs (as xEPI)', 
                         y = 'Final number of PrE cells', 
-                        title = 'Figure 6c')
+                        title = 'Figure 7c')
 # Uncomment print() below to visualize plot
 # print(fig.6c)
 
 ################################################################################
-# Figure 6d
+# Figure 7d
 # ICM composition per embryo. Each bar is the ICM of one embryo, 
 # arrangedby increasing absolute number of ESCs
 ################################################################################
@@ -139,7 +139,7 @@ fig.6d <- fig.6d + geom_bar(position = 'fill')
 fig.6d <- fig.6d + geom_hline(yintercept = 0.4, linetype = 'dashed')
 fig.6d <- fig.6d + looks + scale_fill_manual(values = idcols)
 # fig.6d <- fig.6d + facet_wrap( ~ ESC_line, scales = 'free', nrow = 1)
-fig.6d <- fig.6d + labs(title = 'Figure 6d', y = '% of ICM', 
+fig.6d <- fig.6d + labs(title = 'Figure 7d', y = '% of ICM', 
                         x = 'Embryo (by final number of ESCs at 48h)')
 fig.6d <- fig.6d + theme(aspect.ratio = 0.5, 
                          axis.text.x = element_text(angle = 30, hjust = 1))
@@ -156,7 +156,7 @@ fig.6d <- fig.6d + annotate('text', y = 0.05,
 # Generate PDF
 ################################################################################
 
-pdf(file = './figures/fig6all_NS.pdf', width = 11, paper = 'a4r')
+pdf(file = './figures/fig7all_NS.pdf', width = 11, paper = 'a4r')
 print(fig.6c)
 print(fig.6d)
 dev.off()

@@ -1,4 +1,4 @@
-# This script generates the plots in Figure 4 of the paper
+# This script generates the plots in Figure 5 of the paper
 
 # Check if setup.R has been ran
 setup.ran <- exists('looks')
@@ -45,7 +45,7 @@ endings <- endings %>% group_by(Cell_ID, identity_t0, ending) %>%
   select(Cell_ID, identity_t0, ending)
 
 ################################################################################
-# Figure 4f
+# Figure 5f
 # Survival of intact vs targeted cells, as total number of cells over time 
 ################################################################################
 
@@ -98,12 +98,12 @@ panel.f <- panel.f + scale_x_continuous(breaks = seq(0, 15, by = 1))
 panel.f <- panel.f + looks + theme(aspect.ratio = 0.5)
 panel.f <- panel.f + labs(y = 'Survival (% cells)', 
                       color = 'Embryo & treatment', 
-                      title = 'Figure 4f', x = 'Time (hours)')
+                      title = 'Figure 5f', x = 'Time (hours)')
 # Uncomment print() below to generate plot
 # print(panel.f)
 
 ################################################################################
-# Figure 4g
+# Figure 5g
 # Survival of example subset of cells surrounding a targeted cell
 # Plot Y coordinates over time, offset by initial X position
 ################################################################################
@@ -173,7 +173,7 @@ panel.g <- panel.g + looks +
   scale_color_manual(values = c('intact' = 'darkgreen',
                                 'targeted' = 'gray60')) + 
   theme(aspect.ratio = 1/2) + 
-  labs(title = 'Figure 4g', color = 'Cell type', 
+  labs(title = 'Figure 5g', color = 'Cell type', 
        y = 'Y coordinate', x = 'Time (hours)') +
   scale_x_continuous(breaks = seq(15, 85, by = 5)) + 
   scale_y_continuous(breaks = seq(2, 14, by = 2))
@@ -184,7 +184,7 @@ panel.g <- panel.g + looks +
 # Generate PDF
 ################################################################################
 
-pdf(file = './figures/fig4all_NS.pdf', width = 11, paper = 'a4r')
+pdf(file = './figures/fig5all_NS.pdf', width = 11, paper = 'a4r')
 print(panel.f)
 print(panel.g)
 dev.off()
