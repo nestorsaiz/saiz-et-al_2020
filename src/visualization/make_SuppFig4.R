@@ -74,17 +74,17 @@ fig.s4a <- ggplot(data = my.data,
 fig.s4a <- fig.s4a + geom_boxplot(color = 'black',
                                   outlier.shape = 1, outlier.size = 2) +
   stat_summary(fun.y = mean, colour = "black", geom = "point", 
-               shape = 4, size = 3, show.legend = F)
-fig.s4a <- fig.s4a + geom_jitter(color = 'black', 
-                                 shape = 20, width = 0.2, 
-                                 show.legend = F)
-fig.s4a <- fig.s4a + looks # + facet_wrap( ~ ESC_line, scales = 'free_x')
-# fig.s4a <- fig.s4a + looks + facet_wrap( ~ ES_culture, scales = 'free_x')
-fig.s4a <- fig.s4a + theme(aspect.ratio = 9/5)
-fig.s4a <- fig.s4a + scale_color_manual(values = escols)
-fig.s4a <- fig.s4a + labs(x = 'Initial number of ESCs', 
-                          y = 'Final number of ESCs', 
-                          title = 'Figure S4a')
+               shape = 4, size = 3, show.legend = F) + 
+  geom_jitter(color = 'black', shape = 20, 
+              width = 0.2, show.legend = F)
+fig.s4a <- fig.s4a + looks + 
+  # facet_wrap( ~ ESC_line, scales = 'free_x') +
+  # facet_wrap( ~ ES_culture, scales = 'free_x') + 
+  theme(aspect.ratio = 9/5) + 
+  scale_color_manual(values = escols) + 
+  labs(x = 'Initial number of ESCs', 
+       y = 'Final number of ESCs', 
+       title = 'Figure S4a')
 # Uncomment print() below to visualize plot
 # print(fig.s4a)
 
@@ -109,12 +109,13 @@ my.data <- merge(esc.chimeras, esc.counts) %>%
 # Generate plot
 fig.s4c <- ggplot(data = my.data, 
                  aes(x = esc.end, fill = Identity.hc))
-fig.s4c <- fig.s4c + geom_bar(position = 'fill')
-fig.s4c <- fig.s4c + geom_hline(yintercept = 0.4, linetype = 'dashed')
-fig.s4c <- fig.s4c + looks + scale_fill_manual(values = idcols)
-fig.s4c <- fig.s4c + labs(y = '% of ICM', x = '#ESCs at 48h (as xEPI)', 
-                        title = 'Figure S4c')
-fig.s4c <- fig.s4c + theme(aspect.ratio = 9/6)
+fig.s4c <- fig.s4c + geom_bar(position = 'fill') + 
+  geom_hline(yintercept = 0.4, linetype = 'dashed')
+fig.s4c <- fig.s4c + looks + 
+  scale_fill_manual(values = idcols) + 
+  labs(y = '% of ICM', x = '#ESCs at 48h (as xEPI)', 
+       title = 'Figure S4c') + 
+  theme(aspect.ratio = 9/6)
 # Uncomment print() below to visualize plot
 # print(fig.s4c)
 
@@ -140,15 +141,16 @@ my.data <- esc.xim.lincounts %>%
 fig.s4d <- ggplot(data = my.data, 
                   aes(x = esc.end, y = meancount, 
                       fill = Identity.hc))
-fig.s4d <- fig.s4d + geom_bar(stat = 'identity')
-fig.s4d <- fig.s4d + geom_text(aes(label = N), check_overlap = T,
-                               vjust = 1, y = 5, size = 8)
-fig.s4d <- fig.s4d + looks + scale_fill_manual(values = idcols)
-# fig.s4d <- fig.s4d + facet_wrap( ~ ESC_line)
-fig.s4d <- fig.s4d + labs(y = 'Number of cells', 
-                          x = '#ESCs at 48h (as xEPI)', 
-                          title = 'Figure S4d')
-fig.s4d <- fig.s4d + theme(aspect.ratio = 9/6)
+fig.s4d <- fig.s4d + geom_bar(stat = 'identity') + 
+  geom_text(aes(label = N), check_overlap = T, 
+            vjust = 1, y = 5, size = 8)
+fig.s4d <- fig.s4d + looks + 
+  scale_fill_manual(values = idcols) + 
+  # facet_wrap( ~ ESC_line) + 
+  labs(y = 'Number of cells', 
+       x = '#ESCs at 48h (as xEPI)', 
+       title = 'Figure S4d') + 
+  theme(aspect.ratio = 9/6)
 # Uncomment print() below to visualize plot
 # print(fig.s4d)
 
@@ -171,10 +173,12 @@ my.data <- merge(esc.chimeras, esc.end) %>%
 fig.s4e <- ggplot(data = my.data, 
                   aes(x = esc.end, fill = Identity.hc))
 fig.s4e <- fig.s4e + geom_bar(position = 'fill')
-fig.s4e <- fig.s4e + looks + scale_fill_manual(values = idcols)
-fig.s4e <- fig.s4e + labs(y = '% of ICM', x = '#ESCs at 48h (as xEPI)', 
-                          title = 'Figure S4e')
-fig.s4e <- fig.s4e + theme(aspect.ratio = 9/6)
+fig.s4e <- fig.s4e + looks + 
+  scale_fill_manual(values = idcols) + 
+  labs(y = '% of ICM', 
+       x = '#ESCs at 48h (as xEPI)', 
+       title = 'Figure S4e') + 
+  theme(aspect.ratio = 9/6)
 # Uncomment print() below to visualize plot
 # print(fig.s4e)
 
@@ -212,11 +216,12 @@ my.data <- esc.chimeras %>%
 fig.s4h <- ggplot(data = my.data, 
                   aes(x = Treatment, fill = Identity.hc))
 fig.s4h <- fig.s4h + geom_bar(position = 'fill')
-fig.s4h <- fig.s4h + looks + scale_fill_manual(values = idcols)
-fig.s4h <- fig.s4h + facet_wrap( ~ ESC_line) 
-fig.s4h <- fig.s4h + labs(y = '% of ICM', title = 'Figure S4h')
-fig.s4h <- fig.s4h + theme(aspect.ratio = 9/4.5, 
-                           axis.text.x = element_text(angle = 30, hjust = 1))
+fig.s4h <- fig.s4h + looks + 
+  scale_fill_manual(values = idcols) + 
+  facet_wrap( ~ ESC_line) + 
+  labs(y = '% of ICM', title = 'Figure S4h') + 
+  theme(aspect.ratio = 9/4.5, 
+        axis.text.x = element_text(angle = 30, hjust = 1))
 # Uncomment print() below to visualize plot
 # print(fig.s4h)
 
