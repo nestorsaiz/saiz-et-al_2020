@@ -84,14 +84,16 @@ fig.3c <- ggplot(data = my.data,
 fig.3c <- fig.3c + geom_boxplot(color = 'black',
                                 outlier.shape = 1, outlier.size = 2) +
   stat_summary(fun.y = mean, colour = "black", geom = "point", 
-               shape = 4, size = 3, show.legend = F)
-fig.3c <- fig.3c + geom_jitter(color = 'black', shape = 20, width = 0.2, 
+               shape = 4, size = 3, show.legend = F) + 
+  geom_jitter(color = 'black', shape = 20, width = 0.2, 
                                show.legend = F)
-fig.3c <- fig.3c + looks + theme(aspect.ratio = 9/6) + ylim(0, 100)
-fig.3c <- fig.3c + scale_color_manual(values = escols)
-fig.3c <- fig.3c + labs(x = '#ESCs at 48h (as xEPI)', 
-                        y = 'Total ICM cells at 48h', 
-                        title = 'Figure 3c') 
+fig.3c <- fig.3c + looks + 
+  theme(aspect.ratio = 9/6) + 
+  ylim(0, 100) + 
+  scale_color_manual(values = escols) + 
+  labs(x = '#ESCs at 48h (as xEPI)', 
+       y = 'Total ICM cells at 48h', 
+       title = 'Figure 3c') 
 # Uncomment print() below to visualize plot
 print(fig.3c)
 
@@ -120,15 +122,17 @@ fig.3d <- ggplot(data = my.data,
 fig.3d <- fig.3d + geom_boxplot(color = 'black',
                                 outlier.shape = 1, outlier.size = 2) +
   stat_summary(fun.y = mean, colour = "black", geom = "point", 
-               shape = 4, size = 3, show.legend = F)
-fig.3d <- fig.3d + geom_jitter(color = 'black', shape = 20, width = 0.2, 
-                               show.legend = F)
-fig.3d <- fig.3d + looks + theme(aspect.ratio = 9/6) + ylim(0, 100)
-# fig.3d <- fig.3d + facet_wrap( ~ ES_culture, nrow = 1)
-fig.3d <- fig.3d + scale_color_manual(values = escols)
-fig.3d <- fig.3d + labs(x = '#ESCs at 48h (as xEPI)', 
-                        y = '#host-derived ICM cells at 48h', 
-                        title = 'Figure 3d') 
+               shape = 4, size = 3, show.legend = F) + 
+  geom_jitter(color = 'black', shape = 20, width = 0.2, 
+              show.legend = F)
+fig.3d <- fig.3d + looks + 
+  theme(aspect.ratio = 9/6) + 
+  ylim(0, 100) + 
+  #facet_wrap( ~ ES_culture, nrow = 1) + 
+  scale_color_manual(values = escols) + 
+  labs(x = '#ESCs at 48h (as xEPI)', 
+       y = '#host-derived ICM cells at 48h', 
+       title = 'Figure 3d') 
 # Uncomment print() below to visualize plot
 # print(fig.3d)
 
@@ -154,22 +158,19 @@ my.data <- merge(esc.chimeras, esc.counts) %>%
 fig.3e <- ggplot(data = my.data, 
                   aes(x = reorder(interaction(Embryo_ID, esc.end), ESC), 
                       fill = Identity.hc))
-fig.3e <- fig.3e + geom_bar(position = 'fill')
-fig.3e <- fig.3e + geom_hline(yintercept = 0.4, linetype = 'dashed')
-fig.3e <- fig.3e + looks + scale_fill_manual(values = idcols)
-# fig.3e <- fig.3e + facet_wrap( ~ Treatment + esc.end,
-#                                 scales = 'free', nrow = 1)
-fig.3e <- fig.3e + labs(y = '% of ICM', title = 'Figure 3e', 
-                        x = 'Embryo (by final number of ESCs, after 48h)')
-fig.3e <- fig.3e + theme(aspect.ratio = 0.33, 
-                           axis.text.x = element_text(angle = 30, size = 6, 
-                                                      hjust = 1))
-fig.3e <- fig.3e + annotate('text', y = 0.05, 
-                           x = length(unique(my.data$Embryo_ID)) * 0.975, 
-                           label = paste('N =', 
-                                         print(length(
-                                           unique(my.data$Embryo_ID))), 
-                                         sep = ' '))
+fig.3e <- fig.3e + geom_bar(position = 'fill') + 
+  geom_hline(yintercept = 0.4, linetype = 'dashed')
+fig.3e <- fig.3e + looks + 
+  scale_fill_manual(values = idcols) + 
+  #facet_wrap( ~ Treatment + esc.end, scales = 'free', nrow = 1) + 
+  labs(y = '% of ICM', title = 'Figure 3e', 
+       x = 'Embryo (by final number of ESCs, after 48h)') + 
+  theme(aspect.ratio = 0.33, 
+        axis.text.x = element_text(angle = 30, size = 6, hjust = 1)) + 
+  annotate('text', y = 0.05, 
+           x = length(unique(my.data$Embryo_ID)) * 0.975, 
+           label = paste('N =', print(length(unique(my.data$Embryo_ID))), 
+                         sep = ' '))
 # Uncomment print() below to visualize plot
 # print(fig.3e)
 
@@ -192,16 +193,17 @@ fig.3f <- ggplot(data = my.data,
 fig.3f <- fig.3f + geom_boxplot(color = 'black',
                                 outlier.shape = 1, outlier.size = 2) +
   stat_summary(fun.y = mean, colour = "black", geom = "point", 
-               shape = 4, size = 3, show.legend = F)
-fig.3f <- fig.3f + geom_jitter(color = idcols['PRE'], 
-                               shape = 20, width = 0.2, 
-                               show.legend = F)
-fig.3f <- fig.3f + looks + theme(aspect.ratio = 9/6)
-# fig.3f <- fig.3f + facet_wrap( ~ ES_culture, nrow = 1)
-fig.3f <- fig.3f + scale_color_manual(values = escols)
-fig.3f <- fig.3f + labs(x = '#ESCs at 48h (as xEPI)', 
-                        y = '#PrE cells at 48h', 
-                        title = 'Figure 3f')
+               shape = 4, size = 3, show.legend = F) + 
+  geom_jitter(color = idcols['PRE'], 
+              shape = 20, width = 0.2, 
+              show.legend = F)
+fig.3f <- fig.3f + looks + 
+  theme(aspect.ratio = 9/6) + 
+  # facet_wrap( ~ ES_culture, nrow = 1) + 
+  scale_color_manual(values = escols) + 
+  labs(x = '#ESCs at 48h (as xEPI)', 
+       y = '#PrE cells at 48h', 
+       title = 'Figure 3f')
 # Uncomment print() below to visualize plot
 # print(fig.3f)
 
