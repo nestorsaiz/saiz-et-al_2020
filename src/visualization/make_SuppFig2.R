@@ -55,11 +55,11 @@ g6.bp <- function(dataset, my.filters, y.var, y.label) {
     geom_jitter(data = dataset %>% filter(H_genotype %in% 
                                             my.filters, 
                                           Embryo_size == 'Double'), 
-                color = '#007300', shape = 20, width = 0.2)
+                color = 'purple4', shape = 20, width = 0.2)
   plot.0 <- plot.0 + scale_color_manual(values = cellcols) + looks
   plot.0 <- plot.0 + facet_wrap( ~ cell_type)
   plot.0 <- plot.0 + theme(aspect.ratio = 1)
-  plot.0 <- plot.0 + labs(y = y.label, x = 'Initial % H2B-GFP cells', 
+  plot.0 <- plot.0 + labs(y = y.label, x = 'Initial % GFP+ cells', 
                           title = paste('Genotypes: ', 
                                         my.filters, sep = ''))
   return(plot.0)
@@ -67,12 +67,14 @@ g6.bp <- function(dataset, my.filters, y.var, y.label) {
 
 ################################################################################
 # Supplementary Figure 2b
-# Box plots showing contribution of wt GFP- and wt GFP+ cells to the chimera
+# Box plots showing contribution of wt GFP- and wt GFP+ cells to the TE
 ################################################################################
 
 # Use function to generate plot
-figS2b <- g6.bp(dataset = g6.typecount, my.filters = c('wt', 'CAG:H2B-GFP'), 
-      y.var = 'pc.type', y.label = '% of total')
+figS2b <- g6.bp(dataset = subset(g6.lintype, 
+                                 Identity.hc == 'TE'), 
+                my.filters = c('wt', 'CAG:H2B-GFP'), 
+      y.var = 'pc.lin', y.label = '% of TE')
 # Uncomment below to visualize plot
 # print(figS2b)
 
@@ -88,16 +90,15 @@ figS2c <- g6.bp(dataset = g6.icmtype, my.filters = c('wt', 'CAG:H2B-GFP'),
 # print(figS2c)
 
 ################################################################################
-# Same as Figure 2c, but showing contribution to TE - not shown in paper
+# Same as Figure 2c, but showing contribution to embryo - not shown in paper
 ################################################################################
 
 # Use function to generate plot
 # Can be used to plot number of any other lineage by simply 
 # changing the subsetting condition (Identity.hc)
-figS2x <- g6.bp(dataset = subset(g6.lintype, 
-                                    Identity.hc == 'TE'), 
+figS2x <- g6.bp(dataset = g6.typecount, 
                    my.filters = c('wt', 'CAG:H2B-GFP'), 
-                y.var = 'pc.lin', y.label = '% of TE')
+                y.var = 'pc.type', y.label = '% of total')
 # Uncomment below to visualize plot
 # print(figS2x)
 
@@ -135,7 +136,7 @@ figS2e <- figS2e + scale_color_manual(values = cellcols)
 figS2e <- figS2e + looks + theme(aspect.ratio = 1, 
                                  axis.text.x = element_text(angle = 45, 
                                                             hjust = 1))
-figS2e <- figS2e + labs(x = 'Final % of H2B-GFP ICM cells', 
+figS2e <- figS2e + labs(x = 'Final % of GFP+ ICM cells', 
                         y = '% of lineage', 
                         color = 'Cell type, host genotype', 
                         title = 'Figure S2e')
@@ -158,7 +159,7 @@ figS2f <- figS2f + facet_grid(H_genotype ~ .)
 figS2f <- figS2f + looks + theme(aspect.ratio = 1, 
                                  axis.text.x = element_text(angle = 45, 
                                                             hjust = 1))
-figS2f <- figS2f + labs(x = 'Final % of H2B-GFP ICM cells', 
+figS2f <- figS2f + labs(x = 'Final % of GFP+ ICM cells', 
                         y = '% ICM', 
                         fill = 'Identity', 
                         title = 'Figure S2f')
@@ -167,12 +168,14 @@ figS2f <- figS2f + labs(x = 'Final % of H2B-GFP ICM cells',
 
 ################################################################################
 # Supplementary Figure 2h
-# Box plots showing contribution of Gata6-/- GFP- and wt GFP+ cells to chimera
+# Box plots showing contribution of Gata6-/- GFP- and wt GFP+ cells to TE
 ################################################################################
 
 # Use function to generate plot
-figS2h <- g6.bp(dataset = g6.typecount, my.filters = c('ko'), 
-                y.var = 'pc.type', y.label = '% of total')
+figS2h <- g6.bp(dataset = subset(g6.lintype, 
+                                 Identity.hc == 'TE'), 
+                my.filters = c('ko'), 
+                y.var = 'pc.lin', y.label = '% of TE')
 # Uncomment below to visualize plot
 # print(figS2h)
 
@@ -188,16 +191,15 @@ figS2i <- g6.bp(dataset = g6.icmtype, my.filters = c('ko'),
 # print(figS2i)
 
 ################################################################################
-# Same as Figure 2i, but showing contribution to TE - not shown in paper
+# Same as Figure 2i, but showing contribution to embryo - not shown in paper
 ################################################################################
 
 # Use function to generate plot
 # Can be used to plot number of any other lineage by simply 
 # changing the subsetting condition (Identity.hc)
-figS2xx <- g6.bp(dataset = subset(g6.lintype, 
-                                    Identity.hc == 'TE'), 
+figS2xx <- g6.bp(dataset = g6.typecount, 
                    my.filters = c('ko'), 
-                   y.var = 'pc.lin', y.label = '% of TE')
+                 y.var = 'pc.type', y.label = '% of total')
 # Uncomment below to visualize plot
 # print(figS2xx)
 
@@ -235,7 +237,7 @@ figS2k <- figS2k + scale_color_manual(values = cellcols)
 figS2k <- figS2k + looks + theme(aspect.ratio = 1, 
                                  axis.text.x = element_text(angle = 45, 
                                                             hjust = 1))
-figS2k <- figS2k + labs(x = 'Final % of H2B-GFP ICM cells', 
+figS2k <- figS2k + labs(x = 'Final % of GFP+ ICM cells', 
                         y = '% of lineage', 
                         color = 'Cell type, host genotype', 
                         title = 'Figure S2k')
@@ -258,7 +260,7 @@ figS2l <- figS2l + facet_grid(H_genotype ~ .)
 figS2l <- figS2l + looks + theme(aspect.ratio = 1, 
                                  axis.text.x = element_text(angle = 45, 
                                                             hjust = 1))
-figS2l <- figS2l + labs(x = 'Final % of H2B-GFP ICM cells', 
+figS2l <- figS2l + labs(x = 'Final % of GFP+ ICM cells', 
                         y = '% ICM', 
                         fill = 'Identity', 
                         title = 'Figure S2l')
@@ -330,7 +332,7 @@ figS2m <- figS2m + facet_grid(H_genotype ~ cell_type)
 figS2m <- figS2m + looks + theme(aspect.ratio = 1, 
                                  axis.text.x = element_text(angle = 45, 
                                                             hjust = 1))
-figS2m <- figS2m + labs(x = 'Final % of H2B-GFP ICM cells', 
+figS2m <- figS2m + labs(x = 'Final % of GFP+ ICM cells', 
                         y = '% of cells with EPI identity', 
                         color = 'Identity', 
                         title = 'Figure S2m')
@@ -359,7 +361,7 @@ figS2n <- figS2n + facet_grid(H_genotype ~ cell_type)
 figS2n <- figS2n + looks + theme(aspect.ratio = 1, 
                                  axis.text.x = element_text(angle = 45, 
                                                             hjust = 1))
-figS2n <- figS2n + labs(x = 'Final % of H2B-GFP ICM cells', 
+figS2n <- figS2n + labs(x = 'Final % of GFP+ ICM cells', 
                         y = '% of cells with EPI identity', 
                         color = 'Identity', 
                         title = 'Figure S2n')
