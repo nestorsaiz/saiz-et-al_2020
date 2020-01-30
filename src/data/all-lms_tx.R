@@ -32,7 +32,7 @@ te$Identity.hc <- 'TE'
 
 # and on cells classified as 'in' or 'out', which are too early (morulas)
 rest <- subset(spry.lms, Identity.km == 'morula')
-rest$id.cluster <- 5
+rest$id.cluster <- 6
 rest$Identity.hc <- 'morula'
 
 # Classify ICM cells in blastocysts using Hierarchical clustering
@@ -43,7 +43,7 @@ my.clusters <- hclust(dist(data.frame(icm$CH5.ebLogCor.l,
 # Uncomment to print dendrogram
 # plot(my.clusters)
 
-# Split in four clusters
+# Split in five clusters
 k = 5
 icm$id.cluster <- cutree(my.clusters, k)
 table(icm$id.cluster, icm$Identity.km)
