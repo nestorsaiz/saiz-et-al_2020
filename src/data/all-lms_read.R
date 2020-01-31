@@ -59,6 +59,9 @@ ncoms.lms$Identity.km <- factor(ncoms.lms$Identity.km,
 # Rename Identity variable (manually assigned) as Identity.man
 ncoms.lms <- rename(ncoms.lms, Identity.man = Identity)
 
+# Write out tidy dataset to disk
+write.csv(ncoms.lms, file = './data/interim/ncoms-lms-tidy.csv', row.names = F)
+
 # Calculate cell counts for each ICM lineage
 ncoms.counts <- ncoms.lms %>% 
   group_by(Experiment, Litter, 
@@ -79,7 +82,6 @@ ncoms.counts$pc.icm <- ncoms.counts$count / ncoms.counts$icm.count * 100
 ncoms.counts <- data.frame(ncoms.counts)
 
 # Write out tidy datasets to file
-write.csv(ncoms.lms, file = './data/interim/ncoms-lms-tidy.csv', row.names = F)
 write.csv(ncoms.counts, file = './data/interim/ncoms-counts-tidy.csv', 
           row.names = F)
 
