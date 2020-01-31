@@ -77,3 +77,6 @@ ncoms.lms$Identity.hc <- factor(ncoms.lms$Identity.hc,
                                levels = c('TE', 'PRE', 'DP', 'EPI', 
                                           'EPI.lo', 'DN'))
 
+# Write transformed data to file
+write.csv(ncoms.lms, file = './data/processed/ncoms-lms-processed.csv', 
+          row.names = F)
