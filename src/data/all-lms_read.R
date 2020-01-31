@@ -142,16 +142,16 @@ spry.lms$Stage <- factor(spry.lms$Stage,
 write.csv(spry.lms, file = './data/interim/spry4-lms-tidy.csv', row.names = F)
 
 # Re-classify cells using Hierarchical Clustering, as we've done for
-# other data in this study, using all-lms_tx.R
+# other data in this study, using spry4_tx.R
 
 # Delete existing data table
 rm(spry.lms)
-# Read in output of all-lms_tx.R
+# Read in output of spry4_tx.R
 spry.lms <- read.csv('./data/processed/spry4-lms-processed.csv')
 
-# If the processed table does not exist, run all-lms_tx.R
+# If the processed table does not exist, run spry4_tx.R
 if(exists('spry.lms') == F) { 
-  source('./src/data/all-lms_tx.R')
+  source('./src/data/spry4_tx.R')
 }
 
 # Reorder factor in case data was loaded from file
@@ -161,13 +161,13 @@ spry.lms$Identity.hc <- factor(spry.lms$Identity.hc,
 
 # Calculate cell counts for each ICM lineage in blastocysts only
 spry.counts <- spry.lms %>% 
-  filter(Cellcount > 31) %>% 
+  filter(Cellcount > 30) %>% 
   group_by(Experiment, Litter, Embryo_ID, 
            TE_ICM, Exp_date, Img_date, 
            Stage, Background, 
            Treatment, Gene1, Gene2, 
            Genotype1, Genotype2, 
-           Cellcount,icm.count, 
+           Cellcount, icm.count, 
            litter.median, Identity.hc) %>% 
   summarize(count = n())
 
@@ -514,6 +514,7 @@ for(e in 1:length(allcounts.list)) {
   allcounts.list[[e]] <- filter(allcounts.list[[e]], 
                                 Genotype1 != 'mosaic', 
                                 Genotype2 != 'mosaic', 
+                                Identity != 'morula', 
                                 Cellcount > 29)
   allcounts.list[[e]][which(colnames(allcounts.list[[e]]) %in% 
                               droppers)] <- NULL
@@ -540,6 +541,7 @@ for(e in 1:length(allcounts.list)) {
                 Gene1 + Gene2 + 
                 Background ~ Identity, 
               value.var = 'count')
+  # Drop columns named NA (correspond to ICM identities, not represented here)
   te[which(colnames(te) == 'NA')] <- NULL
   
   icm <- dcast(icm, Experiment + Embryo_ID + Cellcount + 
@@ -548,9 +550,11 @@ for(e in 1:length(allcounts.list)) {
                  Gene1 + Gene2 + 
                  Background ~ Identity, 
                value.var = 'count')
+  # Drop columns named NA (correspond to TE, not represented here)
   icm[which(colnames(icm) == 'NA')] <- NULL
   
-  # Turn NAs into zeroes
+  # Turn NAs into zeroes in ICM 
+  # (which are identities not represented in some of the embryos)
   icm[is.na(icm)] <- 0
   
   # Add an empty DN column for Gata6 dataset
@@ -561,19 +565,19 @@ for(e in 1:length(allcounts.list)) {
   # Create empty all.EPI variable in all
   icm$all.EPI <- rep(0, times = length(icm$Embryo_ID))
   
-  # Embryos with EPI.lo in Identity, 
-  # add EPI and EPI.lo cell numbers as all.EPI
+  # Embryos with 'EPI.lo' cells in Identity, 
+  # will have EPI + EPI.lo cell numbers as all.EPI
   if(nuevas[e] == 1) { 
     icm$all.EPI <- icm$EPI + icm$EPI.lo
     }
   
-  # In datasets, where there is no EPI.lo category
+  # In datasets, where there is no 'EPI.lo' category
   # split embryos into late and early and 
   # add EPI and DN cells as all.EPI in late embryos only
   else {
     # Split into early and late blastocysts
-    early <- subset(icm, Cellcount < 100)
-    late <- subset(icm, Cellcount >= 100)
+    early <- subset(icm, Cellcount < 90)
+    late <- subset(icm, Cellcount >= 90)
     # Add EPI and DN cell numbers in late embryos only
     early$all.EPI <- early$EPI
     late$all.EPI <- late$EPI + late$DN
