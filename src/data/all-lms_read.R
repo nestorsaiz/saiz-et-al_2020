@@ -52,8 +52,11 @@ ncoms.lms[which(colnames(ncoms.lms) %in%
 ncoms.lms$Cellcount <- NULL
 ncoms.lms <- do.counts(ncoms.lms, sep.treatment = F)
 
-# Filter out embryos < 30 cells
-ncoms.lms <- subset(ncoms.lms, Cellcount >= 30)
+# Re-stage data as somehow the existing stages don't match the paper
+ncoms.lms <- stage(ncoms.lms)
+
+# Filter out embryos < 32 cells
+ncoms.lms <- subset(ncoms.lms, Cellcount >= 32)
 
 # Order factors in Identity.km
 ncoms.lms$Identity.km <- factor(ncoms.lms$Identity.km, 
