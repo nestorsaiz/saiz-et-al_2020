@@ -52,6 +52,9 @@ ncoms.lms[which(colnames(ncoms.lms) %in%
 ncoms.lms$Cellcount <- NULL
 ncoms.lms <- do.counts(ncoms.lms, sep.treatment = F)
 
+# Filter out embryos < 30 cells
+ncoms.lms <- subset(ncoms.lms, Cellcount >= 30)
+
 # Order factors in Identity.km
 ncoms.lms$Identity.km <- factor(ncoms.lms$Identity.km, 
                                 levels = c('TE', 'PRE', 'DP', 'EPI', 'DN'))
