@@ -12,6 +12,11 @@ rm(setup.ran)
 # If data is not present, read in from interim data folder
 if(exists('spry.lms') == F) { 
   spry.lms <- read.csv('./data/interim/spry4-lms-tidy.csv')
+}
+
+# If still not present, run all-lms_read.R to generate it
+if(exists('spry.lms') == F) { 
+  source('./src/data/all-lms_read.R')
   }
 
 # Standardize NANOG and GATA6 levels per litter for classification purposes, 
