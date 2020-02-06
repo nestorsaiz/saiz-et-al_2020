@@ -302,7 +302,7 @@ cv.ratio <- ggplot(data = rbind(my.var[[1]], my.var[[2]], my.var[[3]]),
 # print(cv.ratio)
 
 # Generate PDF with plots
-pdf(file = 'Fig2d-S3_NS.pdf')
+pdf(file = './figures/FigS3_NS.pdf')
 print(panel.a)
 print(panel.S3b)
 print(panel.S3c)
