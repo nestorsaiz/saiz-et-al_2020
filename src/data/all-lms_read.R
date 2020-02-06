@@ -68,7 +68,26 @@ ncoms.lms <- rename(ncoms.lms, Identity.man = Identity)
 # Write out tidy dataset to disk
 write.csv(ncoms.lms, file = './data/interim/ncoms-lms-tidy.csv', row.names = F)
 
-# Calculate cell counts for each ICM lineage
+# Remove data table and load processed table
+# in which identities have been reassigned using Hierarchical Clustering
+rm(ncoms.lms)
+ncoms.lms <- read.csv('./data/processed/ncoms-lms-processed.csv')
+
+# If table has not been generated, run ncoms_tx.R to create it
+if(exists('ncoms.lms') == F) {
+  source('./src/data/ncoms_tx.R')
+}
+
+# Order Identity levels
+# Order factors in Identity.km
+ncoms.lms$Identity.km <- factor(ncoms.lms$Identity.km, 
+                                levels = c('TE', 'PRE', 'DP', 'EPI', 'DN'))
+ncoms.lms$Identity.hc <- factor(ncoms.lms$Identity.hc, 
+                               levels = c('TE', 'PRE', 'DP', 'EPI',
+                                          'EPI.lo', 'DN'))
+
+# Calculate cell counts for each ICM lineage using identity
+# assigned by Hierarchical Clustering
 ncoms.counts <- ncoms.lms %>% 
   group_by(Experiment, Litter, 
            Exp_date, Img_date, 
@@ -78,7 +97,7 @@ ncoms.counts <- ncoms.lms %>%
            litter.median, icm.count, 
            Gene1, Genotype1, 
            Gene2, Genotype2, 
-           Identity.km) %>% 
+           Identity.hc) %>% 
   summarize(count = n())
 # Calculate the % of ICM that each ICM lineage represents
 # (the result will be > 100% for TE cells, but it's irrelevant)
@@ -88,7 +107,7 @@ ncoms.counts$pc.icm <- ncoms.counts$count / ncoms.counts$icm.count * 100
 ncoms.counts <- data.frame(ncoms.counts)
 
 # Write out tidy datasets to file
-write.csv(ncoms.counts, file = './data/interim/ncoms-counts-tidy.csv', 
+write.csv(ncoms.counts, file = './data/processed/ncoms-counts-Hc.csv', 
           row.names = F)
 
 ################################################################################
@@ -403,8 +422,7 @@ compos[which(colnames(compos) %in%
 
 # Order factor levels
 compos$Identity.km <- factor(compos$Identity.km, 
-                             levels = c('TE', 'PRE', 'DP', 'EPI', 
-                                        'EPI.lo', 'DN'))
+                             levels = c('TE', 'PRE', 'DP', 'EPI', 'DN'))
 compos$Identity.hc <- factor(compos$Identity.hc, 
                              levels = c('TE', 'PRE', 'DP', 'EPI', 
                                         'EPI.lo', 'DN'))
@@ -454,9 +472,9 @@ gata4.counts <- rename(gata4.counts, Identity = Identity.man)
 
 # Order factor levels
 gata6.counts$Identity <- factor(gata6.counts$Identity, 
-                                levels = levels(ncoms.counts$Identity.km))
+                                levels = c('TE', 'PRE', 'DP', 'EPI', 'DN'))
 gata4.counts$Identity <- factor(gata4.counts$Identity, 
-                                levels = levels(ncoms.counts$Identity.km))
+                                levels = c('TE', 'PRE', 'DP', 'EPI', 'DN'))
 
 ################################################################################
 # Read in lineage counts for the Fgfr1;2 allelic series
@@ -489,17 +507,11 @@ fgfr.lms.counts$Identity <- fgfr.lms.counts$Identity.km
 
 # Order Identity levels
 fgfr.lms.counts$Identity <- factor(fgfr.lms.counts$Identity, 
-                                   levels = levels(ncoms.counts$Identity.km))
+                                   levels = c('TE', 'PRE', 'DP', 'EPI', 'DN'))
 
 ################################################################################
 # Combine all counts datasets 
 ################################################################################
-
-# Rename Identity variables to Identity in Nat Comms, Spry4 
-# and compounds datasets
-ncoms.counts <- rename(ncoms.counts, Identity = Identity.km)
-spry.counts <- rename(spry.counts, Identity = Identity.hc)
-compos.counts <- rename(compos.counts, Identity = Identity.hc)
 
 # Make a list with desired datasets
 allcounts.list <- list(ncoms.counts, spry.counts, 
@@ -507,6 +519,12 @@ allcounts.list <- list(ncoms.counts, spry.counts,
                        fvb.counts, f4.counts,
                        compos.counts, fgfr.lms.counts, 
                        gata4.counts, gata6.counts)
+
+# Rename Identity variables to Identity in Nat Comms, Spry4 
+# and compounds datasets
+allcounts.list[[1]] <- rename(allcounts.list[[1]], Identity = Identity.hc)
+allcounts.list[[2]] <- rename(allcounts.list[[2]], Identity = Identity.hc)
+allcounts.list[[7]] <- rename(allcounts.list[[7]], Identity = Identity.hc)
 
 # Re-stage embryos
 for(e in 1:length(allcounts.list)) { 
@@ -581,7 +599,7 @@ for(e in 1:length(allcounts.list)) {
   
   # In datasets, where there is no 'EPI.lo' category
   # split embryos into late and early and 
-  # add EPI and DN cells as all.EPI in late embryos only
+  # calculate all.EPI as the sum of EPI + DN in late embryos only
   else {
     # Split into early and late blastocysts
     early <- subset(icm, Cellcount < 90)
@@ -620,7 +638,7 @@ for(e in 1:length(allcounts.list)) {
   # Calculate the percentage of the ICM that each lineage represents
   allcounts.list[[e]]$pc.icm <-
     allcounts.list[[e]]$count / allcounts.list[[e]]$icm.count * 100
-
+  
   # Order Genotypes & Identity
   allcounts.list[[e]]$Genotype1 <- factor(allcounts.list[[e]]$Genotype1,
                                           levels = c('wt', 'het', 'ko'))
