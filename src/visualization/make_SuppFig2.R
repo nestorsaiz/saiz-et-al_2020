@@ -166,6 +166,15 @@ figS2f <- figS2f + labs(x = 'Final % of GFP+ ICM cells',
 # Uncomment below to visualize plot
 # print(figS2f)
 
+# Generate table with number of embryos in each group
+figS2f.N <- g6.chimeras %>% 
+  filter(TE_ICM == 'ICM', 
+         H_genotype %in% c('wt')) %>%
+  group_by(Embryo_ID, H_genotype, donor.end) %>%
+  summarize() %>% 
+  group_by(donor.end) %>%
+  summarize(N = n())
+
 ################################################################################
 # Supplementary Figure 2h
 # Box plots showing contribution of Gata6-/- GFP- and wt GFP+ cells to TE
@@ -266,6 +275,15 @@ figS2l <- figS2l + labs(x = 'Final % of GFP+ ICM cells',
                         title = 'Figure S2l')
 # Uncomment below to visualize plot
 # print(figS2l)
+
+# Generate table with number of embryos in each group
+figS2l.N <- g6.chimeras %>% 
+  filter(TE_ICM == 'ICM', 
+         H_genotype %in% c('ko')) %>%
+  group_by(Embryo_ID, H_genotype, donor.end) %>%
+  summarize() %>% 
+  group_by(donor.end) %>%
+  summarize(N = n())
 
 ################################################################################
 # Calculate the % of each subpopulation (GFP-, GFP+) that adopted EPI fate

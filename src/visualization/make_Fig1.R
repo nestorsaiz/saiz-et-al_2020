@@ -46,6 +46,15 @@ fig1c <- fig1c + labs(x = 'Final % of H2B-GFP ICM cells',
                       fill = 'Identity')
 # print(fig1c)
 
+# Generate table with number of embryos in each group in panel C
+fig1c.N <- g6.chimeras %>% 
+  filter(TE_ICM == 'ICM', 
+         H_genotype %in% c('wt')) %>%
+  group_by(cell_type, Embryo_ID, H_genotype, donor.end) %>%
+  summarize() %>% 
+  group_by(cell_type, donor.end) %>%
+  summarize(N = n())
+
 ################################################################################
 # Figure 1f
 # Stacked bar plots showing ICM composition in chimeras made with
@@ -67,8 +76,16 @@ fig1f <- fig1f + labs(x = 'Final % of H2B-GFP ICM cells',
                       fill = 'Identity')
 # print(fig1f)
 
+# Generate table with number of embryos in each group in panel F
+fig1f.N <- g6.chimeras %>% 
+  filter(TE_ICM == 'ICM', 
+         H_genotype %in% c('ko')) %>%
+  group_by(cell_type, Embryo_ID, H_genotype, donor.end) %>%
+  summarize() %>% 
+  group_by(cell_type, donor.end) %>%
+  summarize(N = n())
 
-# Generate PDF
+# Generate PDF with figures
 pdf(file = './figures/fig1cf_NS_lin-distrib.pdf', width = 11, paper = 'a4r')
 print(fig1c)
 print(fig1f)
