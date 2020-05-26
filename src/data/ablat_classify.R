@@ -76,11 +76,12 @@ ablat.b <- subset(ablat, !Experiment %in% unique(ablat.a$Experiment))
 # Standardize NANOG and GATA6 values for each litter against litter maxima
 # for the purpose of cell classification with both K-means and H-clustering
 # This is a rather noisy dataset and this step creates tighter clusters
+ablat.a$Litter <- as.character(ablat.a$Litter)
 ablat.a <- split(ablat.a, as.factor(ablat.a$Litter))
 for(l in 1:length(ablat.a)) { 
-  ablat.a[[l]]$CH3.ebLogCor.xl <- 
+  ablat.a[[l]]$CH3.ebLogCor.xl <-
     ablat.a[[l]]$CH3.ebLogCor.x / max(ablat.a[[l]]$CH3.ebLogCor.x)
-  ablat.a[[l]]$CH5.ebLogCor.xl <- 
+  ablat.a[[l]]$CH5.ebLogCor.xl <-
     ablat.a[[l]]$CH5.ebLogCor / max(ablat.a[[l]]$CH5.ebLogCor)
 }
 ablat.a <- do.call(rbind, ablat.a)
