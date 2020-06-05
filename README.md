@@ -48,4 +48,4 @@ The repository tries to follow a standard structure, mostly based on the [Cookie
 
 ## Usage
 
-Clone repository using ```git clone``` as usual. The file ```regdev_project.Rproj``` should allow you to open and run all scripts and functions and reproducibly generate data tables and figures. Packages are handled by packrat and the working directory by the .Rproj file. If you encounter any bug or issues please reach out.
+Clone repository using ```git clone``` as usual. The file ```regdev_project.Rproj``` should allow you to open and run all scripts and functions and reproducibly generate data tables and figures. Packages are handled by [packrat](https://rstudio.github.io/packrat/) and the working directory by the .Rproj file. If you encounter any bug or issues please reach out.
