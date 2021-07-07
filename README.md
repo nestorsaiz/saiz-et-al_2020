@@ -1,6 +1,6 @@
 # Saiz *et al*. (2020) 
 
-This repository contains the data and code associated with the article by Saiz *et al.*, *Growth factor-mediated coupling between lineage size and cell fate choice underlies robustness of mammalian development*, currently deposited in [bioRXiv](https://www.biorxiv.org/content/10.1101/2019.12.27.889006v2).
+This repository contains the data and code associated with the article by Saiz *et al.*, *Growth factor-mediated coupling between lineage size and cell fate choice underlies robustness of mammalian development*, eLife 2020;9:e56079, DOI:[10.7554/eLife/56079](https://doi.org/10.7554/eLife.56079).
 
 The repository tries to follow a standard structure, mostly based on the [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/#cookiecutter-data-science) project and other best practices recommendations. This repository was made post-hoc, in 2019, based on rawer code written between 2017 and 2019 (sorry - trying to be better).
 
